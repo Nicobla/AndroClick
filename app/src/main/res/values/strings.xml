@@ -18,4 +18,6 @@
     <string name="tacos">Tacos</string>
     <string name="button_options_menu_description">Bouton qui affiche le menu des options</string>
     <string name="button_searchIngredient_description">Recherche un ingrédient</string>
+    <string name="title_tacos_description">Titre écran création tacos</string>
+    <string name="tacos_title">Création de tacos</string>
 </resources>

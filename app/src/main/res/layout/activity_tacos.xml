@@ -6,13 +6,6 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/list_add_ingredient"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/menuButtons"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_add_ingredient" />
-
     <FrameLayout
         android:id="@+id/menuButtons"
         android:layout_width="match_parent"
@@ -30,58 +23,36 @@
         app:menu="@menu/navigation" />
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_add_ingredient"
+        android:id="@+id/toolbar_tacos"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageButton
-                android:id="@+id/button_back"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:background="@color/colorPrimary"
-                android:contentDescription="@string/button_back_description"
-                android:src="@drawable/button_back_icon"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:onClick="moveBackToMyRecipe"/>
-
             <TextView
-                android:id="@+id/title_add_ingredient"
+                android:id="@+id/title_tacos"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="8dp"
-                android:contentDescription="@string/title_add_ingredient_description"
-                android:text="@string/add_ingredient_title"
+                android:contentDescription="@string/title_tacos_description"
+                android:text="@string/tacos_title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textSize="24sp"
-                app:layout_constraintStart_toEndOf="@+id/button_back"
-                app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/button_searchIngredient"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="2dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/button_searchIngredient_description"
-                android:src="@drawable/ic_search"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:onClick="searchIngredient"/>
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.Toolbar>

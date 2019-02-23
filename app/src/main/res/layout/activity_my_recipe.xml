@@ -6,6 +6,13 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent">
 
+    <ListView
+        android:id="@+id/list_ingredients"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/menuButtons"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_myrecipe" />
+
     <FrameLayout
         android:id="@+id/menuButtons"
         android:layout_width="match_parent"
