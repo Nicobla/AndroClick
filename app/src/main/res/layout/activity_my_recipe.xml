@@ -9,8 +9,24 @@
     android:layout_height="match_parent">
 
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/button_add_ingredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="@android:color/holo_blue_light"
+        app:layout_constraintBottom_toTopOf="@id/menuButtons"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@mipmap/button_add_ingredient_icon"
+        app:useCompatPadding="true"
+        android:onClick="moveToAddIngredient" />
+
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_options"
+        android:id="@+id/toolbar_myrecipe"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:background="?attr/colorPrimary"
@@ -24,41 +40,48 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/icon_options"
+            <ImageButton
+                android:id="@+id/button_back"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:contentDescription="@string/icon_options_description"
-                android:src="@drawable/button_options_icon"
+                android:background="@color/colorPrimary"
+                android:contentDescription="@string/button_back_description"
+                android:src="@drawable/button_back_icon"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:onClick="moveBackToMyRecipes"/>
 
             <TextView
-                android:id="@+id/title_options"
+                android:id="@+id/title_myrecipe"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="8dp"
-                android:contentDescription="@string/title_options_description"
-                android:text="@string/options_title"
+                android:contentDescription="@string/title_myrecipe_description"
+                android:text="@string/myrecipe_title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textSize="24sp"
-                app:layout_constraintStart_toEndOf="@+id/icon_options"
+                app:layout_constraintStart_toEndOf="@+id/button_back"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageButton
+                android:id="@+id/button_favorite"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="8dp"
+                android:background="@color/colorAccent"
+                android:contentDescription="@string/button_searchRecipe_description"
+                android:src="@drawable/button_favorite_icon"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.Toolbar>
 
-
-    <ListView
-        android:id="@+id/list_options"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/menuButtons"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_options" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/menuButtons"
@@ -75,11 +98,10 @@
 
             <ImageButton
                 android:id="@+id/button_myrecipes"
+                android:contentDescription="@string/button_myrecipes_description"
                 android:layout_width="0dp"
                 android:layout_height="67dp"
-                android:background="@android:color/background_light"
-                android:contentDescription="@string/button_myrecipes_description"
-                android:onClick="moveToMyrecipes"
+                android:background="?attr/actionModeBackground"
                 android:src="@drawable/button_myrecipes_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/button_otacos"
@@ -112,10 +134,11 @@
 
             <ImageButton
                 android:id="@+id/button_options"
-                android:contentDescription="@string/button_options_description"
                 android:layout_width="0dp"
                 android:layout_height="67dp"
-                android:background="?attr/actionModeBackground"
+                android:background="@android:color/background_light"
+                android:contentDescription="@string/button_options_description"
+                android:onClick="moveToOptions"
                 android:src="@drawable/button_options_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -123,5 +146,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
     </android.support.design.widget.BottomNavigationView>
+
 </android.support.constraint.ConstraintLayout>
 

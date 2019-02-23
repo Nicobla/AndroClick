@@ -56,7 +56,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginRight="8dp"
-                android:background="@drawable/ic_launcher_background"
+                android:background="@color/colorPrimary"
                 android:contentDescription="@string/button_searchRecipe_description"
                 android:src="@drawable/button_search_icon"
                 app:layout_constraintRight_toRightOf="parent"
@@ -65,15 +65,12 @@
     </android.support.v7.widget.Toolbar>
 
 
-    <android.support.v7.widget.RecyclerView
+    <ListView
         android:id="@+id/list_myrecipes"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@id/menuButtons"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_myrecipes"
-        tools:listitem="@android:layout/simple_expandable_list_item_2" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_myrecipes" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/menuButtons"
@@ -138,5 +135,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
     </android.support.design.widget.BottomNavigationView>
+
 </android.support.constraint.ConstraintLayout>
 

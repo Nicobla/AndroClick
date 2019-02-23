@@ -11,4 +11,10 @@
     <string name="icon_options_description">Icone de titre des options</string>
     <string name="title_options_description">Titre des options</string>
     <string name="options_title">Options</string>
+    <string name="title_activity_my_recipe">MyRecipe</string>
+    <string name="button_back_description">Retourne à l\'écran précédent</string>
+    <string name="title_myrecipe_description">Titre de ma recette</string>
+    <string name="myrecipe_title">Ma recette</string>
+    <string name="title_add_ingredient_description">Titre de l\'écran ajouter un ingrédient</string>
+    <string name="add_ingredient_title">Ajouter un ingrédient</string>
 </resources>
