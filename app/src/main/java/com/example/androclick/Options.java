@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class Options extends AppCompatActivity {
 
@@ -29,20 +28,15 @@ public class Options extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch(position) {
-                    case 0:
-                        Toast.makeText(getApplicationContext(), parent.getItemAtPosition(position).toString()+"Oui monsieur", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 1:
-                        Toast.makeText(getApplicationContext(), parent.getItemAtPosition(position).toString()+"Oui madame", Toast.LENGTH_SHORT).show();
-                        break;
-                }
+            switch(position) {
+                case 0:
+                    Toast.makeText(getApplicationContext(), parent.getItemAtPosition(position).toString()+"Oui monsieur", Toast.LENGTH_SHORT).show();
+                    break;
+                case 1:
+                    Toast.makeText(getApplicationContext(), parent.getItemAtPosition(position).toString()+"Oui madame", Toast.LENGTH_SHORT).show();
+                    break;
+            }
             }
         });
-    }
-
-
-    public void moveToMyrecipes(View view) {
-        startActivity(new Intent(this, MainActivity.class));
     }
 }

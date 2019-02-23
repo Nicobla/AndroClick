@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_recipes"
+        android:icon="@drawable/ic_recipes"
+        android:title="@string/recipes"/>
+
+    <item
+        android:id="@+id/navigation_otacos"
+        android:icon="@drawable/ic_otacos"
+        android:title="@string/otacos"/>
+
+    <item
+        android:id="@+id/navigation_tacos"
+        android:icon="@drawable/ic_tacos"
+        android:title="@string/tacos"/>
+
+</menu>

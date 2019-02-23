@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 public class AddIngredient extends AppCompatActivity {
 
@@ -13,12 +14,11 @@ public class AddIngredient extends AppCompatActivity {
         setContentView(R.layout.activity_add_ingredient);
     }
 
-
     public void moveBackToMyRecipe(View view) {
         finish();
     }
 
-    public void moveToOptions(View view) {
-        startActivity(new Intent(this, Options.class));
+    public void searchIngredient(View view) {
+        Toast.makeText(getApplicationContext(), "TODO : searchIngredient", Toast.LENGTH_LONG).show();
     }
 }

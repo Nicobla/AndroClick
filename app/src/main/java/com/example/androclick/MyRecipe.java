@@ -16,15 +16,9 @@ public class MyRecipe extends AppCompatActivity {
         setContentView(R.layout.activity_my_recipe);
     }
 
-
     public void moveBackToMyRecipes(View view) {
         finish();
     }
-
-    public void moveToOptions(View view) {
-        startActivity(new Intent(this, Options.class));
-    }
-
 
     public void moveToAddIngredient(View view) {
         startActivity(new Intent(this, AddIngredient.class));

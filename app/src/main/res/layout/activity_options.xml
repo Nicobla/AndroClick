@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,6 +6,22 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent">
 
+    <FrameLayout
+        android:id="@+id/menuButtons"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/navigation" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_options"
@@ -31,9 +45,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:contentDescription="@string/icon_options_description"
-                android:src="@drawable/button_options_icon"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_options_menu"/>
 
             <TextView
                 android:id="@+id/title_options"
@@ -60,68 +74,5 @@
         app:layout_constraintBottom_toTopOf="@+id/menuButtons"
         app:layout_constraintTop_toBottomOf="@id/toolbar_options" />
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/menuButtons"
-        android:layout_width="0dp"
-        android:layout_height="72dp"
-        android:background="@android:color/background_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageButton
-                android:id="@+id/button_myrecipes"
-                android:layout_width="0dp"
-                android:layout_height="67dp"
-                android:background="@android:color/background_light"
-                android:contentDescription="@string/button_myrecipes_description"
-                android:onClick="moveToMyrecipes"
-                android:src="@drawable/button_myrecipes_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button_otacos"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/button_otacos"
-                android:contentDescription="@string/button_otacos_description"
-                android:layout_width="0dp"
-                android:layout_height="67dp"
-                android:background="@android:color/background_light"
-                android:src="@drawable/button_otacos_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button_createTacos"
-                app:layout_constraintStart_toEndOf="@+id/button_myrecipes"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/button_createTacos"
-                android:contentDescription="@string/button_createTacos_description"
-                android:layout_width="0dp"
-                android:layout_height="67dp"
-                android:background="@android:color/background_light"
-                android:src="@drawable/button_createtacos_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button_options"
-                app:layout_constraintStart_toEndOf="@+id/button_otacos"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/button_options"
-                android:contentDescription="@string/button_options_description"
-                android:layout_width="0dp"
-                android:layout_height="67dp"
-                android:background="?attr/actionModeBackground"
-                android:src="@drawable/button_options_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/button_createTacos"
-                app:layout_constraintTop_toTopOf="parent" />
-        </android.support.constraint.ConstraintLayout>
-    </android.support.design.widget.BottomNavigationView>
 </android.support.constraint.ConstraintLayout>
 
