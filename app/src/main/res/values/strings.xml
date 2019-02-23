@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">AndroClick</string>
+    <string name="app_name">Tacos Maker</string>
+    <string name="button_myrecipes_description">Go to the \"My recipes\" menu</string>
+    <string name="button_otacos_description">Go to the \"OTacos\" menu</string>
+    <string name="button_createTacos_description">Go to the \"create tacos\" menu</string>
+    <string name="button_options_description">Go to the \"Options\" menu</string>
+    <string name="myrecipes_title">Mes recettes</string>
+    <string name="title_myrecipes_description">Titre de mes recettes</string>
+    <string name="icon_myrecipes_description">Icone de mes recettes</string>
+    <string name="button_searchRecipe_description">Recherche une recette</string>
+    <string name="icon_options_description">Icone de titre des options</string>
+    <string name="title_options_description">Titre des options</string>
+    <string name="options_title">Options</string>
 </resources>
