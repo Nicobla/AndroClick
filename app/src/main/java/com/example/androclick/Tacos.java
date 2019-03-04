@@ -23,7 +23,7 @@ public class Tacos extends AppCompatActivity {
         setContentView(R.layout.activity_tacos);
 
         final BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigationView);
-
+        bottomNavigationView.setSelectedItemId(R.id.navigation_tacos);
         bottomNavigationView.setOnNavigationItemSelectedListener
         (new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
