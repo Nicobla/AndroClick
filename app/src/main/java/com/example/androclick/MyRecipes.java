@@ -34,7 +34,7 @@ public class MyRecipes extends AppCompatActivity {
                         break;
                     case R.id.navigation_otacos:
                         Toast.makeText(getApplicationContext(), "OTacos", Toast.LENGTH_LONG).show();
-                        //moveToActivity(bottomNavigationView, OTacos.class);
+                        moveToActivity(bottomNavigationView, OTacos.class);
                         break;
                     case R.id.navigation_tacos:
                         Toast.makeText(getApplicationContext(), "Tacos", Toast.LENGTH_LONG).show();
