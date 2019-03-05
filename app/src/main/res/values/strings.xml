@@ -1,23 +1,33 @@
 <resources>
     <string name="app_name">Tacos Maker</string>
-    <string name="myrecipes_title">Mes recettes</string>
-    <string name="title_myrecipes_description">Titre de mes recettes</string>
-    <string name="icon_myrecipes_description">Icone de mes recettes</string>
-    <string name="button_searchRecipe_description">Recherche une recette</string>
-    <string name="icon_options_description">Icone de titre des options</string>
-    <string name="title_options_description">Titre des options</string>
-    <string name="options_title">Options</string>
-    <string name="title_activity_my_recipe">MyRecipe</string>
-    <string name="button_back_description">Retourne à l\'écran précédent</string>
-    <string name="title_myrecipe_description">Titre de ma recette</string>
-    <string name="myrecipe_title">Ma recette</string>
-    <string name="title_add_ingredient_description">Titre de l\'écran ajouter un ingrédient</string>
-    <string name="add_ingredient_title">Ajouter un ingrédient</string>
+
     <string name="recipes">Recettes</string>
     <string name="otacos">O\'Tacos</string>
     <string name="tacos">Tacos</string>
-    <string name="button_options_menu_description">Bouton qui affiche le menu des options</string>
+
+    <string name="myrecipes_title">Mes recettes</string>
+    <string name="myrecipe_title">Ma recette</string>
+    <string name="add_ingredient_title">Ajouter un ingrédient</string>
+    <string name="tacos_title">Création de tacos</string>
+
+    <string name="about">À propos</string>
+    <string name="myaccount">Mon compte</string>
+    <string name="preferences">Préférences</string>
+
+
+    <string name="button_searchRecipe_desc">Recherche une recette</string>
+    <string name="myrecipe_img_desc">Image de ma recette</string>
+
+    <!-- à supprimer (peut-être) -->
+    <string name="title_myrecipes_description">Titre de mes recettes</string>
+    <string name="icon_myrecipes_description">Icone de mes recettes</string>
+    <string name="icon_options_description">Icone de titre des options</string>
+    <string name="title_options_description">Titre des options</string>
+    <string name="button_back_description">Retourne à l\'écran précédent</string>
+    <string name="title_myrecipe_description">Titre de ma recette</string>
+    <string name="title_add_ingredient_description">Titre de l\'écran ajouter un ingrédient</string>
+    <string name="button_menu_description">Bouton qui affiche le menu des options</string>
     <string name="button_searchIngredient_description">Recherche un ingrédient</string>
     <string name="title_tacos_description">Titre écran création tacos</string>
-    <string name="tacos_title">Création de tacos</string>
+
 </resources>

@@ -1,19 +1,12 @@
 package com.example.androclick;
 
-import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.ImageButton;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Tacos extends AppCompatActivity {
 
@@ -21,33 +14,23 @@ public class Tacos extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tacos);
-
-        final BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigationView);
-        bottomNavigationView.setSelectedItemId(R.id.navigation_tacos);
-        bottomNavigationView.setOnNavigationItemSelectedListener
-        (new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.navigation_recipes:
-                        Toast.makeText(getApplicationContext(), "Recettes", Toast.LENGTH_LONG).show();
-                        moveToActivity(bottomNavigationView, MyRecipes.class);
-                        break;
-                    case R.id.navigation_otacos:
-                        Toast.makeText(getApplicationContext(), "OTacos", Toast.LENGTH_LONG).show();
-                        //moveToActivity(bottomNavigationView, OTacos.class);
-                        break;
-                    case R.id.navigation_tacos:
-                        Toast.makeText(getApplicationContext(), "Tacos", Toast.LENGTH_LONG).show();
-                        moveToActivity(bottomNavigationView, Tacos.class);
-                        break;
-                }
-                return true;
-            }
-        });
     }
 
-    private void moveToActivity(View view, Class classe) {
-        startActivity(new Intent(this, classe));
+
+    public void moveBackTacos(View view) {}
+
+    public void next(View view) {
+        ImageButton mButtonBack = findViewById(R.id.button_back);
+        mButtonBack.setVisibility((int)0);
+
+        ConstraintLayout constraintLayout = findViewById(R.id.toolbar_layout);
+        //TextView mTitle = findViewById(R.id.title_tacos);
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(R.id.title_tacos,ConstraintSet.LEFT,R.id.button_back,ConstraintSet.RIGHT,240); //marche pas
+        constraintSet.connect(R.id.title_tacos,ConstraintSet.TOP,ConstraintSet.PARENT_ID,ConstraintSet.TOP,24);
+        constraintSet.applyTo(constraintLayout);
     }
+
 }
