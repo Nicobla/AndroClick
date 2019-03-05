@@ -34,8 +34,6 @@ public class OTacos extends Fragment {
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                 transaction.replace(R.id.constraintLayout, childFragment).commit();
             }
-
-
         });
         return view;
     }

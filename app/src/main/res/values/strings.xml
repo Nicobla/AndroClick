@@ -29,5 +29,11 @@
     <string name="button_menu_description">Bouton qui affiche le menu des options</string>
     <string name="button_searchIngredient_description">Recherche un ingrédient</string>
     <string name="title_tacos_description">Titre écran création tacos</string>
+    <string name="startTacos">Commencer</string>
+    <string name="taille_du_tacos">Taille du tacos</string>
+    <string name="taille_grand">Grand</string>
+    <string name="taille_moyen">Moyen</string>
+    <string name="taille_petit">Petit</string>
+    <string name="sauces">Sauces</string>
 
 </resources>

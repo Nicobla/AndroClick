@@ -25,6 +25,7 @@
         </activity>
         <activity android:name=".MyRecipe" />
         <activity android:name=".AddIngredient" />
+        <activity android:name=".Tacos" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
