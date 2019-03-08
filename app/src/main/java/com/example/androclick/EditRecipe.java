@@ -11,8 +11,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-
-public class Tacos extends AppCompatActivity implements android.widget.CompoundButton.OnCheckedChangeListener {
+public class EditRecipe extends AppCompatActivity implements android.widget.CompoundButton.OnCheckedChangeListener {
 
     final int NB_MAX_SAUCES = 2;
     int nbSauces = 0;
@@ -28,7 +27,7 @@ public class Tacos extends AppCompatActivity implements android.widget.CompoundB
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tacos);
+        setContentView(R.layout.activity_edit_recipe);
 
         ImageButton button_back = (ImageButton) findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener()
@@ -43,12 +42,12 @@ public class Tacos extends AppCompatActivity implements android.widget.CompoundB
         lvSupplements = (ListView)findViewById(R.id.list_supplements);
         displayListeSupplements();
 
-        Button button_createRecipe = (Button) findViewById(R.id.button_createRecipe);
-        button_createRecipe.setOnClickListener(new View.OnClickListener()
+        Button button_apply = (Button) findViewById(R.id.button_apply);
+        button_apply.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
-                //TODO : enregistrer recette
+                //TODO : modifier recette
                 finish();
             }
         });

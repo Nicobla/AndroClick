@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,42 +19,45 @@ import java.util.Arrays;
 
 public class MyRecipe extends AppCompatActivity {
 
-    private String name;//à supprimer
+    private Recette recette;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_recipe);
 
-        //TODO : modifier affichage (considérer tacos comme objet)
-        final ListView listview = (ListView) findViewById(R.id.list_ingredients);
-        final ArrayList<String> list = new ArrayList<String>(Arrays.asList("Tacos moyen", "Frites", "Mayonnaise", "Oignons"));
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-        listview.setAdapter(adapter);
+        //TODO : get recette from database
+        recette = new Recette("Exemple recette", "Tacos moyen",new String[]{"Ketchup", "Mayonnaise"}, new String[]{"Oignons", "Salade"});
 
-        // Lorsque l'on clique sur un ingrédient
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(getApplicationContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-            //TODO : gestion de la suppression de l'ingrédient (genre popup "Voulez-vous vraiment supprimer cet ingrédient ?")
-            }
-        });
-
-        name = "(nom de la recette)"; //TODO : get name (get infos de la recette)
         TextInputEditText mText = findViewById(R.id.myrecipe_name_input);
-        mText.setText(name);
+        mText.setText(recette.getNom());
+
+        final TextView tvTailleTacos = (TextView) findViewById(R.id.taille_tacos);
+        final ListView lvSauces = (ListView) findViewById(R.id.list_sauces);
+        final ListView lvSupplements = (ListView) findViewById(R.id.list_supplements);
+
+        tvTailleTacos.setText(recette.getTailleTacos());
+        final ArrayList<String> listSauces = new ArrayList<String>(){};
+        listSauces.addAll(Arrays.asList(recette.getSauces()));
+        final ArrayList<String> listSupplements = new ArrayList<String>(){};
+        listSupplements.addAll(Arrays.asList(recette.getSupplements()));
+
+        ArrayAdapter<String> adapterSauces = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listSauces);
+        lvSauces.setAdapter(adapterSauces);
+        ArrayAdapter<String> adapterSupplements = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listSupplements);
+        lvSupplements.setAdapter(adapterSupplements);
+
     }
 
     public void moveBackToMyRecipes(View view) {
         TextInputEditText mText = findViewById(R.id.myrecipe_name_input);
-        Toast.makeText(getApplicationContext(), "Nom de la recette : "+mText.getText(), Toast.LENGTH_SHORT).show();
-        //TODO : sauvegarder le nom de la recette
+        Toast.makeText(getApplicationContext(), mText.getText(), Toast.LENGTH_SHORT).show();
+        //TODO : sauvegarder la recette
         finish();
     }
 
-    public void moveToAddIngredient(View view) {
-        startActivity(new Intent(this, AddIngredient.class));
+    public void moveToEditRecipe(View view) {
+        startActivity(new Intent(this, EditRecipe.class));
     }
 
     @SuppressLint("NewApi")

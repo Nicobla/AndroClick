@@ -1,6 +1,5 @@
 package com.example.androclick;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,11 +14,11 @@ public class OTacos extends Fragment {
 
     //TODO : faire tabs (liste, map)
 
-    private OTacosViewModel mViewModel;
-
-    public static OTacos newInstance() {
-        return new OTacos();
+    public OTacos() {
+        // Required empty public constructor
     }
+
+    //public static OTacos newInstance() { return new OTacos(); }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,8 +41,6 @@ public class OTacos extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(OTacosViewModel.class);
-        // TODO: Use the ViewModel
     }
 
 }

@@ -5,35 +5,37 @@
     <string name="otacos">O\'Tacos</string>
     <string name="tacos">Tacos</string>
 
+
     <string name="myrecipes_title">Mes recettes</string>
-    <string name="myrecipe_title">Ma recette</string>
-    <string name="add_ingredient_title">Ajouter un ingrédient</string>
-    <string name="tacos_title">Création de tacos</string>
 
     <string name="about">À propos</string>
     <string name="myaccount">Mon compte</string>
     <string name="preferences">Préférences</string>
 
-
     <string name="button_searchRecipe_desc">Recherche une recette</string>
-    <string name="myrecipe_img_desc">Image de ma recette</string>
 
-    <!-- à supprimer (peut-être) -->
-    <string name="title_myrecipes_description">Titre de mes recettes</string>
-    <string name="icon_myrecipes_description">Icone de mes recettes</string>
-    <string name="icon_options_description">Icone de titre des options</string>
-    <string name="title_options_description">Titre des options</string>
-    <string name="button_back_description">Retourne à l\'écran précédent</string>
-    <string name="title_myrecipe_description">Titre de ma recette</string>
-    <string name="title_add_ingredient_description">Titre de l\'écran ajouter un ingrédient</string>
-    <string name="button_menu_description">Bouton qui affiche le menu des options</string>
-    <string name="button_searchIngredient_description">Recherche un ingrédient</string>
-    <string name="title_tacos_description">Titre écran création tacos</string>
+
+    <string name="myrecipe_title">Ma recette</string>
+    <string name="myrecipe_img_desc">Image de ma recette</string>
+    <string name="nom_de_la_recette">Nom de la recette</string>
+
+    <string name="title_edit_recipe">Modifier recette</string>
+
+    <string name="tacos_title">Création de tacos</string>
     <string name="startTacos">Commencer</string>
     <string name="taille_du_tacos">Taille du tacos</string>
+    <string name="create_recipe">Créer la recette</string>
+
+
+    <string name="taille">Taille</string>
+    <string name="sauces">Sauces</string>
+    <string name="supplements">Suppléments</string>
     <string name="taille_grand">Grand</string>
     <string name="taille_moyen">Moyen</string>
     <string name="taille_petit">Petit</string>
-    <string name="sauces">Sauces</string>
 
+    <!-- à supprimer (peut-être) -->
+    <string name="button_back_description">Retourne à l\'écran précédent</string>
+    <string name="button_menu_description">Bouton qui affiche le menu des options</string>
+    <string name="apply">Appliquer</string>
 </resources>
