@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MyRecipes extends Fragment {
@@ -43,7 +44,7 @@ public class MyRecipes extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.my_recipes_fragment, container, false);
 
-        this.listeRecettes = ((MyApplication) this.getActivity().getApplicationContext()).getListeRecettes();//appendListeRecettes();
+        this.listeRecettes = ((MyApplication) this.getActivity().getApplicationContext()).getListeRecettes();
 
         final EditText text_search = (EditText) view.findViewById(R.id.text_search);
         final TextView title_myrecipes = (TextView) view.findViewById(R.id.title_myrecipes);
@@ -54,6 +55,7 @@ public class MyRecipes extends Fragment {
             @Override
             public void onClick(View v)
             {
+                //TODO : showOptionsMenu
                 Toast.makeText(getContext(), "TODO : showOptionsMenu", Toast.LENGTH_SHORT).show();
             }
         });
@@ -92,7 +94,7 @@ public class MyRecipes extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s == "") {
-                    displayListeRecettes();
+                    displayListeRecettes(listeRecettes);
                 } else {
                     ArrayList<Recette> liste = new ArrayList<Recette>();
                     for (Recette recette : listeRecettes) {
@@ -101,7 +103,7 @@ public class MyRecipes extends Fragment {
                             liste.add(recette);
                         }
                     }
-                    displayListeRecettes();
+                    displayListeRecettes(liste);
                 }
             }
 
@@ -110,12 +112,12 @@ public class MyRecipes extends Fragment {
         });
 
         rvRecettes = (RecyclerView)view.findViewById(R.id.list_myrecipes);
-        displayListeRecettes();
+        displayListeRecettes(listeRecettes);
 
         return view;
     }
 
-    private void displayListeRecettes() {
+    private void displayListeRecettes(ArrayList<Recette> listeRecettes) {
         rvRecettes.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(getContext());
@@ -128,8 +130,6 @@ public class MyRecipes extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
     }
 
     @Override

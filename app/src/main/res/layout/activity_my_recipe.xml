@@ -124,7 +124,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:text="@string/sauces"
+        android:text="@string/sauces_recette"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taille_tacos" />
@@ -136,15 +136,32 @@
         app:layout_constraintTop_toBottomOf="@+id/titre_sauces" />
 
     <TextView
+        android:id="@+id/titre_viandes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="@string/viandes_recette"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_sauces" />
+
+    <ListView
+        android:id="@+id/list_viandes"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/titre_viandes" />
+
+    <TextView
         android:id="@+id/titre_supplements"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:text="@string/supplements"
+        android:text="@string/supplements_recette"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_sauces" />
+        app:layout_constraintTop_toBottomOf="@+id/list_viandes" />
 
     <ListView
         android:id="@+id/list_supplements"

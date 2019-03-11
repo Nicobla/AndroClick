@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -39,18 +40,28 @@ public class SupplementsAdapter extends RecyclerView.Adapter<SupplementsAdapter.
 
     public class SupplementsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView nomSupplement;
-        public TextView ingSupplement;
+        public CheckBox chkSupplement;
 
         public SupplementsHolder(View v) {
             super(v);
+
             nomSupplement = (TextView) v.findViewById(R.id.nom_supplement);
-            //ingSupplement = (TextView) v.findViewById(R.id.ingredients_supplement);
+            chkSupplement = (CheckBox) v.findViewById(R.id.checkbox_supplement);
+            //chkSupplement.setChecked(false);
+
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            Log.d("Test", "Slt");
+            CheckBox chk = (CheckBox) view.findViewById(R.id.checkbox_supplement);
+            chk.setChecked(!chk.isChecked());
+
+            int pos = getAdapterPosition();
+            Supplement s = listeSupplements.get(pos);
+            //s.setSelected(!s.isSelected());
+
+            Log.d("Test", "Click sur un supplément ("+pos+") - "+s.isSelected());
         }
     }
 
@@ -62,15 +73,18 @@ public class SupplementsAdapter extends RecyclerView.Adapter<SupplementsAdapter.
     public SupplementsAdapter.SupplementsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_supplements, parent, false);
         SupplementsHolder vh = new SupplementsHolder(v);
+        //vh.chkSupplement.setChecked(false);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(SupplementsHolder holder, int position) {
-        Supplement r = listeSupplements.get(position);
+        Supplement s = listeSupplements.get(position);
 
-        holder.nomSupplement.setText(r.getNom());
+        holder.nomSupplement.setText(s.getNom());
+        holder.chkSupplement.setChecked(s.isSelected());
 
+        //holder.chkSupplement.setTag(kek_chose);
     }
 
     @Override

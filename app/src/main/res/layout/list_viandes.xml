@@ -7,14 +7,14 @@
     android:layout_below="@+id/toolbar_tacos">
 
     <CheckBox
-        android:id="@+id/checkbox_sauce"
+        android:id="@+id/checkbox_viande"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"/>
 
     <TextView
-        android:id="@+id/nom_sauce"
+        android:id="@+id/nom_viande"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"/>

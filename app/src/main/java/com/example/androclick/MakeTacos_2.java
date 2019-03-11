@@ -1,10 +1,12 @@
 package com.example.androclick;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MakeTacos_2 extends Fragment implements android.widget.CompoundButton.OnCheckedChangeListener {
+public class MakeTacos_2 extends Fragment {//implements android.widget.CompoundButton.OnCheckedChangeListener {
+
+    private Bundle bundle;
+    private Recette recette;
 
     final int NB_MAX_SAUCES = 2;
     int nbSauces = 0;
@@ -26,8 +31,21 @@ public class MakeTacos_2 extends Fragment implements android.widget.CompoundButt
     private RecyclerView.Adapter saucesAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
+
     public MakeTacos_2() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        bundle = getArguments();
+        recette = (Recette)bundle.getSerializable("recette");
     }
 
 
@@ -41,35 +59,52 @@ public class MakeTacos_2 extends Fragment implements android.widget.CompoundButt
         rvSauces = (RecyclerView)view.findViewById(R.id.list_sauces);
         displayListeSauces();
 
+        rvSauces.addOnItemTouchListener(
+            new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Sauce s = listeSauces.get(position);
+                    s.setSelected(!s.isSelected());
+                    if (s.isSelected())
+                        recette.addSauce(s);
+                    else
+                        recette.removeSauce(s);
+                    bundle.putSerializable("recette", recette);
+                    setArguments(bundle);
+                }
+            })
+        );
+
+        bundle.putSerializable("recette", recette);
+        setArguments(bundle);
+
         return view;
     }
 
 
     private void displayListeSauces() {
-        listeSauces = new ArrayList<Sauce>();
-        //TODO : récupérer la liste des sauces depuis BDD
-        listeSauces.add(new Sauce("Mayonnaise"));
-        listeSauces.add(new Sauce("Moutarde"));
-        listeSauces.add(new Sauce("Ketchup"));
-        for (int i=1; i<=4; i++) {
-            listeSauces.add(new Sauce("Exemple "+i));
-        }
+        listeSauces = ((MyApplication) this.getActivity().getApplicationContext()).getListeSauces();
 
-        rvSauces.setHasFixedSize(true);
+        //rvSauces.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(getContext());
         rvSauces.setLayoutManager(layoutManager);
 
         saucesAdapter = new SaucesAdapter(listeSauces);
+        saucesAdapter.notifyDataSetChanged();
         rvSauces.setAdapter(saucesAdapter);
     }
 
-    @Override
+    /*@Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         int pos = rvSauces.getChildAdapterPosition(buttonView);
         if (pos != ListView.INVALID_POSITION) {
             Sauce s = listeSauces.get(pos);
             s.setSelected(isChecked);
+            if (s.isSelected())
+                recette.addSauce(s);
+            else
+                recette.removeSauce(s);
             // Compteur de sauces pour limiter
             if (isChecked)
                 nbSauces++;
@@ -80,5 +115,5 @@ public class MakeTacos_2 extends Fragment implements android.widget.CompoundButt
                 //TODO : griser checkboxes sauf celles déjà cochées
             }
         }
-    }
+    }*/
 }

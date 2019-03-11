@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -12,11 +13,12 @@ import java.util.ArrayList;
 
 class Sauce implements Serializable {
     String nom;
-    boolean selected = false;
+    boolean selected;
 
     public Sauce(String nom) {
         super();
         this.nom=nom;
+        this.selected=false;
     }
 
     public String getNom() {
@@ -35,27 +37,34 @@ class Sauce implements Serializable {
 }
 
 public class SaucesAdapter extends RecyclerView.Adapter<SaucesAdapter.SaucesHolder> {
-    private ArrayList<Sauce> listeSauces = new ArrayList<Sauce>();
+    private ArrayList<Sauce> listeSauces;
 
     public class SaucesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView nomSauce;
-        public TextView ingSauce;
+        public CheckBox chkSauce;
 
         public SaucesHolder(View v) {
             super(v);
             nomSauce = (TextView) v.findViewById(R.id.nom_sauce);
-            //ingSauce = (TextView) v.findViewById(R.id.ingredients_sauce);
+            chkSauce = (CheckBox) v.findViewById(R.id.checkbox_sauce);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            Log.d("Test", "Slt");
+            CheckBox chk = (CheckBox) view.findViewById(R.id.checkbox_sauce);
+            chk.setChecked(!chk.isChecked());
+
+            int pos = getAdapterPosition();
+            Sauce s = listeSauces.get(pos);
+            //s.setSelected(!s.isSelected());
+
+            Log.d("Test", "Click sur une sauce ("+pos+") - "+s.isSelected());
         }
     }
 
     public SaucesAdapter(ArrayList<Sauce> listSauces) {
-        listeSauces = listSauces;
+        this.listeSauces = listSauces;
     }
 
     @Override
@@ -67,10 +76,10 @@ public class SaucesAdapter extends RecyclerView.Adapter<SaucesAdapter.SaucesHold
 
     @Override
     public void onBindViewHolder(SaucesHolder holder, int position) {
-        Sauce r = listeSauces.get(position);
+        Sauce s = listeSauces.get(position);
 
-        holder.nomSauce.setText(r.getNom());
-
+        holder.nomSauce.setText(s.getNom());
+        holder.chkSauce.setChecked(s.isSelected());
     }
 
     @Override

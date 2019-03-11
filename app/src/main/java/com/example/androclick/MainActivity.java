@@ -1,5 +1,6 @@
 package com.example.androclick;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -7,15 +8,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-//import android.widget.Toast;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+    public void reload() {
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        ((MyApplication) getApplicationContext()).setListeSauces(insertListeSauces());
+        ((MyApplication) getApplicationContext()).setListeViandes(insertListeViandes());
+        ((MyApplication) getApplicationContext()).setListeSupplements(insertListeSupplements());
 
         ((MyApplication) getApplicationContext()).setListeRecettes(insertListeRecettes());
 
@@ -53,23 +67,75 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ArrayList<Recette> insertListeRecettes() {
+        final ArrayList<Sauce> sauces = ((MyApplication) getApplicationContext()).getListeSauces();
+        final ArrayList<Viande> viandes = ((MyApplication) getApplicationContext()).getListeViandes();
+        final ArrayList<Supplement> supplements = ((MyApplication) getApplicationContext()).getListeSupplements();
+
         ArrayList<Recette> recettes = new ArrayList<Recette>();
         //TODO : récupérer la liste des recettes depuis la BDD
 
-        recettes.add(new Recette("Recette 1", "Tacos moyen",
-                new Sauce[] {new Sauce("moutarde")},
-                new Supplement[]{}));
-        recettes.add(new Recette("Bon tacos", "Grand tacos",
-                new Sauce[]{new Sauce("ketchup"), new Sauce("mayonnaise")},
-                new Supplement[]{new Supplement("salade"), new Supplement("tomate"), new Supplement("oignon")}));
-        recettes.add(new Recette("Recette 3", "Petit tacos",
-                new Sauce[]{new Sauce("ketchup")},
-                new Supplement[]{}));
-        for (int i=4; i<=18; i++) {
-            recettes.add(new Recette("Recette "+i, "Tacos moyen",new Sauce[]{},new Supplement[]{}));
+        recettes.add(new Recette("Mon premier tacos",
+                Recette.TailleTacos.L,
+                new ArrayList<Sauce>(Arrays.asList(sauces.get(1))),
+                new ArrayList<Viande>(),
+                new ArrayList<Supplement>()));
+        recettes.add(new Recette("Bon tacos",
+                Recette.TailleTacos.XL,
+                new ArrayList<Sauce>(Arrays.asList(sauces.get(2), sauces.get(0))),
+                new ArrayList<Viande>(Arrays.asList(viandes.get(1))),
+                new ArrayList<Supplement>(Arrays.asList(supplements.get(0), supplements.get(1), supplements.get(2)))));
+        recettes.add(new Recette("Petite faim",
+                Recette.TailleTacos.M,
+                new ArrayList<Sauce>(Arrays.asList(sauces.get(2))),
+                new ArrayList<Viande>(Arrays.asList(viandes.get(2))),
+                new ArrayList<Supplement>()));
+        for (int i=4; i<=7; i++) {
+            recettes.add(new Recette("Recette "+i,
+                    Recette.TailleTacos.L,
+                    new ArrayList<Sauce>(),
+                    new ArrayList<Viande>(),
+                    new ArrayList<Supplement>()));
         }
 
         return recettes;
     }
 
+    private ArrayList<Sauce> insertListeSauces() {
+        ArrayList<Sauce> listeSauces = new ArrayList<Sauce>();
+        //TODO : récupérer la liste des sauces depuis BDD
+
+        listeSauces.add(new Sauce("Mayonnaise"));
+        listeSauces.add(new Sauce("Moutarde"));
+        listeSauces.add(new Sauce("Ketchup"));
+        for (int i = 4; i <= 8; i++) {
+            listeSauces.add(new Sauce("Sauce n. " + i));
+        }
+        return listeSauces;
+    }
+
+    private ArrayList<Viande> insertListeViandes() {
+        ArrayList<Viande> listeViandes = new ArrayList<Viande>();
+        //TODO : récupérer la liste des viandes depuis BDD
+
+        listeViandes.add(new Viande("Steak"));
+        listeViandes.add(new Viande("Poulet"));
+        listeViandes.add(new Viande("Jambon"));
+        for (int i=4; i<=7; i++) {
+            listeViandes.add(new Viande("Viande n. "+i));
+        }
+        return listeViandes;
+    }
+
+    private ArrayList<Supplement> insertListeSupplements() {
+        ArrayList<Supplement> listeSupplements = new ArrayList<Supplement>();
+        //TODO : récupérer la liste des suppléments depuis BDD
+
+        listeSupplements.add(new Supplement("Salade"));
+        listeSupplements.add(new Supplement("Tomate"));
+        listeSupplements.add(new Supplement("Oignon"));
+        for (int i=1; i<=15; i++) {
+            listeSupplements.add(new Supplement("Supplément n. "+i));
+        }
+        return listeSupplements;
+    }
 }

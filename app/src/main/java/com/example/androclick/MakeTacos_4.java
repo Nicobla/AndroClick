@@ -1,13 +1,18 @@
 package com.example.androclick;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -15,7 +20,45 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MakeTacos_4 extends Fragment implements android.widget.CompoundButton.OnCheckedChangeListener {
+class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
+
+    private OnItemClickListener mListener;
+    public interface OnItemClickListener {
+        public void onItemClick(View view, int position);
+    }
+    GestureDetector mGestureDetector;
+    public RecyclerItemClickListener(Context context, OnItemClickListener listener) {
+        mListener = listener;
+        mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+        });
+    }
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
+        View childView = view.findChildViewUnder(e.getX(), e.getY());
+        if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
+            mListener.onItemClick(childView, view.getChildAdapterPosition(childView));
+        }
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) {
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+    }
+}
+
+public class MakeTacos_4 extends Fragment {
+
+    private Bundle bundle;
+    private Recette recette;
 
     ArrayList<Supplement> listeSupplements;
 
@@ -27,6 +70,17 @@ public class MakeTacos_4 extends Fragment implements android.widget.CompoundButt
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        bundle = getArguments();
+        recette = (Recette)bundle.getSerializable("recette");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,18 +92,34 @@ public class MakeTacos_4 extends Fragment implements android.widget.CompoundButt
         rvSupplements = (RecyclerView)view.findViewById(R.id.list_supplements);
         displayListeSupplements();
 
+        rvSupplements.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Supplement s = listeSupplements.get(position);
+                        s.setSelected(!s.isSelected());
+                        if (s.isSelected()) {
+                            recette.addSupplement(s);
+                            Log.e("Click", "Ajout du supplément "+s.getNom());
+                        }
+                        else {
+                            recette.removeSupplement(s);
+                            Log.e("Click", "Suppression du supplément "+s.getNom());
+                        }
+                        bundle.putSerializable("recette", recette);
+                        setArguments(bundle);
+                    }
+                })
+        );
+
+        bundle.putSerializable("recette", recette);
+        setArguments(bundle);
+
         return view;
     }
 
     private void displayListeSupplements() {
-        listeSupplements = new ArrayList<Supplement>();
-        //TODO : récupérer la liste des suppléments depuis BDD
-        listeSupplements.add(new Supplement("Salade"));
-        listeSupplements.add(new Supplement("Tomate"));
-        listeSupplements.add(new Supplement("Oignon"));
-        for (int i=1; i<=15; i++) {
-            listeSupplements.add(new Supplement("Exemple "+i));
-        }
+        listeSupplements = ((MyApplication) this.getActivity().getApplicationContext()).getListeSupplements();
 
         rvSupplements.setHasFixedSize(true);
 
@@ -58,16 +128,5 @@ public class MakeTacos_4 extends Fragment implements android.widget.CompoundButt
 
         supplementsAdapter = new SupplementsAdapter(listeSupplements);
         rvSupplements.setAdapter(supplementsAdapter);
-
-        rvSupplements.setAdapter(supplementsAdapter);
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        int pos2 = rvSupplements.getChildAdapterPosition(buttonView);//.getPositionForView(buttonView);
-        if (pos2 != ListView.INVALID_POSITION) {
-            Supplement s = listeSupplements.get(pos2);
-            s.setSelected(isChecked);
-        }
     }
 }

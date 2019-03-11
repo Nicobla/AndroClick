@@ -23,8 +23,12 @@ public class MakeTacos extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.make_tacos_fragment, container, false);
 
+        Bundle bundle = new Bundle();
+        int numRecette = ((MyApplication) getActivity().getApplicationContext()).getListeRecettes().size() +1;
+        bundle.putSerializable("recette", new Recette("Recette "+numRecette));
+
         viewPager = view.findViewById(R.id.pager);
-        pagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), new Bundle()); // getSupportFragmentManager()
+        pagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), bundle); // getSupportFragmentManager()
         viewPager.setAdapter(pagerAdapter);
 
         return view;
