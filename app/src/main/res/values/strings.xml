@@ -12,6 +12,7 @@
     <string name="myaccount">Mon compte</string>
     <string name="preferences">Préférences</string>
 
+    <string name="rechercher_une_recette">Rechercher une recette</string>
     <string name="button_searchRecipe_desc">Recherche une recette</string>
 
 
@@ -20,22 +21,28 @@
     <string name="nom_de_la_recette">Nom de la recette</string>
 
     <string name="title_edit_recipe">Modifier recette</string>
+    <string name="apply">Appliquer</string>
 
     <string name="tacos_title">Création de tacos</string>
     <string name="startTacos">Commencer</string>
     <string name="taille_du_tacos">Taille du tacos</string>
     <string name="create_recipe">Créer la recette</string>
+    <string name="terminer_recette">Terminer la recette</string>
 
 
-    <string name="taille">Taille</string>
-    <string name="sauces">Sauces</string>
-    <string name="supplements">Suppléments</string>
-    <string name="taille_grand">Grand</string>
-    <string name="taille_moyen">Moyen</string>
-    <string name="taille_petit">Petit</string>
+    <string name="taille">Taille du tacos</string>
+    <string name="sauces">Sélection de la sauce</string>
+    <string name="viandes">Sélection de la viande</string>
+    <string name="supplements">Sélection des suppléments</string>
 
     <!-- à supprimer (peut-être) -->
     <string name="button_back_description">Retourne à l\'écran précédent</string>
     <string name="button_menu_description">Bouton qui affiche le menu des options</string>
-    <string name="apply">Appliquer</string>
+    <string name="m">M</string>
+    <string name="l">L</string>
+    <string name="xl">XL</string>
+    <string name="xxl">XXL</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,33 +1,34 @@
 package com.example.androclick;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MyRecipe extends AppCompatActivity {
 
     private Recette recette;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_recipe);
 
-        //TODO : get recette from database
-        recette = new Recette("Exemple recette", "Tacos moyen",new String[]{"Ketchup", "Mayonnaise"}, new String[]{"Oignons", "Salade"});
+        recette = (Recette)getIntent().getSerializableExtra("recette");
+        position = (int)getIntent().getSerializableExtra("position");
 
         TextInputEditText mText = findViewById(R.id.myrecipe_name_input);
         mText.setText(recette.getNom());
@@ -38,9 +39,9 @@ public class MyRecipe extends AppCompatActivity {
 
         tvTailleTacos.setText(recette.getTailleTacos());
         final ArrayList<String> listSauces = new ArrayList<String>(){};
-        listSauces.addAll(Arrays.asList(recette.getSauces()));
+        for (String sauce : recette.getStrSauces()) { listSauces.add(StringUtils.capitalize(sauce)); }
         final ArrayList<String> listSupplements = new ArrayList<String>(){};
-        listSupplements.addAll(Arrays.asList(recette.getSupplements()));
+        for (String supplement : recette.getStrSupplements()) { listSupplements.add(StringUtils.capitalize(supplement)); }
 
         ArrayAdapter<String> adapterSauces = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listSauces);
         lvSauces.setAdapter(adapterSauces);
@@ -51,13 +52,20 @@ public class MyRecipe extends AppCompatActivity {
 
     public void moveBackToMyRecipes(View view) {
         TextInputEditText mText = findViewById(R.id.myrecipe_name_input);
-        Toast.makeText(getApplicationContext(), mText.getText(), Toast.LENGTH_SHORT).show();
-        //TODO : sauvegarder la recette
+        recette.setNom(mText.getText().toString());
+        Intent intent = new Intent();
+        intent.putExtra("recette", recette);
+        intent.putExtra("position", position);
+        setResult(Activity.RESULT_OK, intent);
         finish();
     }
 
     public void moveToEditRecipe(View view) {
-        startActivity(new Intent(this, EditRecipe.class));
+        //TODO : plusieurs float buttons (edit, suppress->popup)
+        Intent intent = new Intent(this, EditRecipe.class);
+        intent.putExtra("recette", recette);
+        intent.putExtra("position", position);
+        startActivityForResult(intent, Activity.RESULT_OK);
     }
 
     @SuppressLint("NewApi")
@@ -66,6 +74,19 @@ public class MyRecipe extends AppCompatActivity {
         //TODO : gestion du clic sur le bouton favoris
         ImageButton mButton = findViewById(R.id.button_favorite);
         mButton.setBackgroundColor(getColor(R.color.colorFav));
+    }
+
+    @Override
+    public void onActivityResult (int requestCode, int resultCode, Intent data) {
+        Toast.makeText(getApplicationContext(), "test",Toast.LENGTH_SHORT).show();
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            Bundle b = data.getExtras();
+            if (b != null) {
+                recette = (Recette) b.getSerializable("recette");
+                Toast.makeText(getApplicationContext(), "Receive: "+position + recette.getNom(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 }

@@ -76,20 +76,20 @@
             android:id="@+id/radio_grand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/taille_grand" />
+            android:text="string/taille_grand" />
 
         <RadioButton
             android:id="@+id/radio_moyen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/taille_moyen" />
+            android:text="string/taille_moyen" />
 
         <RadioButton
             android:id="@+id/radio_petit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/taille_petit" />
+            android:text="string/taille_petit" />
     </RadioGroup>
 
     <TextView

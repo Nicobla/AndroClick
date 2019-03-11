@@ -9,4 +9,6 @@
 
     <color name="colorFav">#B3DE115D</color>
     <color name="colorNotFav">#B3DA6892</color>
+    <color name="test">#10000000</color>
+    <color name="colorPrimary2">#7C008577</color>
 </resources>

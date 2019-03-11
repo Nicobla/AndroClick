@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "625577395196",
+    "firebase_url": "https://androclick-4c696.firebaseio.com",
+    "project_id": "androclick-4c696",
+    "storage_bucket": "androclick-4c696.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625577395196:android:df11dda25cdfa437",
+        "android_client_info": {
+          "package_name": "com.example.androclick"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625577395196-15lsr8bruquu4ltnh1t4t3fsda8ds286.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbarr_TsHUW5RD5ZXvNTP2ZHLUHkW0xiI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
