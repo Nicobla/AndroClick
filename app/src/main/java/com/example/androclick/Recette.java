@@ -1,5 +1,7 @@
 package com.example.androclick;
 
+import com.google.firebase.firestore.CollectionReference;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
