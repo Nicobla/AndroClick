@@ -23,17 +23,7 @@ public class OTacos extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.map_fragment, container, false); //TODO : layout otacos avec tabs
-        Button button = view.findViewById(R.id.button_test);
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Fragment childFragment = new MyRecipes();
-                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                transaction.replace(R.id.constraintLayout, childFragment).commit();
-            }
-        });
+
         return view;
     }
 

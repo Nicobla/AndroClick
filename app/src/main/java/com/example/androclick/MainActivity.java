@@ -1,23 +1,31 @@
 package com.example.androclick;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.core.QueryListener;
+
 import java.util.ArrayList;
-//import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "DocSnippets";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        ((MyApplication) getApplicationContext()).setListeRecettes(insertListeRecettes());
+        ((MyApplication) getApplicationContext()).setListeRecettes(getAllRecype());
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -52,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private ArrayList<Recette> insertListeRecettes() {
+ /*   private ArrayList<Recette> insertListeRecettes() {
         ArrayList<Recette> recettes = new ArrayList<Recette>();
         //TODO : récupérer la liste des recettes depuis la BDD
 
@@ -71,5 +79,29 @@ public class MainActivity extends AppCompatActivity {
 
         return recettes;
     }
+    */
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    int i =0;
+    private ArrayList<Recette> getAllRecype() {
+        final ArrayList<Recette> recettes = new ArrayList<Recette>();
+        // [START get_all_users]
+        db.collection("Recettes").get().addOnCompleteListener( new OnCompleteListener <QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task <QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+                    recettes.add(new Recette( document.getId()));
+                    }
+                }
+            }
+        }
+    );
+
+        return recettes;
+        // [END get_all_users]
+    }
+
 
 }

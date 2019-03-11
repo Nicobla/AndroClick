@@ -32,18 +32,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:onClick="moveBackToMyRecipes"/>
 
-            <TextView
-                android:id="@+id/title_myrecipe"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/myrecipe_title"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textSize="24sp"
-                app:layout_constraintStart_toEndOf="@+id/button_back"
-                app:layout_constraintTop_toTopOf="parent" />
+
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.Toolbar>
 
