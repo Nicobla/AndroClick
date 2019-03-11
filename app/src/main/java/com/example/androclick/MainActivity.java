@@ -1,27 +1,22 @@
 package com.example.androclick;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
-import java.lang.reflect.Array;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    public void reload() {
-        Intent intent = getIntent();
-        overridePendingTransition(0, 0);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
-        overridePendingTransition(0, 0);
-        startActivity(intent);
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         ((MyApplication) getApplicationContext()).setListeViandes(insertListeViandes());
         ((MyApplication) getApplicationContext()).setListeSupplements(insertListeSupplements());
 
-        ((MyApplication) getApplicationContext()).setListeRecettes(insertListeRecettes());
+        ((MyApplication) getApplicationContext()).setListeRecettes(getAllRecipes());
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -98,6 +93,28 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return recettes;
+    }
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private ArrayList<Recette> getAllRecipes() {
+        final ArrayList<Recette> recettes = new ArrayList<Recette>();
+        // [START get_all_users]
+        db.collection("Recettes").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+           @Override
+           public void onComplete(@NonNull Task<QuerySnapshot> task) {
+               if(task.isSuccessful()){
+                   for (QueryDocumentSnapshot document : task.getResult()) {
+                       Log.e("DEBUG", document.getId() + " => " + document.getData());
+                       Log.e("DEBUG", document.getData().toString());
+                       recettes.add(new Recette( document.getId()));
+                   }
+               }
+           }
+       });
+
+        return recettes;
+        // [END get_all_users]
     }
 
     private ArrayList<Sauce> insertListeSauces() {
