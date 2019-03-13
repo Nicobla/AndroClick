@@ -8,9 +8,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        ((MyApplication) getApplicationContext()).setListeOTacos(getAllOTacos());
 
         ((MyApplication) getApplicationContext()).setListeSauces(getAllSauces());
         ((MyApplication) getApplicationContext()).setListeViandes(getAllViandes());
@@ -64,9 +68,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    private ArrayList<O_Tacos> getAllOTacos() {
+        final ArrayList<O_Tacos> otacos = new ArrayList<>();
+
+        db.collection("OTacos").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        O_Tacos o_tacos = (O_Tacos) document.toObject(O_Tacos.class);
+                        otacos.add(o_tacos);
+                    }
+                }
+            }
+        });
+
+        return otacos;
+    }
 
     private ArrayList<Sauce> getAllSauces() {
         final ArrayList<Sauce> sauces = new ArrayList<>();
@@ -122,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         final ArrayList<Recette> recettes = new ArrayList<>();
         // [START get_all_users]
 
-
+        //TODO : get recette en entier
         db.collection("Recette").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
            @Override
            public void onComplete(@NonNull Task<QuerySnapshot> task) {

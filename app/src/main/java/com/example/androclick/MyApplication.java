@@ -7,6 +7,17 @@ import java.util.ArrayList;
 
 public class MyApplication extends Application {
 
+    private ArrayList<O_Tacos> listeOTacos;
+
+    public ArrayList<O_Tacos> getListeOTacos() {
+        return listeOTacos;
+    }
+    public void setListeOTacos(ArrayList<O_Tacos> listeOTacos) {
+        this.listeOTacos = listeOTacos;
+    }
+
+
+
     private ArrayList<Recette> listeRecettes;
 
     public ArrayList<Recette> getListeRecettes() {

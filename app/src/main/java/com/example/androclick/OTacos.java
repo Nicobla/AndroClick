@@ -18,6 +18,41 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.GeoPoint;
+
+import java.util.ArrayList;
+
+class O_Tacos { //Utiliser cette classe pour instancier des restaurants
+    private String nom;
+    private GeoPoint location;
+
+    public O_Tacos(String nom, double latitude, double longitude) {
+        this(nom, new GeoPoint(latitude, longitude));
+    }
+
+    public O_Tacos(String nom, GeoPoint location) {
+        this.nom = nom;
+        this.location = location;
+    }
+
+    public O_Tacos() {
+        this("O'Tacos sans nom", new GeoPoint(0,0));
+    }
+
+    public String getNom() {
+        return nom;
+    }
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public GeoPoint getLocation() {
+        return location;
+    }
+    public void setLocation(GeoPoint location) {
+        this.location = location;
+    }
+}
 
 public class OTacos extends Fragment implements OnMapReadyCallback {
     private static final int REQUEST_LOCATION_PERMISSION = 0 ;
@@ -50,10 +85,13 @@ public class OTacos extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
 
         // Ajout des marqueurs des O'Tacos
-        mMap.addMarker( new MarkerOptions().position( new LatLng( 25.9208490,6.1415  ) ).title( "O'Tacos en Algérie" ) );
-        //TODO : for OTacos in listeOTacos --> addMarker(OTacos.getPosition().N, (pareil).E) (title=OTacos.getNom(); 'fin comme au dessus là quoi
+        ArrayList<O_Tacos> listeOTacos = ((MyApplication) getActivity().getApplicationContext()).getListeOTacos();
+        for (O_Tacos o_tacos : listeOTacos) {
+            LatLng latLng = new LatLng(o_tacos.getLocation().getLatitude(), o_tacos.getLocation().getLongitude());
+            mMap.addMarker(new MarkerOptions().position(latLng).title(o_tacos.getNom()));
+        }
 
-        // Bouge la caméra sur la position "home" suivante //à supprimer ??
+        // Positionne la caméra sur la position "home" suivante //TODO : à supprimer ??
         LatLng home = new LatLng( 45.9208490,6.1415  );
         mMap.moveCamera( CameraUpdateFactory.newLatLng( home ) );
         enableMyLocation(mMap);
@@ -63,8 +101,7 @@ public class OTacos extends Fragment implements OnMapReadyCallback {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             map.setMyLocationEnabled(true);
         } else {
-            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION_PERMISSION);
+            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         }
 
     }
