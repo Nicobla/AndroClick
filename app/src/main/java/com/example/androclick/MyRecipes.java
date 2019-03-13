@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -29,9 +30,8 @@ import java.util.ArrayList;
 public class MyRecipes extends Fragment {
 
     private boolean searching = false;
-    private ArrayAdapter adapter;
 
-    private ArrayList<Recette> listeRecettes = new ArrayList<Recette>();
+    private ArrayList<Recette> listeRecettes = new ArrayList<>();
     private RecyclerView rvRecettes;
     private RecyclerView.Adapter recettesAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -40,9 +40,16 @@ public class MyRecipes extends Fragment {
         // Required empty public constructor
     }
 
+    /*public void reset() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+    }*/
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.my_recipes_fragment, container, false);
+        //((MainActivity)getActivity()).selectMyRecipes();
 
         this.listeRecettes = ((MyApplication) this.getActivity().getApplicationContext()).getListeRecettes();
 
@@ -66,12 +73,16 @@ public class MyRecipes extends Fragment {
             public void onClick(View v)
             {
                 searching = !searching;
+                View view = getActivity().getCurrentFocus();
+                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
                 if (searching) { // Affiche la barre de recherche
                     button_menu.setVisibility(View.INVISIBLE);
                     title_myrecipes.setVisibility(View.INVISIBLE);
                     text_search.setVisibility(View.VISIBLE);
                     button_searchRecipe.setImageResource(R.drawable.ic_close);
+                    imm.showSoftInput(view,0);
+                    text_search.requestFocus();
                 } else { // Réinitialise l'affichage
                     button_menu.setVisibility(View.VISIBLE);
                     title_myrecipes.setVisibility(View.VISIBLE);
@@ -79,9 +90,7 @@ public class MyRecipes extends Fragment {
                     text_search.setText("");
                     button_searchRecipe.setImageResource(R.drawable.ic_search);
                     //Ferme le clavier
-                    View view = getActivity().getCurrentFocus();
                     if (view != null) {
-                        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
                 }
@@ -118,8 +127,6 @@ public class MyRecipes extends Fragment {
     }
 
     private void displayListeRecettes(ArrayList<Recette> listeRecettes) {
-        rvRecettes.setHasFixedSize(true);
-
         layoutManager = new LinearLayoutManager(getContext());
         rvRecettes.setLayoutManager(layoutManager);
 
@@ -132,7 +139,7 @@ public class MyRecipes extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Override
+    /*@Override
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         Toast.makeText(getContext(), "test",Toast.LENGTH_SHORT).show();
         super.onActivityResult(requestCode, resultCode, data);
@@ -145,6 +152,6 @@ public class MyRecipes extends Fragment {
                 Toast.makeText(getContext(), "Receive: "+position + recette.getNom(), Toast.LENGTH_SHORT).show();
             }
         }
-    }
+    }*/
 
 }

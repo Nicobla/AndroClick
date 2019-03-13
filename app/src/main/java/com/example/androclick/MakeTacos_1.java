@@ -3,6 +3,7 @@ package com.example.androclick;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,9 +41,6 @@ public class MakeTacos_1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.make_tacos_fragment_1, container, false);
 
-//        ProgressBar progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
-//        progressBar.setProgress(getArguments().getInt("progression"));
-
         if (bundle != null) {
             recette = (Recette) bundle.getSerializable("recette");
             int numRecette = ((MyApplication) getActivity().getApplicationContext()).getListeRecettes().size() +1;
@@ -52,6 +50,7 @@ public class MakeTacos_1 extends Fragment {
             int numRecette = ((MyApplication) getActivity().getApplicationContext()).getListeRecettes().size() +1;
             if (recette == null) recette = new Recette("Recette "+numRecette);
         }
+
 
         RadioGroup ItemtypeGroup = (RadioGroup) view.findViewById(R.id.tailles_tacos);
 

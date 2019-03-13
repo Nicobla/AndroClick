@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -51,6 +52,7 @@ public class MakeTacos_5 extends Fragment {
 //        ProgressBar progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
 //        progressBar.setProgress(getArguments().getInt("progression"));
 
+
         final EditText nomRecette = (EditText)view.findViewById(R.id.recipe_name);
         nomRecette.setText(recette.getNom());
 
@@ -62,15 +64,13 @@ public class MakeTacos_5 extends Fragment {
                 //Enregistrement de la recette dans la liste des recettes
                 ((MyApplication) getActivity().getApplicationContext()).addToListeRecettes(recette);
 
-                //TODO :  réinitialiser les fragments (adapters ? relancer l'activité ?)
-
-                //((MakeTacos) getParentFragment()).getActivity();
+                // Réinitialisation des recyclerview et redirection vers mes recettes
                 closeFragment();
 
-                /*//Redirection vers mes recettes
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.constraintLayout, new MyRecipes())
-                        .commitNow();*/
+//                ((MakeTacos) getParentFragment()).getActivity();
+//                getActivity().getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.constraintLayout, new MyRecipes())
+//                        .commitNow();
             }
         });
 
@@ -96,6 +96,9 @@ public class MakeTacos_5 extends Fragment {
     }
 
     public void closeFragment() {
+        ((MyApplication) this.getActivity().getApplicationContext()).uncheckAllIngredients();
+        getParentFragment().onDestroy();
+
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.constraintLayout, new MyRecipes())

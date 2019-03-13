@@ -7,16 +7,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="@android:style/Widget.Holo.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@color/test"
-        android:progress="25" />
-
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

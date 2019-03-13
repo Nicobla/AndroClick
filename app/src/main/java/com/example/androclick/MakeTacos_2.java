@@ -3,6 +3,7 @@ package com.example.androclick;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,9 +54,6 @@ public class MakeTacos_2 extends Fragment {//implements android.widget.CompoundB
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.make_tacos_fragment_2, container, false);
 
-//        ProgressBar progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
-//        progressBar.setProgress(getArguments().getInt("progression"));
-
         rvSauces = (RecyclerView)view.findViewById(R.id.list_sauces);
         displayListeSauces();
 
@@ -84,6 +82,10 @@ public class MakeTacos_2 extends Fragment {//implements android.widget.CompoundB
 
     private void displayListeSauces() {
         listeSauces = ((MyApplication) this.getActivity().getApplicationContext()).getListeSauces();
+
+        for (Sauce sauce : listeSauces) {
+            Log.d("Sauce", "isSelected="+sauce.isSelected());
+        }
 
         //rvSauces.setHasFixedSize(true);
 

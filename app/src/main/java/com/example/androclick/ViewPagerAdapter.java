@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     private Bundle data;
-    //int progression = 0;
 
     public ViewPagerAdapter(FragmentManager fm, Bundle data) {
         super(fm);
@@ -21,7 +20,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 fragment = new MakeTacos_1();
-                //progression = 0;
                 break;
             case 1:
                 fragment = new MakeTacos_2();
@@ -37,7 +35,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                 break;
         }
 
-        //bundle.putInt("progression", progression);
         fragment.setArguments(data);
 
         return fragment;

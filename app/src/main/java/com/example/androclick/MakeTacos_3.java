@@ -3,6 +3,7 @@ package com.example.androclick;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -52,9 +53,6 @@ public class MakeTacos_3 extends Fragment implements android.widget.CompoundButt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.make_tacos_fragment_3, container, false);
-
-//        ProgressBar progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
-//        progressBar.setProgress(getArguments().getInt("progression"));
 
         rvViandes = (RecyclerView)view.findViewById(R.id.list_viandes);
         displayListeViandes();

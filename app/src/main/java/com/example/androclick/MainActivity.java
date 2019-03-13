@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -17,14 +18,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        ((MyApplication) getApplicationContext()).setListeSauces(insertListeSauces());
-        ((MyApplication) getApplicationContext()).setListeViandes(insertListeViandes());
-        ((MyApplication) getApplicationContext()).setListeSupplements(insertListeSupplements());
+        ((MyApplication) getApplicationContext()).setListeSauces(getAllSauces());
+        ((MyApplication) getApplicationContext()).setListeViandes(getAllViandes());
+        ((MyApplication) getApplicationContext()).setListeSupplements(getAllSupplements());
 
         ((MyApplication) getApplicationContext()).setListeRecettes(getAllRecipes());
 
@@ -61,6 +63,100 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+    private ArrayList<Sauce> getAllSauces() {
+        final ArrayList<Sauce> sauces = new ArrayList<>();
+        db.collection("Sauce").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Sauce sauce = (Sauce) document.toObject(Sauce.class);
+                        sauces.add(sauce);
+                    }
+                }
+            }
+        });
+        return sauces;
+    }
+    private ArrayList<Viande> getAllViandes() {
+        final ArrayList<Viande> viandes = new ArrayList<>();
+        db.collection("Viande").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Viande viande = (Viande) document.toObject(Viande.class);
+                        viandes.add(viande);
+                    }
+                }
+            }
+        });
+        return viandes;
+    }
+    private ArrayList<Supplement> getAllSupplements() {
+        final ArrayList<Supplement> supplements = new ArrayList<>();
+        db.collection("Supplement").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Supplement supplement = (Supplement) document.toObject(Supplement.class);
+                        supplements.add(supplement);
+                    }
+                }
+            }
+        });
+        return supplements;
+    }
+
+
+    private ArrayList<Recette> getAllRecipes() {
+        final ArrayList<Sauce> listeSauces = ((MyApplication) getApplicationContext()).getListeSauces();
+        Log.e("AAAAAAAA", "nb sauces="+listeSauces.size());
+
+        final ArrayList<Recette> recettes = new ArrayList<>();
+        // [START get_all_users]
+
+
+        db.collection("Recette").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+           @Override
+           public void onComplete(@NonNull Task<QuerySnapshot> task) {
+               if(task.isSuccessful()){
+                   for (QueryDocumentSnapshot document : task.getResult()) {
+                       Recette recette = new Recette(document.get("nom").toString());
+                       recette.setTailleTacosByStr(document.get("tailleTacos").toString());
+                       //for (int idxSauce=0; i<document.)
+                       ArrayList sauces = new ArrayList<>();
+                       /*for (Object i : (ArrayList)document.getData().get("sauces")) {
+                           sauces.add((Long)i);
+                       }*/
+
+                       //recette.setSaucesByInt(sauces, listeSauces);
+
+                       recettes.add(recette);
+                   }
+               }
+           }
+       });
+
+        /*for (int i=0; i<recettes.size(); i++) {
+            for (int j=0; j<recettes.)
+            recettes.get(i).setSauces(new ArrayList<Sauce>(Arrays.asList()));
+        }*/
+
+        return recettes;
+        // [END get_all_users]
+    }
+
+
+
+
+
     private ArrayList<Recette> insertListeRecettes() {
         final ArrayList<Sauce> sauces = ((MyApplication) getApplicationContext()).getListeSauces();
         final ArrayList<Viande> viandes = ((MyApplication) getApplicationContext()).getListeViandes();
@@ -93,28 +189,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return recettes;
-    }
-
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-    private ArrayList<Recette> getAllRecipes() {
-        final ArrayList<Recette> recettes = new ArrayList<Recette>();
-        // [START get_all_users]
-        db.collection("Recettes").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
-           @Override
-           public void onComplete(@NonNull Task<QuerySnapshot> task) {
-               if(task.isSuccessful()){
-                   for (QueryDocumentSnapshot document : task.getResult()) {
-                       Log.e("DEBUG", document.getId() + " => " + document.getData());
-                       Log.e("DEBUG", document.getData().toString());
-                       recettes.add(new Recette( document.getId()));
-                   }
-               }
-           }
-       });
-
-        return recettes;
-        // [END get_all_users]
     }
 
     private ArrayList<Sauce> insertListeSauces() {

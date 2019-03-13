@@ -6,13 +6,6 @@
     android:id="@+id/constraintLayout"
     android:layout_width="fill_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:text="Category:"
-        android:layout_marginBottom="5dp"
-        tools:ignore="MissingConstraints" />
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -20,28 +13,18 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="619dp"
+        android:layout_height="0dp"
         android:layout_marginTop="56dp"
-        map:layout_constraintTop_toTopOf="parent"
-        tools:context=".MapsActivity"
-        tools:layout_editor_absoluteX="0dp" />
+        map:layout_constraintBottom_toTopOf="@+id/menuButtons"
+        map:layout_constraintTop_toTopOf="parent"/>
 
 
     <FrameLayout
-            android:id="@+id/menuButtons"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintBottom_toBottomOf="parent" />
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/navigationView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/windowBackground"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:menu="@menu/navigation" />
+        android:id="@+id/menuButtons"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
     <android.support.v7.widget.Toolbar
@@ -61,7 +44,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <TextView
                 android:id="@+id/title_Maps"
                 android:layout_width="0dp"
@@ -69,13 +51,11 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Map"
+                android:text="@string/map"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.Toolbar>

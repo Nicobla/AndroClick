@@ -3,6 +3,7 @@ package com.example.androclick;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,13 +47,10 @@ class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
     }
 
     @Override
-    public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) {
-    }
+    public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) {}
 
     @Override
-    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-    }
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
 }
 
 public class MakeTacos_4 extends Fragment {
@@ -85,9 +83,6 @@ public class MakeTacos_4 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.make_tacos_fragment_4, container, false);
-
-//        ProgressBar progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
-//        progressBar.setProgress(getArguments().getInt("progression"));
 
         rvSupplements = (RecyclerView)view.findViewById(R.id.list_supplements);
         displayListeSupplements();

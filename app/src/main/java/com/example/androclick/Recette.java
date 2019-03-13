@@ -34,11 +34,26 @@ public class Recette implements Serializable {
         }
     }
 
-    String nom;
-    TailleTacos tailleTacos;
-    ArrayList<Sauce> sauces;
-    ArrayList<Viande> viandes;
-    ArrayList<Supplement> supplements;
+    private String nom;
+    private TailleTacos tailleTacos;
+    private ArrayList<Sauce> sauces;
+    private ArrayList<Viande> viandes;
+    private ArrayList<Supplement> supplements;
+
+    /*public Recette(String nom, String tailleTacos, ArrayList<Sauce> sauces, ArrayList<Viande> viandes, ArrayList<Supplement> supplements) {
+        TailleTacos tailleTacos2 = TailleTacos.L;
+        switch (tailleTacos) {
+            case "M": tailleTacos2 = TailleTacos.M; break;
+            case "L": tailleTacos2 = TailleTacos.L; break;
+            case "XL": tailleTacos2 = TailleTacos.XL; break;
+            case "XXL": tailleTacos2 = TailleTacos.XXL; break;
+        }
+        this.nom = nom;
+        this.tailleTacos = tailleTacos2;
+        this.sauces = sauces;
+        this.viandes = viandes;
+        this.supplements = supplements;
+    }*/
 
     public Recette(String nom, TailleTacos tailleTacos, ArrayList<Sauce> sauces, ArrayList<Viande> viandes, ArrayList<Supplement> supplements) {
         super();
@@ -49,12 +64,10 @@ public class Recette implements Serializable {
         this.supplements = supplements;
     }
     public Recette(String nom) {
-        super();
-        this.nom = nom;
-        this.tailleTacos = TailleTacos.L;
-        this.sauces = new ArrayList<Sauce>(){};
-        this.viandes = new ArrayList<Viande>(){};
-        this.supplements = new ArrayList<Supplement>(){};
+        this(nom, TailleTacos.L, new ArrayList<Sauce>(), new ArrayList<Viande>(), new ArrayList<Supplement>());
+    }
+    public Recette() {
+        this("Recette sans nom");
     }
 
     public String getNom() {
@@ -71,6 +84,15 @@ public class Recette implements Serializable {
     public void setTailleTacos(TailleTacos tailleTacos) {
         this.tailleTacos = tailleTacos;
     }
+    public void setTailleTacosByStr(String tailleTacos) {
+        switch (tailleTacos) {
+            case "M": this.tailleTacos = TailleTacos.M; break;
+            case "L": this.tailleTacos = TailleTacos.L; break;
+            case "XL": this.tailleTacos = TailleTacos.XL; break;
+            case "XXL": this.tailleTacos = TailleTacos.XXL; break;
+        }
+    }
+
 
     public void addSauce(Sauce sauce) {
         ArrayList<Sauce> sauces = this.getSauces();
@@ -95,6 +117,13 @@ public class Recette implements Serializable {
     public void setSauces(ArrayList<Sauce> sauces) {
         this.sauces = sauces;
     }
+    /*public void setSaucesByInt(ArrayList sauces, ArrayList<Sauce> listeSauces) {
+        ArrayList<Sauce> listSauces = new ArrayList<Sauce>();
+        for (Object idx : sauces) {
+            listSauces.add(listeSauces.get(   (int) (( (Long)idx ) -1 ))   );
+        }
+    }*/
+
 
     public void addViande(Viande viande) {
         ArrayList<Viande> viandes = this.getViandes();

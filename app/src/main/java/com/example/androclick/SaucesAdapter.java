@@ -15,6 +15,10 @@ class Sauce implements Serializable {
     String nom;
     boolean selected;
 
+    public Sauce() {
+        this("sauce sans nom");
+    }
+
     public Sauce(String nom) {
         super();
         this.nom=nom;

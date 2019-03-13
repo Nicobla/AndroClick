@@ -29,9 +29,20 @@
                 android:contentDescription="@string/button_back_description"
                 android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:onClick="moveBackToMyRecipes"/>
+                app:layout_constraintTop_toTopOf="parent"/>
 
+            <TextView
+                android:id="@+id/title_my_recipe"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/title_my_recipe"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textSize="24sp"
+                app:layout_constraintLeft_toRightOf="@+id/button_back"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.Toolbar>

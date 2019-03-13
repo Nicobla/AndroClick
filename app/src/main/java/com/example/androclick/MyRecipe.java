@@ -5,10 +5,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,13 +25,17 @@ public class MyRecipe extends AppCompatActivity {
     private Recette recette;
     private int position;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_recipe);
 
         recette = (Recette)getIntent().getSerializableExtra("recette");
-        position = (int)getIntent().getSerializableExtra("position");
+        position = ((MyApplication) getApplication().getApplicationContext()).getPositionRecette(recette);
+
+        //position = (int)getIntent().getSerializableExtra("position");
+        //recette = ((MyApplication) getApplication().getApplicationContext()).getRecetteAtPos(position);
 
         TextInputEditText mText = findViewById(R.id.myrecipe_name_input);
         mText.setText(recette.getNom());
@@ -40,37 +46,63 @@ public class MyRecipe extends AppCompatActivity {
         final ListView lvSupplements = (ListView) findViewById(R.id.list_supplements);
 
         tvTailleTacos.setText(recette.getStrTailleTacos());
-        final ArrayList<String> listSauces = new ArrayList<String>(){};
+
+        final ArrayList<String> listSauces = new ArrayList<>();
+        final ArrayList<String> listViandes = new ArrayList<>();
+        final ArrayList<String> listSupplements = new ArrayList<>();
+
         for (String sauce : recette.getStrSauces()) { listSauces.add(StringUtils.capitalize(sauce)); }
         if (listSauces.isEmpty()) listSauces.add("Aucune");
 
-        final ArrayList<String> listViandes = new ArrayList<String>(){};
         for (String viande : recette.getStrViandes()) { listViandes.add(StringUtils.capitalize(viande)); }
         if (listViandes.isEmpty()) listViandes.add("Aucune");
 
-        final ArrayList<String> listSupplements = new ArrayList<String>(){};
         for (String supplement : recette.getStrSupplements()) { listSupplements.add(StringUtils.capitalize(supplement)); }
         if (listSupplements.isEmpty()) listSupplements.add("Aucun");
 
-        ArrayAdapter<String> adapterSauces = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listSauces);
+        ArrayAdapter<String> adapterSauces = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listSauces);
         lvSauces.setAdapter(adapterSauces);
-        ArrayAdapter<String> adapterViandes = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listViandes);
+        ArrayAdapter<String> adapterViandes = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listViandes);
         lvViandes.setAdapter(adapterViandes);
-        ArrayAdapter<String> adapterSupplements = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listSupplements);
+        ArrayAdapter<String> adapterSupplements = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listSupplements);
         lvSupplements.setAdapter(adapterSupplements);
 
+        ImageButton button_back = (ImageButton) findViewById(R.id.button_back);
+        button_back.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                TextInputEditText mText = findViewById(R.id.myrecipe_name_input);
+                recette.setNom(mText.getText().toString());
+
+                /*Intent intent = new Intent();
+                intent.putExtra("recette", recette);
+                intent.putExtra("position", position);
+                setResult(Activity.RESULT_OK, intent);*/
+                ((MyApplication) getApplicationContext()).setRecette(position, recette);
+
+                //((MyRecipes)getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getFragments().indexOf(new MyRecipes()))).reset();
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.myRecipes);
+                Log.e("DEBUG", "frag null - "+(currentFragment==null));
+
+
+
+                finish();
+            }
+        });
     }
 
-    public void moveBackToMyRecipes(View view) {
-        TextInputEditText mText = findViewById(R.id.myrecipe_name_input);
-        recette.setNom(mText.getText().toString());
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
-        ((MyApplication) this.getApplicationContext()).setRecette(position, recette);
-        Intent intent = new Intent();
-        intent.putExtra("recette", recette);
-        intent.putExtra("position", position);
-        setResult(Activity.RESULT_OK, intent);
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Recette recette = ((MyApplication) getApplication().getApplicationContext()).getRecetteAtPos(position);
         finish();
+        startActivity(getIntent().putExtra("recette", recette));
     }
 
     public void moveToEditRecipe(View view) {

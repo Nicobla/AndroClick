@@ -15,9 +15,14 @@ class Supplement implements Serializable {
     String nom;
     boolean selected = false;
 
+    public Supplement() {
+        this("supplément sans nom");
+    }
+
     public Supplement(String nom) {
         super();
         this.nom=nom;
+        this.selected=false;
     }
 
     public String getNom() {

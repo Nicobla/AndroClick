@@ -15,9 +15,14 @@ class Viande implements Serializable {
     String nom;
     boolean selected = false;
 
+    public Viande() {
+        this("viande sans nom");
+    }
+
     public Viande(String nom) {
         super();
         this.nom=nom;
+        this.selected=false;
     }
 
     public String getNom() {

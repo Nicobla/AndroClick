@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 
 public class RecettesAdapter extends RecyclerView.Adapter<RecettesAdapter.RecettesHolder> {
-    private ArrayList<Recette> listeRecettes = new ArrayList<Recette>();
+    private ArrayList<Recette> listeRecettes = new ArrayList<>();
 
     public class RecettesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView nomRecette;
@@ -30,9 +30,8 @@ public class RecettesAdapter extends RecyclerView.Adapter<RecettesAdapter.Recett
         public void onClick(View view) {
             Intent intent = new Intent(view.getContext(), MyRecipe.class);
             Recette recette = listeRecettes.get(getAdapterPosition());
-            //Recette recette = new Recette("aaaaa");
             intent.putExtra("recette", recette);
-            intent.putExtra("position", getAdapterPosition());
+            //intent.putExtra("position", getAdapterPosition());
             ((Activity) view.getContext()).startActivity(intent);
             //((Activity) view.getContext()).recreate();//displayListeRecettes();
         }
