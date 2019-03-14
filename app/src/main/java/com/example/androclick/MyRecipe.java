@@ -2,19 +2,29 @@ package com.example.androclick;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,14 +35,18 @@ public class MyRecipe extends AppCompatActivity {
     private Recette recette;
     private int position;
 
-
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_recipe);
 
-        recette = (Recette)getIntent().getSerializableExtra("recette");
+        recette = (Recette) getIntent().getSerializableExtra("recette");
         position = ((MyApplication) getApplication().getApplicationContext()).getPositionRecette(recette);
+        if (position == -1) {
+            Log.e("Erreur", "Tentative d'ouverture d'une recette supprimée");
+            finish();
+        }
 
         //position = (int)getIntent().getSerializableExtra("position");
         //recette = ((MyApplication) getApplication().getApplicationContext()).getRecetteAtPos(position);
@@ -51,13 +65,19 @@ public class MyRecipe extends AppCompatActivity {
         final ArrayList<String> listViandes = new ArrayList<>();
         final ArrayList<String> listSupplements = new ArrayList<>();
 
-        for (String sauce : recette.getStrSauces()) { listSauces.add(StringUtils.capitalize(sauce)); }
+        for (String sauce : recette.getStrSauces()) {
+            listSauces.add(StringUtils.capitalize(sauce));
+        }
         if (listSauces.isEmpty()) listSauces.add("Aucune");
 
-        for (String viande : recette.getStrViandes()) { listViandes.add(StringUtils.capitalize(viande)); }
+        for (String viande : recette.getStrViandes()) {
+            listViandes.add(StringUtils.capitalize(viande));
+        }
         if (listViandes.isEmpty()) listViandes.add("Aucune");
 
-        for (String supplement : recette.getStrSupplements()) { listSupplements.add(StringUtils.capitalize(supplement)); }
+        for (String supplement : recette.getStrSupplements()) {
+            listSupplements.add(StringUtils.capitalize(supplement));
+        }
         if (listSupplements.isEmpty()) listSupplements.add("Aucun");
 
         ArrayAdapter<String> adapterSauces = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listSauces);
@@ -67,29 +87,73 @@ public class MyRecipe extends AppCompatActivity {
         ArrayAdapter<String> adapterSupplements = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listSupplements);
         lvSupplements.setAdapter(adapterSupplements);
 
-        ImageButton button_back = (ImageButton) findViewById(R.id.button_back);
-        button_back.setOnClickListener(new View.OnClickListener()
-        {
+        final ImageButton button_back = (ImageButton) findViewById(R.id.button_back);
+        button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextInputEditText mText = findViewById(R.id.myrecipe_name_input);
-                recette.setNom(mText.getText().toString());
-
-                /*Intent intent = new Intent();
-                intent.putExtra("recette", recette);
-                intent.putExtra("position", position);
-                setResult(Activity.RESULT_OK, intent);*/
-                ((MyApplication) getApplicationContext()).setRecette(position, recette);
-
-                //((MyRecipes)getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getFragments().indexOf(new MyRecipes()))).reset();
-                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.myRecipes);
-                Log.e("DEBUG", "frag null - "+(currentFragment==null));
-
-
-
-                finish();
+                onBackPressed();
             }
         });
+
+        ImageButton favButton = findViewById(R.id.button_favorite);
+        if (recette.isFavorite()) {
+            favButton.setBackgroundColor(getColor(R.color.colorFav));
+        } else {
+            favButton.setBackgroundColor(getColor(R.color.colorNotFav));
+        }
+
+
+        FloatingActionMenu fabEdit;
+        FloatingActionButton subfabShare, subfabDelete, subfabEdit;
+
+        fabEdit = (FloatingActionMenu) findViewById(R.id.button_open_edit);
+        /*fabEdit.setOnMenuButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "qdzqzdq", Toast.LENGTH_SHORT).show();
+            }
+        });*/
+        subfabShare = (FloatingActionButton) findViewById(R.id.button_share);
+        subfabDelete = (FloatingActionButton) findViewById(R.id.button_delete);
+        subfabEdit = (FloatingActionButton) findViewById(R.id.button_edit);
+
+        subfabShare.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //TODO : share
+                Toast.makeText(getApplicationContext(), "TODO : share", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        subfabDelete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                deleteRecipe();
+            }
+        });
+        subfabEdit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                editRecipe();
+
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        TextInputEditText mText = findViewById(R.id.myrecipe_name_input);
+        recette.setNom(mText.getText().toString());
+
+        /*Intent intent = new Intent();
+        intent.putExtra("recette", recette);
+        intent.putExtra("position", position);
+        setResult(Activity.RESULT_OK, intent);*/
+        ((MyApplication) getApplicationContext()).setRecette(position, recette);
+
+        //((MyRecipes)getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getFragments().indexOf(new MyRecipes()))).reset();
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.myRecipes);
+        Log.e("DEBUG", "frag null - " + (currentFragment == null));
+
+        finish();
     }
 
     @Override
@@ -105,8 +169,40 @@ public class MyRecipe extends AppCompatActivity {
         startActivity(getIntent().putExtra("recette", recette));
     }
 
-    public void moveToEditRecipe(View view) {
-        //TODO : plusieurs float buttons (edit, suppress->popup)
+
+    public void deleteRecipe() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_delete, null);
+
+        // Crée la fenêtre de pop-up
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        popupWindow.showAtLocation(findViewById(R.id.constraintLayout), Gravity.CENTER, 0, 0);
+
+        Button buttonYes = (Button) popupView.findViewById(R.id.button_yes);
+        Button buttonNo = (Button) popupView.findViewById(R.id.button_no);
+
+        buttonYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                // Suppression
+                ((MyApplication) getApplicationContext()).deleteRecetteAt(position);
+                finish();
+            }
+        });
+        buttonNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+    }
+
+    public void editRecipe() {
         Intent intent = new Intent(this, EditRecipe.class);
         intent.putExtra("recette", recette);
         intent.putExtra("position", position);
@@ -115,10 +211,14 @@ public class MyRecipe extends AppCompatActivity {
 
     @SuppressLint("NewApi")
     public void makeFavorite(View view) {
-        Toast.makeText(getApplicationContext(), "TODO : gestion des favoris", Toast.LENGTH_SHORT).show();
-        //TODO : gestion du clic sur le bouton favoris
-        ImageButton mButton = findViewById(R.id.button_favorite);
-        mButton.setBackgroundColor(getColor(R.color.colorFav));
+        ImageButton favButton = findViewById(R.id.button_favorite);
+        if (recette.isFavorite()) {
+            favButton.setBackgroundColor(getColor(R.color.colorNotFav));
+            recette.setFavorite(false);
+        } else {
+            favButton.setBackgroundColor(getColor(R.color.colorFav));
+            recette.setFavorite(true);
+        }
     }
 
     /*@Override

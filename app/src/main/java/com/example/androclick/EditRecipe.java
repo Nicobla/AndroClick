@@ -49,17 +49,18 @@ public class EditRecipe extends AppCompatActivity {//implements android.widget.C
 
         ((MyApplication) getApplicationContext()).uncheckAllIngredients();
 
-        recette = (Recette)getIntent().getSerializableExtra("recette");
-        position = (int)getIntent().getSerializableExtra("position");
+        recette = (Recette) getIntent().getSerializableExtra("recette");
+        position = (int) getIntent().getSerializableExtra("position");
 
         ImageButton button_back = (ImageButton) findViewById(R.id.button_back);
-        button_back.setOnClickListener(new View.OnClickListener()
-        {
+        button_back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { finish(); }
+            public void onClick(View v) {
+                finish();
+            }
         });
 
-        rvSauces = (RecyclerView)findViewById(R.id.list_sauces);
+        rvSauces = (RecyclerView) findViewById(R.id.list_sauces);
         displayListeSauces();
 
         rvViandes = (RecyclerView) findViewById(R.id.list_viandes);
@@ -69,20 +70,27 @@ public class EditRecipe extends AppCompatActivity {//implements android.widget.C
         displayListeSupplements();
 
 
-
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.tailles_tacos);
 
         switch (recette.getStrTailleTacos()) {
-            case "M": radioGroup.check(R.id.radio_M); break;
-            case "L": radioGroup.check(R.id.radio_L); break;
-            case "XL": radioGroup.check(R.id.radio_XL); break;
-            case "XXL": radioGroup.check(R.id.radio_XXL); break;
+            case "M":
+                radioGroup.check(R.id.radio_M);
+                break;
+            case "L":
+                radioGroup.check(R.id.radio_L);
+                break;
+            case "XL":
+                radioGroup.check(R.id.radio_XL);
+                break;
+            case "XXL":
+                radioGroup.check(R.id.radio_XXL);
+                break;
         }
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
             @Override
-            public void onCheckedChanged (RadioGroup group,int checkedId){
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.radio_M:
                         recette.setTailleTacos(Recette.TailleTacos.M);
@@ -101,61 +109,57 @@ public class EditRecipe extends AppCompatActivity {//implements android.widget.C
         });
 
         rvSauces.addOnItemTouchListener(
-            new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    Sauce s = listeSauces.get(position);
-                    s.setSelected(!s.isSelected());
-                    if (s.isSelected()) {
-                        recette.addSauce(s);
-                        Log.e("Click", "Ajout de la sauce "+s.getNom());
+                new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Sauce s = listeSauces.get(position);
+                        s.setSelected(!s.isSelected());
+                        if (s.isSelected()) {
+                            recette.addSauce(s);
+                            Log.e("Click", "Ajout de la sauce " + s.getNom());
+                        } else {
+                            recette.removeSauce(s);
+                            Log.e("Click", "Suppression de la sauce " + s.getNom());
+                        }
                     }
-                    else {
-                        recette.removeSauce(s);
-                        Log.e("Click", "Suppression de la sauce "+s.getNom());
-                    }
-                }
-            })
+                })
         );
         rvViandes.addOnItemTouchListener(
-            new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    Viande v = listeViandes.get(position);
-                    v.setSelected(!v.isSelected());
-                    if (v.isSelected()) {
-                        recette.addViande(v);
-                        Log.e("Click", "Ajout de la viande "+v.getNom());
+                new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Viande v = listeViandes.get(position);
+                        v.setSelected(!v.isSelected());
+                        if (v.isSelected()) {
+                            recette.addViande(v);
+                            Log.e("Click", "Ajout de la viande " + v.getNom());
+                        } else {
+                            recette.removeViande(v);
+                            Log.e("Click", "Suppression de la viande " + v.getNom());
+                        }
                     }
-                    else {
-                        recette.removeViande(v);
-                        Log.e("Click", "Suppression de la viande "+v.getNom());
-                    }
-                }
-            })
+                })
         );
         rvSupplements.addOnItemTouchListener(
-            new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    Supplement s = listeSupplements.get(position);
-                    s.setSelected(!s.isSelected());
-                    if (s.isSelected()) {
-                        recette.addSupplement(s);
-                        Log.e("Click", "Ajout du supplément "+s.getNom());
+                new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Supplement s = listeSupplements.get(position);
+                        s.setSelected(!s.isSelected());
+                        if (s.isSelected()) {
+                            recette.addSupplement(s);
+                            Log.e("Click", "Ajout du supplément " + s.getNom());
+                        } else {
+                            recette.removeSupplement(s);
+                            Log.e("Click", "Suppression du supplément " + s.getNom());
+                        }
                     }
-                    else {
-                        recette.removeSupplement(s);
-                        Log.e("Click", "Suppression du supplément "+s.getNom());
-                    }
-                }
-            })
+                })
         );
 
 
         Button button_apply = (Button) findViewById(R.id.button_apply);
-        button_apply.setOnClickListener(new View.OnClickListener()
-        {
+        button_apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Enregistrement de la recette
@@ -169,8 +173,7 @@ public class EditRecipe extends AppCompatActivity {//implements android.widget.C
     private void displayListeSauces() {
         listeSauces = ((MyApplication) getApplicationContext()).getListeSauces();
 
-        for (Sauce sauce1 : listeSauces)
-        {
+        for (Sauce sauce1 : listeSauces) {
             for (Sauce sauce : recette.getSauces()) {
                 if (sauce.getNom().equals(sauce1.getNom())) {
                     sauce.setSelected(true);
@@ -185,11 +188,11 @@ public class EditRecipe extends AppCompatActivity {//implements android.widget.C
         saucesAdapter.notifyDataSetChanged();
         rvSauces.setAdapter(saucesAdapter);
     }
+
     private void displayListeViandes() {
         listeViandes = ((MyApplication) getApplicationContext()).getListeViandes();
 
-        for (Viande viande1 : listeViandes)
-        {
+        for (Viande viande1 : listeViandes) {
             for (Viande viande : recette.getViandes()) {
                 if (viande.getNom().equals(viande1.getNom())) {
                     viande.setSelected(true);
@@ -204,11 +207,11 @@ public class EditRecipe extends AppCompatActivity {//implements android.widget.C
         viandesAdapter.notifyDataSetChanged();
         rvViandes.setAdapter(viandesAdapter);
     }
+
     private void displayListeSupplements() {
         listeSupplements = ((MyApplication) getApplicationContext()).getListeSupplements();
 
-        for (Supplement supplement1 : listeSupplements)
-        {
+        for (Supplement supplement1 : listeSupplements) {
             for (Supplement supplement : recette.getSupplements()) {
                 if (supplement.getNom().equals(supplement1.getNom())) {
                     supplement.setSelected(true);

@@ -43,10 +43,10 @@ public class MakeTacos_2 extends Fragment {//implements android.widget.CompoundB
     }
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
-        recette = (Recette)bundle.getSerializable("recette");
+        recette = (Recette) bundle.getSerializable("recette");
     }
 
 
@@ -54,23 +54,23 @@ public class MakeTacos_2 extends Fragment {//implements android.widget.CompoundB
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.make_tacos_fragment_2, container, false);
 
-        rvSauces = (RecyclerView)view.findViewById(R.id.list_sauces);
+        rvSauces = (RecyclerView) view.findViewById(R.id.list_sauces);
         displayListeSauces();
 
         rvSauces.addOnItemTouchListener(
-            new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    Sauce s = listeSauces.get(position);
-                    s.setSelected(!s.isSelected());
-                    if (s.isSelected())
-                        recette.addSauce(s);
-                    else
-                        recette.removeSauce(s);
-                    bundle.putSerializable("recette", recette);
-                    setArguments(bundle);
-                }
-            })
+                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Sauce s = listeSauces.get(position);
+                        s.setSelected(!s.isSelected());
+                        if (s.isSelected())
+                            recette.addSauce(s);
+                        else
+                            recette.removeSauce(s);
+                        bundle.putSerializable("recette", recette);
+                        setArguments(bundle);
+                    }
+                })
         );
 
         bundle.putSerializable("recette", recette);
@@ -84,7 +84,7 @@ public class MakeTacos_2 extends Fragment {//implements android.widget.CompoundB
         listeSauces = ((MyApplication) this.getActivity().getApplicationContext()).getListeSauces();
 
         for (Sauce sauce : listeSauces) {
-            Log.d("Sauce", "isSelected="+sauce.isSelected());
+            Log.d("Sauce", "isSelected=" + sauce.isSelected());
         }
 
         //rvSauces.setHasFixedSize(true);

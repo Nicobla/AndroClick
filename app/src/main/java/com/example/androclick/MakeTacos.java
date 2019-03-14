@@ -5,12 +5,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 
@@ -29,25 +32,36 @@ public class MakeTacos extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.make_tacos_fragment, container, false);
 
+        final ImageButton button_menu = (ImageButton) view.findViewById(R.id.button_menu);
+        button_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DrawerLayout mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+                mDrawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+
         ((MyApplication) this.getActivity().getApplicationContext()).uncheckAllIngredients();
 
         this.progressBar = view.findViewById(R.id.progress_bar);
 
         Bundle bundle = new Bundle();
-        int numRecette = ((MyApplication) getActivity().getApplicationContext()).getListeRecettes().size() +1;
-        bundle.putSerializable("recette", new Recette("Recette "+numRecette));
+        int numRecette = ((MyApplication) getActivity().getApplicationContext()).getListeRecettes().size() + 1;
+        bundle.putSerializable("recette", new Recette("Recette " + numRecette));
 
         viewPager = view.findViewById(R.id.pager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrollStateChanged(int arg0) {}
+            public void onPageScrollStateChanged(int arg0) {
+            }
 
             @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {}
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+            }
 
             @Override
             public void onPageSelected(int pos) {
-                updateProgressBar((pos+1)*20);
+                updateProgressBar((pos + 1) * 20);
             }
         });
 
@@ -74,7 +88,7 @@ public class MakeTacos extends Fragment {
 class ProgressBarAnimation extends Animation {
     private ProgressBar progressBar;
     private float from;
-    private float  to;
+    private float to;
 
     public ProgressBarAnimation(ProgressBar progressBar, float from, float to) {
         super();

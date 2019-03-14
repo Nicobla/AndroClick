@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_myrecipes"
+            android:icon="@drawable/ic_recipes"
+            android:title="@string/myrecipes_title" />
+        <item
+            android:id="@+id/nav_otacos"
+            android:icon="@drawable/ic_otacos"
+            android:title="@string/otacos" />
+        <item
+            android:id="@+id/nav_tacos"
+            android:icon="@drawable/ic_tacos"
+            android:title="@string/tacos_title" />
+    </group>
+
+    <item android:title="@string/plus">
+        <menu>
+            <item
+                android:id="@+id/nav_account"
+                android:icon="@drawable/ic_account"
+                android:title="@string/my_account" />
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings"
+                android:title="@string/settings" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_about"
+                android:title="@string/about" />
+        </menu>
+    </item>
+</menu>

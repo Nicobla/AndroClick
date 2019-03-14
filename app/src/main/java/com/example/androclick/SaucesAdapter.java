@@ -21,19 +21,22 @@ class Sauce implements Serializable {
 
     public Sauce(String nom) {
         super();
-        this.nom=nom;
-        this.selected=false;
+        this.nom = nom;
+        this.selected = false;
     }
 
     public String getNom() {
         return nom;
     }
+
     public void setNom(String nom) {
         this.nom = nom;
     }
+
     public boolean isSelected() {
         return selected;
     }
+
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
@@ -63,7 +66,7 @@ public class SaucesAdapter extends RecyclerView.Adapter<SaucesAdapter.SaucesHold
             Sauce s = listeSauces.get(pos);
             //s.setSelected(!s.isSelected());
 
-            Log.d("Test", "Click sur une sauce ("+pos+") - "+s.isSelected());
+            Log.d("Test", "Click sur une sauce (" + pos + ") - " + s.isSelected());
         }
     }
 

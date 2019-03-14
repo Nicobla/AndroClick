@@ -21,19 +21,22 @@ class Supplement implements Serializable {
 
     public Supplement(String nom) {
         super();
-        this.nom=nom;
-        this.selected=false;
+        this.nom = nom;
+        this.selected = false;
     }
 
     public String getNom() {
         return nom;
     }
+
     public void setNom(String nom) {
         this.nom = nom;
     }
+
     public boolean isSelected() {
         return selected;
     }
+
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
@@ -66,7 +69,7 @@ public class SupplementsAdapter extends RecyclerView.Adapter<SupplementsAdapter.
             Supplement s = listeSupplements.get(pos);
             //s.setSelected(!s.isSelected());
 
-            Log.d("Test", "Click sur un supplément ("+pos+") - "+s.isSelected());
+            Log.d("Test", "Click sur un supplément (" + pos + ") - " + s.isSelected());
         }
     }
 

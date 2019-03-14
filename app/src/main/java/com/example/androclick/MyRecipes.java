@@ -1,30 +1,31 @@
 package com.example.androclick;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MyRecipes extends Fragment {
@@ -40,11 +41,16 @@ public class MyRecipes extends Fragment {
         // Required empty public constructor
     }
 
-    /*public void reset() {
+    public void restart() {
+        if (listeRecettes.size() == 0) { // TODO : needToDownload
+            ArrayList<Recette> listeRecettes = ((MainActivity) getActivity()).getAllRecipes();
+            ((MyApplication) getActivity().getApplicationContext()).setListeRecettes(listeRecettes);
+            //displayListeRecettes(listeRecettes);
+        }
+
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
-    }*/
-
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,31 +63,27 @@ public class MyRecipes extends Fragment {
         final TextView title_myrecipes = (TextView) view.findViewById(R.id.title_myrecipes);
 
         final ImageButton button_menu = (ImageButton) view.findViewById(R.id.button_menu);
-        button_menu.setOnClickListener(new View.OnClickListener()
-        {
+        button_menu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                //TODO : showOptionsMenu
-                Toast.makeText(getContext(), "TODO : showOptionsMenu", Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                DrawerLayout mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+                mDrawerLayout.openDrawer(Gravity.LEFT);
             }
         });
         final ImageButton button_searchRecipe = (ImageButton) view.findViewById(R.id.button_searchRecipe);
-        button_searchRecipe.setOnClickListener(new View.OnClickListener()
-        {
+        button_searchRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 searching = !searching;
                 View view = getActivity().getCurrentFocus();
-                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
                 if (searching) { // Affiche la barre de recherche
                     button_menu.setVisibility(View.INVISIBLE);
                     title_myrecipes.setVisibility(View.INVISIBLE);
                     text_search.setVisibility(View.VISIBLE);
                     button_searchRecipe.setImageResource(R.drawable.ic_close);
-                    imm.showSoftInput(view,0);
+                    imm.showSoftInput(view, 0);
                     text_search.requestFocus();
                 } else { // Réinitialise l'affichage
                     button_menu.setVisibility(View.VISIBLE);
@@ -98,7 +100,8 @@ public class MyRecipes extends Fragment {
         });
         text_search.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -117,14 +120,27 @@ public class MyRecipes extends Fragment {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
 
-        rvRecettes = (RecyclerView)view.findViewById(R.id.list_myrecipes);
+        rvRecettes = (RecyclerView) view.findViewById(R.id.list_myrecipes);
         displayListeRecettes(listeRecettes);
+
+        SwipeRefreshLayout mySwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeLayout);
+
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        restart();
+                    }
+                }
+        );
 
         return view;
     }
+
 
     private void displayListeRecettes(ArrayList<Recette> listeRecettes) {
         layoutManager = new LinearLayoutManager(getContext());

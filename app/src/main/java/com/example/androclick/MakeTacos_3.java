@@ -31,8 +31,8 @@ public class MakeTacos_3 extends Fragment implements android.widget.CompoundButt
     private RecyclerView rvViandes;
     private RecyclerView.Adapter viandesAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    
-    
+
+
     public MakeTacos_3() {
         // Required empty public constructor
     }
@@ -43,10 +43,10 @@ public class MakeTacos_3 extends Fragment implements android.widget.CompoundButt
     }
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
-        recette = (Recette)bundle.getSerializable("recette");
+        recette = (Recette) bundle.getSerializable("recette");
     }
 
 
@@ -54,7 +54,7 @@ public class MakeTacos_3 extends Fragment implements android.widget.CompoundButt
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.make_tacos_fragment_3, container, false);
 
-        rvViandes = (RecyclerView)view.findViewById(R.id.list_viandes);
+        rvViandes = (RecyclerView) view.findViewById(R.id.list_viandes);
         displayListeViandes();
 
 
@@ -104,7 +104,7 @@ public class MakeTacos_3 extends Fragment implements android.widget.CompoundButt
             else
                 nbViandes--;
             if (nbViandes >= NB_MAX_VIANDES) {
-                Toast.makeText(getContext(), "MAX VIANDES ("+nbViandes+")", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "MAX VIANDES (" + nbViandes + ")", Toast.LENGTH_SHORT).show();
                 //TODO : griser checkboxes sauf celles déjà cochées
             }
         }

@@ -1,36 +1,98 @@
 package com.example.androclick;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toolbar;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private DrawerLayout drawer;
+
+    SharedPreferences sharedPreferences;
+
+    private ArrayList<O_Tacos> listeOTacos;
+
+    private ArrayList<Sauce> listeSauces;
+    private ArrayList<Viande> listeViandes;
+    private ArrayList<Supplement> listeSupplements;
+
+    private ArrayList<Recette> listeRecettes = new ArrayList<>();
+
+    void addRecette(Recette recette) {
+        listeRecettes.add(recette);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
+        View view = bottomNavigationView.findViewById(R.id.navigation_recipes);
+        view.performClick();
+        switch (item.getItemId()) {
+            case R.id.nav_myrecipes:
+                break;
+            case R.id.nav_otacos:
+                view = bottomNavigationView.findViewById(R.id.navigation_otacos);
+                view.performClick();
+                break;
+            case R.id.nav_tacos:
+                view = bottomNavigationView.findViewById(R.id.navigation_tacos);
+                view.performClick();
+                break;
+            case R.id.nav_account:
+                getSupportFragmentManager().beginTransaction().replace(R.id.constraintLayout,
+                        new MyAccount()).commit();
+                break;
+            case R.id.nav_settings:
+                getSupportFragmentManager().beginTransaction().replace(R.id.constraintLayout,
+                        new Settings()).commit();
+                break;
+            case R.id.nav_about:
+                getSupportFragmentManager().beginTransaction().replace(R.id.constraintLayout,
+                        new About()).commit();
+                break;
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        ((MyApplication) getApplicationContext()).setListeOTacos(getAllOTacos());
+        getData();
 
-        ((MyApplication) getApplicationContext()).setListeSauces(getAllSauces());
-        ((MyApplication) getApplicationContext()).setListeViandes(getAllViandes());
-        ((MyApplication) getApplicationContext()).setListeSupplements(getAllSupplements());
+        drawer = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        ((MyApplication) getApplicationContext()).setListeOTacos(listeOTacos);
+
+        ((MyApplication) getApplicationContext()).setListeSauces(listeSauces);
+        ((MyApplication) getApplicationContext()).setListeViandes(listeViandes);
+        ((MyApplication) getApplicationContext()).setListeSupplements(listeSupplements);
 
         ((MyApplication) getApplicationContext()).setListeRecettes(getAllRecipes());
 
@@ -39,30 +101,30 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.constraintLayout, new MyRecipes()) // premier onglet ouvert (défaut: MyRecipes())
                     .commitNow();
         }
-        final BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigationView);
+        final BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
 
         bottomNavigationView.setOnNavigationItemSelectedListener
         (new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_recipes:
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.constraintLayout, new MyRecipes())
-                            .commitNow();
-                    break;
-                case R.id.navigation_otacos:
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.constraintLayout, new OTacos())
-                            .commitNow();
-                    break;
-                case R.id.navigation_tacos:
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.constraintLayout, new MakeTacos())
-                            .commitNow();
-                    break;
-            }
-            return true;
+                switch (item.getItemId()) {
+                    case R.id.navigation_recipes:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.constraintLayout, new MyRecipes())
+                                .commitNow();
+                        break;
+                    case R.id.navigation_otacos:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.constraintLayout, new OTacos())
+                                .commitNow();
+                        break;
+                    case R.id.navigation_tacos:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.constraintLayout, new MakeTacos())
+                                .commitNow();
+                        break;
+                }
+                return true;
             }
         });
     }
@@ -73,10 +135,10 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<O_Tacos> getAllOTacos() {
         final ArrayList<O_Tacos> otacos = new ArrayList<>();
 
-        db.collection("OTacos").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+        db.collection("OTacos").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         O_Tacos o_tacos = (O_Tacos) document.toObject(O_Tacos.class);
                         otacos.add(o_tacos);
@@ -90,10 +152,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Sauce> getAllSauces() {
         final ArrayList<Sauce> sauces = new ArrayList<>();
-        db.collection("Sauce").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Sauce").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Sauce sauce = (Sauce) document.toObject(Sauce.class);
                         sauces.add(sauce);
@@ -103,12 +165,13 @@ public class MainActivity extends AppCompatActivity {
         });
         return sauces;
     }
+
     private ArrayList<Viande> getAllViandes() {
         final ArrayList<Viande> viandes = new ArrayList<>();
-        db.collection("Viande").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Viande").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Viande viande = (Viande) document.toObject(Viande.class);
                         viandes.add(viande);
@@ -118,12 +181,13 @@ public class MainActivity extends AppCompatActivity {
         });
         return viandes;
     }
+
     private ArrayList<Supplement> getAllSupplements() {
         final ArrayList<Supplement> supplements = new ArrayList<>();
-        db.collection("Supplement").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Supplement").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Supplement supplement = (Supplement) document.toObject(Supplement.class);
                         supplements.add(supplement);
@@ -135,118 +199,132 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private ArrayList<Recette> getAllRecipes() {
-        final ArrayList<Sauce> listeSauces = ((MyApplication) getApplicationContext()).getListeSauces();
-        Log.e("AAAAAAAA", "nb sauces="+listeSauces.size());
+    public ArrayList<Recette> getAllRecipes() {
+        /*final ArrayList<Sauce> listeSauces = ((MyApplication) getApplicationContext()).getListeSauces();
+        final ArrayList<Viande> listeViandes = ((MyApplication) getApplicationContext()).getListeViandes();
+        final ArrayList<Supplement> listeSupplements = ((MyApplication) getApplicationContext()).getListeSupplements();*/
 
-        final ArrayList<Recette> recettes = new ArrayList<>();
+        if (listeSauces.size() <= 0 || listeViandes.size() <= 0 || listeSupplements.size() <= 0) {
+            Log.e("DEBUG", "Impossible de set la liste des recettes car les listes sont vides :(");
+            return new ArrayList<>();
+        }
+
+
         // [START get_all_users]
 
-        //TODO : get recette en entier
-        db.collection("Recette").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
-           @Override
-           public void onComplete(@NonNull Task<QuerySnapshot> task) {
-               if(task.isSuccessful()){
-                   for (QueryDocumentSnapshot document : task.getResult()) {
-                       Recette recette = new Recette(document.get("nom").toString());
-                       recette.setTailleTacosByStr(document.get("tailleTacos").toString());
-                       //for (int idxSauce=0; i<document.)
-                       ArrayList sauces = new ArrayList<>();
-                       /*for (Object i : (ArrayList)document.getData().get("sauces")) {
-                           sauces.add((Long)i);
-                       }*/
+        db.collection("Recette").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Recette recette = new Recette();
+                        Object nom = document.get("nom");
+                        Object tailleTacos = document.get("tailleTacos");
+                        Object isFavorite = document.get("isFavorite");
 
-                       //recette.setSaucesByInt(sauces, listeSauces);
+                        ArrayList sauces = (ArrayList) document.get("sauces");
+                        ArrayList viandes = (ArrayList) document.get("viandes");
+                        ArrayList supplements = (ArrayList) document.get("supplements");
 
-                       recettes.add(recette);
-                   }
-               }
-           }
-       });
+                        if (nom != null) recette.setNom(nom.toString());
+                        if (tailleTacos != null)
+                            recette.setTailleTacosByStr(tailleTacos.toString());
+                        if (isFavorite != null) recette.setFavorite((boolean) isFavorite);
 
-        /*for (int i=0; i<recettes.size(); i++) {
-            for (int j=0; j<recettes.)
-            recettes.get(i).setSauces(new ArrayList<Sauce>(Arrays.asList()));
-        }*/
+                        if (sauces != null) {
+                            for (int i = 0; i < sauces.size(); i++) {
+                                Long idxSauce = (Long) sauces.get(i);
+                                Sauce sauce = listeSauces.get(idxSauce.intValue() - 1);
+                                recette.addSauce(sauce);
+                            }
+                        }
+                        if (viandes != null) {
+                            for (int i = 0; i < viandes.size(); i++) {
+                                Long idxViande = (Long) viandes.get(i);
+                                Viande viande = listeViandes.get(idxViande.intValue() - 1);
+                                recette.addViande(viande);
+                            }
+                        }
+                        if (supplements != null) {
+                            for (int i = 0; i < supplements.size(); i++) {
+                                Long idxSupplement = (Long) supplements.get(i);
+                                Supplement supplement = listeSupplements.get(idxSupplement.intValue() - 1);
+                                recette.addSupplement(supplement);
+                            }
+                        }
+                        Log.e("DEBUG", "Recette:" + recette.getNom());
+                        addRecette(recette);
+                    }
+                }
+            }
+        });
+        Log.e("DEBUG", "nbRecettes=" + listeRecettes.size());
 
-        return recettes;
+        return listeRecettes;
         // [END get_all_users]
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("DEBUG", "Fermeture de l'app");
 
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("needToDownload", false);
+        editor.apply();
 
+        //TODO : enregistrer les données
 
+        String filename = "sauces";
+        String fileContents = "Hello world!";
+        FileOutputStream outputStream;
 
-    private ArrayList<Recette> insertListeRecettes() {
-        final ArrayList<Sauce> sauces = ((MyApplication) getApplicationContext()).getListeSauces();
-        final ArrayList<Viande> viandes = ((MyApplication) getApplicationContext()).getListeViandes();
-        final ArrayList<Supplement> supplements = ((MyApplication) getApplicationContext()).getListeSupplements();
-
-        ArrayList<Recette> recettes = new ArrayList<Recette>();
-        //TODO : récupérer la liste des recettes depuis la BDD
-
-        recettes.add(new Recette("Mon premier tacos",
-                Recette.TailleTacos.L,
-                new ArrayList<Sauce>(Arrays.asList(sauces.get(1))),
-                new ArrayList<Viande>(),
-                new ArrayList<Supplement>()));
-        recettes.add(new Recette("Bon tacos",
-                Recette.TailleTacos.XL,
-                new ArrayList<Sauce>(Arrays.asList(sauces.get(2), sauces.get(0))),
-                new ArrayList<Viande>(Arrays.asList(viandes.get(1))),
-                new ArrayList<Supplement>(Arrays.asList(supplements.get(0), supplements.get(1), supplements.get(2)))));
-        recettes.add(new Recette("Petite faim",
-                Recette.TailleTacos.M,
-                new ArrayList<Sauce>(Arrays.asList(sauces.get(2))),
-                new ArrayList<Viande>(Arrays.asList(viandes.get(2))),
-                new ArrayList<Supplement>()));
-        for (int i=4; i<=7; i++) {
-            recettes.add(new Recette("Recette "+i,
-                    Recette.TailleTacos.L,
-                    new ArrayList<Sauce>(),
-                    new ArrayList<Viande>(),
-                    new ArrayList<Supplement>()));
+        try {
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(fileContents.getBytes());
+            outputStream.close();
+            File directory = getApplicationContext().getFilesDir();
+            File file = new File(directory, filename);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return recettes;
+        Log.e("DEBUG", "App fermée");
+
     }
 
-    private ArrayList<Sauce> insertListeSauces() {
-        ArrayList<Sauce> listeSauces = new ArrayList<Sauce>();
-        //TODO : récupérer la liste des sauces depuis BDD
+    private void getData() {
+        sharedPreferences = getPreferences(MODE_PRIVATE);
+        boolean needToDownload = sharedPreferences.getBoolean("needToDownload", true);
+        Log.e("DEBUG", "NeedToDownload=" + needToDownload);
 
-        listeSauces.add(new Sauce("Mayonnaise"));
-        listeSauces.add(new Sauce("Moutarde"));
-        listeSauces.add(new Sauce("Ketchup"));
-        for (int i = 4; i <= 8; i++) {
-            listeSauces.add(new Sauce("Sauce n. " + i));
+        listeOTacos = getAllOTacos();
+        listeSauces = getAllSauces();
+        listeViandes = getAllViandes();
+        listeSupplements = getAllSupplements();
+        if (needToDownload) {
+            //mettre les gets là
+        } else {
+            //charger les données
+            String filename = "sauces";
+            File directory;
+            if (filename.isEmpty()) {
+                directory = getFilesDir();
+                Log.e("DEBUG", "Fichier " + filename + " vides");
+            } else {
+                directory = getDir(filename, MODE_PRIVATE);
+                Log.e("DEBUG", "Fichier " + filename + " remplit");
+            }
+            File[] files = directory.listFiles();
+            Log.e("DEBUG", "filesToString=" + files.toString());
+            for (File file : files) {
+                Log.e("DEBUG", "Ligne X=" + file.toString());
+            }
+
+
         }
-        return listeSauces;
+
+
     }
 
-    private ArrayList<Viande> insertListeViandes() {
-        ArrayList<Viande> listeViandes = new ArrayList<Viande>();
-        //TODO : récupérer la liste des viandes depuis BDD
-
-        listeViandes.add(new Viande("Steak"));
-        listeViandes.add(new Viande("Poulet"));
-        listeViandes.add(new Viande("Jambon"));
-        for (int i=4; i<=7; i++) {
-            listeViandes.add(new Viande("Viande n. "+i));
-        }
-        return listeViandes;
-    }
-
-    private ArrayList<Supplement> insertListeSupplements() {
-        ArrayList<Supplement> listeSupplements = new ArrayList<Supplement>();
-        //TODO : récupérer la liste des suppléments depuis BDD
-
-        listeSupplements.add(new Supplement("Salade"));
-        listeSupplements.add(new Supplement("Tomate"));
-        listeSupplements.add(new Supplement("Oignon"));
-        for (int i=1; i<=15; i++) {
-            listeSupplements.add(new Supplement("Supplément n. "+i));
-        }
-        return listeSupplements;
-    }
 }

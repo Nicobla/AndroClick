@@ -24,10 +24,13 @@ import java.util.ArrayList;
 class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
 
     private OnItemClickListener mListener;
+
     public interface OnItemClickListener {
         public void onItemClick(View view, int position);
     }
+
     GestureDetector mGestureDetector;
+
     public RecyclerItemClickListener(Context context, OnItemClickListener listener) {
         mListener = listener;
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
@@ -37,6 +40,7 @@ class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
             }
         });
     }
+
     @Override
     public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
         View childView = view.findChildViewUnder(e.getX(), e.getY());
@@ -47,10 +51,12 @@ class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
     }
 
     @Override
-    public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) {}
+    public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) {
+    }
 
     @Override
-    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+    }
 }
 
 public class MakeTacos_4 extends Fragment {
@@ -74,17 +80,17 @@ public class MakeTacos_4 extends Fragment {
     }
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
-        recette = (Recette)bundle.getSerializable("recette");
+        recette = (Recette) bundle.getSerializable("recette");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.make_tacos_fragment_4, container, false);
 
-        rvSupplements = (RecyclerView)view.findViewById(R.id.list_supplements);
+        rvSupplements = (RecyclerView) view.findViewById(R.id.list_supplements);
         displayListeSupplements();
 
         rvSupplements.addOnItemTouchListener(
@@ -95,11 +101,10 @@ public class MakeTacos_4 extends Fragment {
                         s.setSelected(!s.isSelected());
                         if (s.isSelected()) {
                             recette.addSupplement(s);
-                            Log.e("Click", "Ajout du supplément "+s.getNom());
-                        }
-                        else {
+                            Log.e("Click", "Ajout du supplément " + s.getNom());
+                        } else {
                             recette.removeSupplement(s);
-                            Log.e("Click", "Suppression du supplément "+s.getNom());
+                            Log.e("Click", "Suppression du supplément " + s.getNom());
                         }
                         bundle.putSerializable("recette", recette);
                         setArguments(bundle);

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -38,10 +39,10 @@ public class MakeTacos_5 extends Fragment {
     }
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
-        recette = (Recette)bundle.getSerializable("recette");
+        recette = (Recette) bundle.getSerializable("recette");
     }
 
 
@@ -53,12 +54,11 @@ public class MakeTacos_5 extends Fragment {
 //        progressBar.setProgress(getArguments().getInt("progression"));
 
 
-        final EditText nomRecette = (EditText)view.findViewById(R.id.recipe_name);
+        final EditText nomRecette = (EditText) view.findViewById(R.id.recipe_name);
         nomRecette.setText(recette.getNom());
 
         Button button_createRecipe = (Button) view.findViewById(R.id.button_createRecipe);
-        button_createRecipe.setOnClickListener(new View.OnClickListener()
-        {
+        button_createRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Enregistrement de la recette dans la liste des recettes
@@ -77,10 +77,12 @@ public class MakeTacos_5 extends Fragment {
 
         nomRecette.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -97,17 +99,18 @@ public class MakeTacos_5 extends Fragment {
 
     public void closeFragment() {
         ((MyApplication) this.getActivity().getApplicationContext()).uncheckAllIngredients();
+
         getParentFragment().onDestroy();
 
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) getActivity().findViewById(R.id.navigationView);
+        View view = bottomNavigationView.findViewById(R.id.navigation_recipes);
+        view.performClick();
+
+
+        /*getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.constraintLayout, new MyRecipes())
-                .commitNow();
-    }
-
-    @Override public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
+                .commitNow();*/
     }
 
 }

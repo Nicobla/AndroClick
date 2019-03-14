@@ -38,11 +38,23 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/title_my_recipe"
+                android:text="@string/myrecipe_title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textSize="24sp"
                 app:layout_constraintLeft_toRightOf="@+id/button_back"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/button_favorite"
+                android:layout_width="64dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent"
+                android:onClick="makeFavorite"
+                android:src="@drawable/button_favorite_icon"
+                android:tint="@android:color/white"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/fav_desc" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.Toolbar>
@@ -71,7 +83,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 app:layout_constraintLeft_toRightOf="@+id/myrecipe_img"
-                app:layout_constraintRight_toLeftOf="@+id/button_favorite"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:focusableInTouchMode="true" >
 
@@ -82,17 +94,6 @@
                     android:paddingTop="4dp" />
             </android.support.design.widget.TextInputLayout>
 
-            <ImageButton
-                android:id="@+id/button_favorite"
-                android:layout_width="64dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorAccent"
-                android:contentDescription="@string/button_searchRecipe_desc"
-                android:onClick="makeFavorite"
-                android:src="@drawable/button_favorite_icon"
-                android:tint="@android:color/white"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
     </FrameLayout>
 
@@ -169,13 +170,14 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/titre_supplements" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/button_add_ingredient"
+    <!--android.support.design.widget.FloatingActionButton
+        android:id="@+id/button_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
         android:focusable="true"
+        android:onClick="editRecipe"
         android:src="@drawable/ic_edit"
         android:tint="@android:color/white"
         app:backgroundTint="@android:color/holo_blue_light"
@@ -183,8 +185,70 @@
         app:layout_anchor="@id/constraintLayout"
         app:layout_anchorGravity="bottom|right|end"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" /-->
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/button_open_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginBottom="11dp"
+        app:layout_anchor="@id/constraintLayout"
+        app:layout_anchorGravity="bottom|right|end"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:onClick="moveToEditRecipe"/>
+        app:menu_animationDelayPerItem="55"
+        app:menu_backgroundColor="@android:color/transparent"
+        app:menu_buttonSpacing="0dp"
+        app:menu_colorNormal="@color/colorFab"
+        app:menu_colorPressed="@color/colorFabPressed"
+        app:menu_colorRipple="#99d4d4d4"
+        app:menu_fab_size="normal"
+        app:menu_icon="@drawable/fab_add"
+        app:menu_labels_colorNormal="#333"
+        app:menu_labels_colorPressed="#444"
+        app:menu_labels_colorRipple="#66efecec"
+        app:menu_labels_cornerRadius="3dp"
+        app:menu_labels_ellipsize="none"
+        app:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+        app:menu_labels_margin="0dp"
+        app:menu_labels_maxLines="-1"
+        app:menu_labels_padding="8dp"
+        app:menu_labels_position="left"
+        app:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+        app:menu_labels_showShadow="true"
+        app:menu_labels_singleLine="false"
+        app:menu_labels_textColor="#f2f1f1"
+        app:menu_labels_textSize="15sp"
+        app:menu_openDirection="up"
+        app:menu_shadowColor="#66aff198"
+        app:menu_shadowRadius="4dp"
+        app:menu_shadowXOffset="1dp"
+        app:menu_shadowYOffset="4dp"
+        app:menu_showShadow="true">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/button_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_share"
+            app:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete"
+            app:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/button_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
+            app:fab_size="mini" />
+    </com.github.clans.fab.FloatingActionMenu>
 
 </android.support.constraint.ConstraintLayout>
 

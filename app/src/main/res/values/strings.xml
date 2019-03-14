@@ -7,24 +7,31 @@
 
 
     <string name="myrecipes_title">Mes recettes</string>
-
+    <string name="my_account">Mon compte</string>
+    <string name="settings">Paramètres</string>
     <string name="about">À propos</string>
-    <string name="myaccount">Mon compte</string>
-    <string name="preferences">Préférences</string>
-
     <string name="rechercher_une_recette">Rechercher une recette</string>
-    <string name="button_searchRecipe_desc">Recherche une recette</string>
 
 
     <string name="myrecipe_title">Ma recette</string>
     <string name="myrecipe_img_desc">Image de ma recette</string>
     <string name="nom_de_la_recette">Nom de la recette</string>
+    <string name="sauces_recette">Sauce(s)</string>
+    <string name="viandes_recette">Viande(s)</string>
+    <string name="supplements_recette">Suppléments</string>
 
     <string name="title_edit_recipe">Modifier recette</string>
     <string name="apply">Appliquer</string>
 
+
+    <string name="map">Map</string>
+    <string name="list_otacos">Liste</string>
+    <string name="findOTacos">Trouver le plus proche</string>
+    <string name="adresse">Adresse</string>
+
+
     <string name="tacos_title">Création de tacos</string>
-    <string name="startTacos">Commencer</string>
+    <string name="random_recipe">Créer une recette aléatoire</string>
     <string name="taille_du_tacos">Taille du tacos</string>
     <string name="create_recipe">Créer la recette</string>
     <string name="terminer_recette">Terminer la recette</string>
@@ -35,19 +42,32 @@
     <string name="viandes">Sélection de la viande</string>
     <string name="supplements">Sélection des suppléments</string>
 
-    <!-- à supprimer (peut-être) -->
-    <string name="button_back_description">Retourne à l\'écran précédent</string>
-    <string name="button_menu_description">Bouton qui affiche le menu des options</string>
     <string name="m">M</string>
     <string name="l">L</string>
     <string name="xl">XL</string>
     <string name="xxl">XXL</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="supplements_recette">Suppléments</string>
-    <string name="viandes_recette">Viande(s)</string>
-    <string name="sauces_recette">Sauce(s)</string>
-    <string name="map">Map</string>
-    <string name="title_my_recipe">Ma recette</string>
+
+    <!-- Description -->
+    <string name="button_menu_description">Bouton qui affiche le menu des options</string>
+    <string name="button_back_description">Retourne à l\'écran précédent</string>
+    <string name="button_searchRecipe_desc">Recherche une recette</string>
+    <string name="otacos_img_desc">Image d\'un OTacos</string>
+    <string name="fav_desc">Met en favoris</string>
+    <string name="confirm_suppression">Voulez-vous vraiment supprimer cette recette ?</string>
+    <string name="oui">Oui</string>
+    <string name="non">Non</string>
+    <string name="plus">Plus</string>
+    <string name="nav_options_title">Tacos Maker</string>
+    <string name="nav_options_subtitle">Made by AndroTeam</string>
+    <string name="nav_options_img_desc">Icône du menu options</string>
+
+
+
+    <string name="text_about">
+        Le tacos français se compose d\'une tortilla repliée sur elle-même et grillée, contenant toujours une garniture qui est le plus souvent à base de viandes, de frites et de sauce. Très différent du taco, le tacos (avec un « s » même au singulier) français, hybride entre panini, kebab et burrito, est de forme rectangulaire et comprend des frites et un fromage crémeux industriel.
+        \n\nO\'Tacos est une chaîne de restauration rapide, française et spécialisée dans le tacos français.
+        Le point fort de cette chaîne de restauration est que le client choisit ces ingrédients (viandes, sauces et suppléments), ainsi que la taille de son tacos.
+    </string>
+    <string name="copyright">Copyright © 2019 AndroTeam</string>
 </resources>

@@ -21,19 +21,22 @@ class Viande implements Serializable {
 
     public Viande(String nom) {
         super();
-        this.nom=nom;
-        this.selected=false;
+        this.nom = nom;
+        this.selected = false;
     }
 
     public String getNom() {
         return nom;
     }
+
     public void setNom(String nom) {
         this.nom = nom;
     }
+
     public boolean isSelected() {
         return selected;
     }
+
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
@@ -63,7 +66,7 @@ public class ViandesAdapter extends RecyclerView.Adapter<ViandesAdapter.ViandesH
             Viande v = listeViandes.get(pos);
             //s.setSelected(!s.isSelected());
 
-            Log.d("Test", "Click sur une viande ("+pos+") - "+v.isSelected());
+            Log.d("Test", "Click sur une viande (" + pos + ") - " + v.isSelected());
         }
     }
 
