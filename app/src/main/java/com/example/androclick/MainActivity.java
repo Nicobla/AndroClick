@@ -45,9 +45,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
         View view = bottomNavigationView.findViewById(R.id.navigation_recipes);
-        view.performClick();
         switch (item.getItemId()) {
             case R.id.nav_myrecipes:
+                view.performClick();
                 break;
             case R.id.nav_otacos:
                 view = bottomNavigationView.findViewById(R.id.navigation_otacos);
@@ -58,14 +58,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 view.performClick();
                 break;
             case R.id.nav_account:
+                view.performClick();
                 getSupportFragmentManager().beginTransaction().replace(R.id.constraintLayout,
                         new MyAccount()).commit();
                 break;
             case R.id.nav_settings:
+                view.performClick();
                 getSupportFragmentManager().beginTransaction().replace(R.id.constraintLayout,
                         new Settings()).commit();
                 break;
             case R.id.nav_about:
+                view.performClick();
                 getSupportFragmentManager().beginTransaction().replace(R.id.constraintLayout,
                         new About()).commit();
                 break;
@@ -84,8 +87,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawer = findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_myrecipes);
 
 
         ((MyApplication) getApplicationContext()).setListeOTacos(listeOTacos);
@@ -109,16 +113,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_recipes:
+                        navigationView.setCheckedItem(R.id.nav_myrecipes);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.constraintLayout, new MyRecipes())
                                 .commitNow();
                         break;
                     case R.id.navigation_otacos:
+                        navigationView.setCheckedItem(R.id.nav_otacos);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.constraintLayout, new OTacos())
                                 .commitNow();
                         break;
                     case R.id.navigation_tacos:
+                        navigationView.setCheckedItem(R.id.nav_tacos);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.constraintLayout, new MakeTacos())
                                 .commitNow();
