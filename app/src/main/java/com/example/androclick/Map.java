@@ -2,12 +2,14 @@ package com.example.androclick;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,9 @@ import java.util.ArrayList;
 public class Map extends Fragment implements OnMapReadyCallback {
     private static final int REQUEST_LOCATION_PERMISSION = 0;
     private GoogleMap mMap;
+
+    private Location myLocation;
+    private LatLng userLocation;
 
     public Map() {
         // Required empty public constructor
@@ -59,20 +64,34 @@ public class Map extends Fragment implements OnMapReadyCallback {
             mMap.addMarker(new MarkerOptions().position(latLng).title(o_tacos.getNom()));
         }
 
-        // Positionne la caméra sur la position "home" suivante //TODO : à supprimer ??
-        LatLng home = new LatLng(45.9208490, 6.1415);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(home));
+
+
         enableMyLocation(mMap);
+        // Positionne la caméra sur la position de l'utilisateur (si elle existe)
+        if (userLocation != null)
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
     }
 
     private void enableMyLocation(GoogleMap map) {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             map.setMyLocationEnabled(true);
+            if (mMap.isMyLocationEnabled()) {
+                //TODO : enregistrer localisation
+                myLocation = mMap.getMyLocation();
+                if (myLocation!= null) {
+                    userLocation = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+                    Log.e("DEBUG", userLocation.latitude + ", " + userLocation.longitude);
+                    ((MyApplication) this.getActivity().getApplicationContext()).setUserPosition(userLocation);
+                } else {
+                    Log.e("DEBUG", "enabled mais null");
+                }
+            }
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         }
 
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

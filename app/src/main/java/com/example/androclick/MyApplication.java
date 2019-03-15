@@ -3,9 +3,19 @@ package com.example.androclick;
 import android.app.Application;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 public class MyApplication extends Application {
+
+    private LatLng userPosition = new LatLng(45.9208490, 6.1415);
+    public LatLng getUserPosition() {
+        return userPosition;
+    }
+    public void setUserPosition(LatLng userPosition) {
+        this.userPosition = userPosition;
+    }
 
     private ArrayList<O_Tacos> listeOTacos;
 

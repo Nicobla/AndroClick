@@ -15,9 +15,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+
 
 public class OTacos_Details extends AppCompatActivity {
 
@@ -30,6 +33,11 @@ public class OTacos_Details extends AppCompatActivity {
         setContentView(R.layout.activity_otacos_details);
 
         otacos = (O_Tacos_Serializable) getIntent().getSerializableExtra("otacos");
+        GeoPoint2 userPosition = (GeoPoint2) getIntent().getSerializableExtra("userPosition");
+        double distance = otacos.distance(userPosition);
+        distance = (double) Math.round(distance/1000 * 100) / 100;
+
+        String distanceStr = distance+" km";
 
         final TextView tvNomTacos = (TextView) findViewById(R.id.otacos_name);
         tvNomTacos.setText(otacos.getNom());
@@ -40,13 +48,16 @@ public class OTacos_Details extends AppCompatActivity {
         final TextView tvAdresse2Tacos = (TextView) findViewById(R.id.adresse2_otacos);
         tvAdresse2Tacos.setText(otacos.getFullStrVille());
 
+        final TextView tvDistance = (TextView) findViewById(R.id.distance);
+        tvDistance.setText(distanceStr);
+
         ImageButton button_back = (ImageButton) findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (otacos.getId() != 0) {
                     //TODO : enregistrer l'id otacos en favoris
-                    Toast.makeText(getApplicationContext(), "TODO : enregistrer " + otacos.getId() + " en favoris - " + otacos.isFavorite(), Toast.LENGTH_SHORT).show();
+                    Log.e("DEBUG", "TODO : enregistrer " + otacos.getId() + " en favoris - " + otacos.isFavorite());
                 }
 
                 finish();

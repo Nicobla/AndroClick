@@ -70,4 +70,5 @@
         Le point fort de cette chaîne de restauration est que le client choisit ces ingrédients (viandes, sauces et suppléments), ainsi que la taille de son tacos.
     </string>
     <string name="copyright">Copyright © 2019 AndroTeam</string>
+    <string name="distance">Distance</string>
 </resources>

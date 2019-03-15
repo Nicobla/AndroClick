@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        getData();
+        getData(); // Récupère les données (OTacos, recettes, sauces, viandes, suppléments)
 
         drawer = findViewById(R.id.drawer_layout);
 

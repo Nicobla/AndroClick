@@ -44,7 +44,8 @@ public class ListOTacos extends Fragment {
         this.listeOTacos = ((MyApplication) this.getActivity().getApplicationContext()).getListeOTacos();
 
         rvOTacos = (RecyclerView) view.findViewById(R.id.list_otacos);
-        displayListeOTaocs(listeOTacos);
+        final LatLng userPosition = ((MyApplication) this.getActivity().getApplicationContext()).getUserPosition();
+        displayListeOTaocs(listeOTacos, userPosition);
 
         SwipeRefreshLayout mySwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeLayout);
 
@@ -62,12 +63,11 @@ public class ListOTacos extends Fragment {
             @Override
             public void onClick(View v) {
                 //Localisation + calcul plus proche
-                LatLng home = new LatLng(45.9208490, 6.1415); // TODO : get position
                 double distance_min = -1;
                 O_Tacos nearest_otacos = new O_Tacos();
                 nearest_otacos.setId(-1);
                 for (O_Tacos o_tacos : listeOTacos) {
-                    double distance_otacos = distance(o_tacos.getLocation(), home);
+                    double distance_otacos = o_tacos.distance(userPosition);
                     if (distance_min == -1 || distance_min > distance_otacos) {
                         distance_min = distance_otacos;
                         nearest_otacos = o_tacos;
@@ -78,28 +78,20 @@ public class ListOTacos extends Fragment {
                     Intent intent = new Intent(getContext(), OTacos_Details.class);
                     O_Tacos_Serializable otacos = new O_Tacos_Serializable(nearest_otacos);
                     intent.putExtra("otacos", otacos);
+                    intent.putExtra("userPosition", new GeoPoint2(userPosition.latitude, userPosition.longitude));
                     ((Activity) getContext()).startActivity(intent);
                 }
-
-
-            }
-
-            private double distance(GeoPoint location, LatLng home) {
-                double distanceN = Math.abs(location.getLatitude() - home.latitude);
-                double distanceE = Math.abs(location.getLongitude() - home.longitude);
-
-                return (double) Math.abs(distanceN - distanceE);
             }
         });
 
         return view;
     }
 
-    private void displayListeOTaocs(ArrayList<O_Tacos> listeOTacos) {
+    private void displayListeOTaocs(ArrayList<O_Tacos> listeOTacos, LatLng userPosition) {
         layoutManager = new LinearLayoutManager(getContext());
         rvOTacos.setLayoutManager(layoutManager);
 
-        otacosAdapter = new OTacosAdapter(listeOTacos);
+        otacosAdapter = new OTacosAdapter(listeOTacos, userPosition);
         rvOTacos.setAdapter(otacosAdapter);
     }
 

@@ -8,11 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 
 public class OTacosAdapter extends RecyclerView.Adapter<OTacosAdapter.OTacosHolder> {
     private ArrayList<O_Tacos> listeOTacos = new ArrayList<>();
+    private LatLng userPosition = new LatLng(0,0);
 
     public class OTacosHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView nomOTacos;
@@ -30,12 +33,40 @@ public class OTacosAdapter extends RecyclerView.Adapter<OTacosAdapter.OTacosHold
             Intent intent = new Intent(view.getContext(), OTacos_Details.class);
             O_Tacos_Serializable otacos = new O_Tacos_Serializable(listeOTacos.get(getAdapterPosition()));
             intent.putExtra("otacos", otacos);
+            intent.putExtra("userPosition", new GeoPoint2(userPosition.latitude, userPosition.longitude));
             ((Activity) view.getContext()).startActivity(intent);
         }
     }
 
-    public OTacosAdapter(ArrayList<O_Tacos> listOTacos) {
-        this.listeOTacos = listOTacos;
+    public OTacosAdapter(ArrayList<O_Tacos> listOTacos, LatLng userPosition) {
+        this.userPosition = userPosition;
+        this.listeOTacos = triParDistance(listOTacos, userPosition);
+//        Collections.sort(listOTacos); //tri les OTacos par ordre de distance au point "home"
+//        this.listeOTacos = listOTacos;
+    }
+
+    public ArrayList<O_Tacos> triParDistance(ArrayList<O_Tacos> listeOTacos, LatLng userPosition) {
+        boolean continueTri = true;
+        int nbOTacos = listeOTacos.size();
+
+        while (continueTri) {
+            continueTri = false;
+            for (int idx=0; idx<nbOTacos-1; idx++) {
+                O_Tacos o1 = listeOTacos.get(idx);
+                O_Tacos o2 = listeOTacos.get(idx+1);
+
+                double dif = o1.distance(userPosition) - o2.distance(userPosition);
+
+                if (dif > 0) {
+                    continueTri = true;
+                    O_Tacos temp = listeOTacos.get(idx);
+                    listeOTacos.set(idx, listeOTacos.get(idx+1));
+                    listeOTacos.set(idx+1, temp);
+                }
+            }
+        }
+
+        return listeOTacos;
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -15,9 +16,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.io.Serializable;
+import java.util.Comparator;
+
 
 class GeoPoint2 implements Serializable {
     private double latitude;
@@ -26,6 +30,14 @@ class GeoPoint2 implements Serializable {
     public GeoPoint2(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 
     public GeoPoint2(GeoPoint geoPoint) {
@@ -141,9 +153,42 @@ class O_Tacos_Serializable implements Serializable {
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
     }
+
+    /*public double distance(GeoPoint2 home) {
+        double distanceN = Math.abs(this.getLocation().getLatitude() - home.getLatitude());
+        double distanceE = Math.abs(this.getLocation().getLongitude() - home.getLongitude());
+
+        return (double) Math.abs(distanceN - distanceE);
+    }*/
+
+    public double distance(GeoPoint2 home) {
+        double lat_a_degree = this.getLocation().getLatitude();
+        double lon_a_degre = this.getLocation().getLongitude();
+
+        double lat_b_degre = home.getLatitude();
+        double lon_b_degre = home.getLongitude();
+
+        double R = 6378000; //Rayon de la terre en mètre
+
+        double lat_a = Math.toRadians(lat_a_degree);
+        double lon_a = Math.toRadians(lon_a_degre);
+        double lat_b = Math.toRadians(lat_b_degre);
+        double lon_b = Math.toRadians(lon_b_degre);
+
+        double d = R * (Math.PI / 2 - Math.asin(Math.sin(lat_b) * Math.sin(lat_a) + Math.cos(lon_b - lon_a) * Math.cos(lat_b) * Math.cos(lat_a)));
+        return d;
+    }
+
 }
 
-class O_Tacos implements Serializable { //Utiliser cette classe pour instancier des restaurants
+class O_Tacos implements Serializable, Comparable<O_Tacos> { //Utiliser cette classe pour instancier des restaurants
+    @Override
+    public int compareTo(O_Tacos o2) {
+        LatLng home = new LatLng(45.9208490, 6.1415);
+        double resul = this.distance(home) - o2.distance(home);
+        return (int) resul;
+    }
+
     private int id;
 
     private String nom;
@@ -245,6 +290,25 @@ class O_Tacos implements Serializable { //Utiliser cette classe pour instancier 
 
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
+    }
+
+
+    public double distance(LatLng home) {
+        double lat_a_degree = this.getLocation().getLatitude();
+        double lon_a_degre = this.getLocation().getLongitude();
+
+        double lat_b_degre = home.latitude;
+        double lon_b_degre = home.longitude;
+
+        double R = 6378000; //Rayon de la terre en mètre
+
+        double lat_a = Math.toRadians(lat_a_degree);
+        double lon_a = Math.toRadians(lon_a_degre);
+        double lat_b = Math.toRadians(lat_b_degre);
+        double lon_b = Math.toRadians(lon_b_degre);
+
+        double d = R * (Math.PI / 2 - Math.asin(Math.sin(lat_b) * Math.sin(lat_a) + Math.cos(lon_b - lon_a) * Math.cos(lat_b) * Math.cos(lat_a)));
+        return d;
     }
 }
 
