@@ -1,5 +1,7 @@
 package com.example.androclick;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -108,6 +110,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onStop() {
         super.onStop();
         Log.e("MainActivity - onStop", "Fermeture de mainActivity, enregistrement des données");
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        boolean truc = sharedPreferences.getBoolean("isConnected", false);
+//        ((MyApplication) getApplicationContext()).setConnected(truc);
+//        Log.e("CONNECTED", "isCo:"+truc);
         ((MyApplication) getApplicationContext()).writeArrayInFile(((MyApplication) getApplicationContext()).getListeOTacos(), "otacos.json");
         ((MyApplication) getApplicationContext()).writeArrayInFile(((MyApplication) getApplicationContext()).getListeSauces(), "sauces.json");
         ((MyApplication) getApplicationContext()).writeArrayInFile(((MyApplication) getApplicationContext()).getListeViandes(), "viandes.json");

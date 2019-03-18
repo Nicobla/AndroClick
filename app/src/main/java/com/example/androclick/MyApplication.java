@@ -1,7 +1,8 @@
 package com.example.androclick;
 
 import android.app.Application;
-import android.os.Handler;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -18,6 +19,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class MyApplication extends Application {
+
+    private boolean isConnected;
+
+    public void setConnected(boolean connected) {
+        isConnected = connected;
+    }
 
     private LatLng userPosition;// = new LatLng(45.9208490, 6.1415);
 
@@ -427,5 +434,11 @@ public class MyApplication extends Application {
             return 0;
         else
             return this.listeRecettes.size();
+    }
+
+    public void deleteAllData() {
+        //TODO : deconnect
+        this.setListeOTacos(Data.getAllOTacosFromDb());
+        this.setListeRecettes(Data.getAllRecipesFromDb(getListeSauces(), getListeViandes(), getListeSupplements()));
     }
 }

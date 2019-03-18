@@ -28,16 +28,20 @@ public class MyRecipes extends Fragment {
     private boolean searching = false;
 
     private ArrayList<Recette> listeRecettes = new ArrayList<>();
-    private RecyclerView rvRecettes;
-    private RecyclerView.Adapter recettesAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView rvFavRecettes;
+    private RecyclerView rvOtherRecettes;
+    private RecyclerView.Adapter favRecettesAdapter;
+    private RecyclerView.Adapter otherRecettesAdapter;
 
     public MyRecipes() {
         // Required empty public constructor
     }
 
     public void reload() {
-        recettesAdapter.notifyDataSetChanged();
+        this.listeRecettes = ((MyApplication) this.getActivity().getApplicationContext()).getListeRecettes();
+        displayListeRecettes(listeRecettes);
+        favRecettesAdapter.notifyDataSetChanged();
+        otherRecettesAdapter.notifyDataSetChanged();
 //        if (getFragmentManager() != null) {
 //            FragmentTransaction ft = getFragmentManager().beginTransaction();
 //            ft.detach(this).attach(this).commit();
@@ -118,7 +122,8 @@ public class MyRecipes extends Fragment {
             }
         });
 
-        rvRecettes = (RecyclerView) view.findViewById(R.id.list_myrecipes);
+        rvFavRecettes = (RecyclerView) view.findViewById(R.id.list_my_fav_recipes);
+        rvOtherRecettes = (RecyclerView) view.findViewById(R.id.list_other_recipes);
         displayListeRecettes(listeRecettes);
 
         final SwipeRefreshLayout mySwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeLayout);
@@ -156,14 +161,29 @@ public class MyRecipes extends Fragment {
     }
 
     private void displayListeRecettes(ArrayList<Recette> listeRecettes) {
-        layoutManager = new LinearLayoutManager(getContext());
-        rvRecettes.setLayoutManager(layoutManager);
+        rvFavRecettes.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvOtherRecettes.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        if (listeRecettes != null)
-            recettesAdapter = new RecettesAdapter(listeRecettes);
-        else
-            recettesAdapter = new RecettesAdapter(new ArrayList<Recette>());
-        rvRecettes.setAdapter(recettesAdapter);
+        if (listeRecettes != null) {
+            ArrayList<Recette> favRecettes = new ArrayList<>();
+            ArrayList<Recette> otherRecettes = new ArrayList<>();
+            for (Recette recette : listeRecettes) {
+                if (recette.isFavorite()) {
+                    favRecettes.add(recette);
+                } else {
+                    otherRecettes.add(recette);
+                }
+            }
+
+            favRecettesAdapter = new RecettesAdapter(favRecettes);
+            otherRecettesAdapter = new RecettesAdapter(otherRecettes);
+        }
+        else {
+            favRecettesAdapter = new RecettesAdapter(new ArrayList<Recette>());
+            otherRecettesAdapter = new RecettesAdapter(new ArrayList<Recette>());
+        }
+        rvFavRecettes.setAdapter(favRecettesAdapter);
+        rvOtherRecettes.setAdapter(otherRecettesAdapter);
     }
 
     @Override

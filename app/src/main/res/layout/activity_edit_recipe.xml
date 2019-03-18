@@ -185,19 +185,21 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_apply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="24dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:paddingLeft="32dp"
         android:paddingTop="20dp"
         android:paddingRight="32dp"
         android:paddingBottom="20dp"
+        android:src="@drawable/ic_check"
         android:text="@string/apply"
+        app:backgroundTint="@color/colorFab"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
-
 
 </android.support.constraint.ConstraintLayout>

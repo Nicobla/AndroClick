@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="56dp"
-    android:background="@android:color/holo_green_light">
+    android:id="@+id/constraintLayout">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_settings"
@@ -46,14 +46,26 @@
     </android.support.v7.widget.Toolbar>
 
     <TextView
+        android:id="@+id/titre_param"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/settings"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_settings" />
+
+    <Button
+        android:id="@+id/button_reinit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/reinitialize_all_data"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/titre_param" />
 
 </android.support.constraint.ConstraintLayout>

@@ -2,18 +2,14 @@ package com.example.androclick;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
-import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -109,21 +104,19 @@ public class MyRecipe extends AppCompatActivity {
         FloatingActionButton subfabShare, subfabDelete, subfabEdit;
 
         fabEdit = (FloatingActionMenu) findViewById(R.id.button_open_edit);
-        /*fabEdit.setOnMenuButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "qdzqzdq", Toast.LENGTH_SHORT).show();
-            }
-        });*/
+//        fabEdit.setOnMenuButtonClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getApplicationContext(), "qdzqzdq", Toast.LENGTH_SHORT).show();
+//            }
+//        });
         subfabShare = (FloatingActionButton) findViewById(R.id.button_share);
         subfabDelete = (FloatingActionButton) findViewById(R.id.button_delete);
         subfabEdit = (FloatingActionButton) findViewById(R.id.button_edit);
 
         subfabShare.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //TODO : share
-                Toast.makeText(getApplicationContext(), "TODO : share", Toast.LENGTH_SHORT).show();
-
+                share();
             }
         });
         subfabDelete.setOnClickListener(new View.OnClickListener() {
@@ -171,6 +164,13 @@ public class MyRecipe extends AppCompatActivity {
         startActivity(getIntent().putExtra("recette", recette));
     }
 
+    public void share() {
+        Intent myIntent = new Intent(Intent.ACTION_SEND);
+        myIntent.setType("text/plain");
+        myIntent.putExtra(Intent.EXTRA_SUBJECT, "Ma recette de tacos : "+recette.getNom());
+        myIntent.putExtra(Intent.EXTRA_TEXT, "Ingrédients de la recette :\n"+recette.getIngredients());
+        startActivity(Intent.createChooser(myIntent, "Partager avec"));
+    }
 
     public void deleteRecipe() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -223,17 +223,17 @@ public class MyRecipe extends AppCompatActivity {
         }
     }
 
-    /*@Override
-    public void onActivityResult (int requestCode, int resultCode, Intent data) {
-        Toast.makeText(getApplicationContext(), "test",Toast.LENGTH_SHORT).show();
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            Bundle b = data.getExtras();
-            if (b != null) {
-                recette = (Recette) b.getSerializable("recette");
-                Toast.makeText(getApplicationContext(), "Receive: "+position + recette.getNom(), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }*/
+//    @Override
+//    public void onActivityResult (int requestCode, int resultCode, Intent data) {
+//        Toast.makeText(getApplicationContext(), "test",Toast.LENGTH_SHORT).show();
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if(requestCode == 1 && resultCode == Activity.RESULT_OK) {
+//            Bundle b = data.getExtras();
+//            if (b != null) {
+//                recette = (Recette) b.getSerializable("recette");
+//                Toast.makeText(getApplicationContext(), "Receive: "+position + recette.getNom(), Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
 
 }

@@ -26,7 +26,6 @@
 
     <string name="map">Map</string>
     <string name="list_otacos">Liste</string>
-    <string name="findOTacos">Trouver le plus proche</string>
     <string name="adresse">Adresse</string>
 
 
@@ -73,4 +72,24 @@
     <string name="distance">Distance</string>
     <string name="unknown_location">inconnue (localisation impossible)</string>
     <string name="image_distance_otacos">image distance otacos</string>
+    <string name="my_fav_recipes_title">Mes recettes favorites</string>
+    <string name="other_recipes_title">Autres recettes</string>
+    <string name="fav_otacos_title">O\'Tacos favoris</string>
+    <string name="other_otacos_title">Autres O\'Tacos</string>
+    <string name="reinitialize_all_data">Réinitialiser toutes mes données</string>
+    <string name="warning_reinit">Attention ! Vous ne pourrez plus récupérer vos données !</string>
+    <string name="cancel">Annuler</string>
+    <string name="continuer">Continuer</string>
+
+    <!-- account strings -->
+    <string name="loading">Chargement</string>
+    <string name="disconnect">Se déconnecter</string>
+    <string name="sign_out">Changer de compte</string>
+    <string name="signed_out">Déconnecté</string>
+    <string name="desc_google_icon">Icône Google</string>
+    <string name="signed_in_fmt">Connecté en tant que: %s</string>
+    <string name="desc_firebase_lockup">firebase lockup</string>
+    <string name="google_title_text">Compte Google</string>
+    <string name="google_status_fmt">Utilisateur Google: %s</string>
+    <string name="firebase_status_fmt">Utilisateur Firebase: %s</string>
 </resources>
