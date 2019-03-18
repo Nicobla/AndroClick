@@ -50,7 +50,7 @@ public class MakeTacos_1 extends Fragment {
         } else {
             //recette = (Recette) bundle.getSerializable("recette");
         }
-        int numRecette = ((MyApplication) getActivity().getApplicationContext()).getListeRecettes().size() + 1;
+        int numRecette = ((MyApplication) getActivity().getApplicationContext()).getNbRecettes() + 1;
         if (recette == null) recette = new Recette("Recette " + numRecette);
 
 

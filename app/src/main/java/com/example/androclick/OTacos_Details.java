@@ -34,10 +34,17 @@ public class OTacos_Details extends AppCompatActivity {
 
         otacos = (O_Tacos_Serializable) getIntent().getSerializableExtra("otacos");
         GeoPoint2 userPosition = (GeoPoint2) getIntent().getSerializableExtra("userPosition");
-        double distance = otacos.distance(userPosition);
-        distance = (double) Math.round(distance/1000 * 100) / 100;
 
-        String distanceStr = distance+" km";
+        final TextView tvDistance = (TextView) findViewById(R.id.distance);
+        if (userPosition != null) {
+            double distance = otacos.distance(userPosition);
+            distance = (double) Math.round(distance/1000 * 10) / 10;
+            String distanceStr = distance+" km";
+
+            tvDistance.setText(distanceStr);
+        } else {
+            tvDistance.setText(getString(R.string.unknown_location));
+        }
 
         final TextView tvNomTacos = (TextView) findViewById(R.id.otacos_name);
         tvNomTacos.setText(otacos.getNom());
@@ -48,18 +55,14 @@ public class OTacos_Details extends AppCompatActivity {
         final TextView tvAdresse2Tacos = (TextView) findViewById(R.id.adresse2_otacos);
         tvAdresse2Tacos.setText(otacos.getFullStrVille());
 
-        final TextView tvDistance = (TextView) findViewById(R.id.distance);
-        tvDistance.setText(distanceStr);
-
         ImageButton button_back = (ImageButton) findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (otacos.getId() != 0) {
-                    //TODO : enregistrer l'id otacos en favoris
-                    Log.e("DEBUG", "TODO : enregistrer " + otacos.getId() + " en favoris - " + otacos.isFavorite());
+                int id = otacos.getId();
+                if (id != 0) {
+                    ((MyApplication) getApplicationContext()).setOTacosFav(id, otacos.isFavorite());
                 }
-
                 finish();
             }
         });

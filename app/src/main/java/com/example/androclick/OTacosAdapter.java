@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class OTacosAdapter extends RecyclerView.Adapter<OTacosAdapter.OTacosHolder> {
     private ArrayList<O_Tacos> listeOTacos = new ArrayList<>();
-    private LatLng userPosition = new LatLng(0,0);
+    private LatLng userPosition;
 
     public class OTacosHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView nomOTacos;
@@ -33,15 +33,19 @@ public class OTacosAdapter extends RecyclerView.Adapter<OTacosAdapter.OTacosHold
             Intent intent = new Intent(view.getContext(), OTacos_Details.class);
             O_Tacos_Serializable otacos = new O_Tacos_Serializable(listeOTacos.get(getAdapterPosition()));
             intent.putExtra("otacos", otacos);
-            intent.putExtra("userPosition", new GeoPoint2(userPosition.latitude, userPosition.longitude));
+            if (userPosition != null)
+                intent.putExtra("userPosition", new GeoPoint2(userPosition.latitude, userPosition.longitude));
             ((Activity) view.getContext()).startActivity(intent);
         }
     }
 
     public OTacosAdapter(ArrayList<O_Tacos> listOTacos, LatLng userPosition) {
         this.userPosition = userPosition;
-        this.listeOTacos = triParDistance(listOTacos, userPosition);
-//        Collections.sort(listOTacos); //tri les OTacos par ordre de distance au point "home"
+        if (userPosition != null)
+            this.listeOTacos = triParDistance(listOTacos, userPosition);
+        else
+            this.listeOTacos = listOTacos;
+//        Collections.sort(listOTacos); //tri les OTacos par ordre de distance au point "userPosition"
 //        this.listeOTacos = listOTacos;
     }
 
@@ -82,7 +86,12 @@ public class OTacosAdapter extends RecyclerView.Adapter<OTacosAdapter.OTacosHold
 
         holder.nomOTacos.setText(o.getNom());
 
-        holder.adrOTacos.setText(o.getStrFullAdresse());
+        String strAdresse;
+        if (userPosition != null)
+            strAdresse = o.getStrFullAdresse() + "\n" + (double) Math.round(o.distance(userPosition)/1000 * 10) / 10 + " km";
+        else
+            strAdresse = o.getStrFullAdresse();
+        holder.adrOTacos.setText(strAdresse);
     }
 
     @Override

@@ -77,14 +77,14 @@ public class Map extends Fragment implements OnMapReadyCallback {
             map.setMyLocationEnabled(true);
             if (mMap.isMyLocationEnabled()) {
                 //TODO : enregistrer localisation
-                myLocation = mMap.getMyLocation();
-                if (myLocation!= null) {
-                    userLocation = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-                    Log.e("DEBUG", userLocation.latitude + ", " + userLocation.longitude);
-                    ((MyApplication) this.getActivity().getApplicationContext()).setUserPosition(userLocation);
-                } else {
-                    Log.e("DEBUG", "enabled mais null");
-                }
+//                myLocation = mMap.getMyLocation();
+//                if (myLocation != null) {
+//                    userLocation = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+//                    Log.e("DEBUG", userLocation.latitude + ", " + userLocation.longitude);
+//                    ((MyApplication) this.getActivity().getApplicationContext()).setUserPosition(userLocation);
+//                } else {
+//                    Log.e("DEBUG", "enabled mais null");
+//                }
             }
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);

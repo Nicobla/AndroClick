@@ -29,16 +29,22 @@ public class RecettesAdapter extends RecyclerView.Adapter<RecettesAdapter.Recett
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(view.getContext(), MyRecipe.class);
-            Recette recette = listeRecettes.get(getAdapterPosition());
+            Recette recette = new Recette();
+            if (listeRecettes.size() > getAdapterPosition()) {
+                recette = listeRecettes.get(getAdapterPosition());
+            }
             intent.putExtra("recette", recette);
-            //intent.putExtra("position", getAdapterPosition());
             ((Activity) view.getContext()).startActivity(intent);
+            //intent.putExtra("position", getAdapterPosition());
             //((Activity) view.getContext()).recreate();//displayListeRecettes();
         }
     }
 
     public RecettesAdapter(ArrayList<Recette> listRecettes) {
-        this.listeRecettes = listRecettes;
+        if (listRecettes == null)
+            this.listeRecettes = new ArrayList<>();
+        else
+            this.listeRecettes = listRecettes;
     }
 
     @Override

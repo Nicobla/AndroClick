@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -42,8 +43,9 @@ public class MyRecipe extends AppCompatActivity {
         setContentView(R.layout.activity_my_recipe);
 
         recette = (Recette) getIntent().getSerializableExtra("recette");
-        position = ((MyApplication) getApplication().getApplicationContext()).getPositionRecette(recette);
-        if (position == -1) {
+        if (recette != null)
+            position = ((MyApplication) getApplication().getApplicationContext()).getPositionRecette(recette);
+        if (position == -1 || recette == null) {
             Log.e("Erreur", "Tentative d'ouverture d'une recette supprimée");
             finish();
         }

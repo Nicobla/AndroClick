@@ -59,94 +59,68 @@
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.Toolbar>
 
-    <FrameLayout
-        android:id="@+id/highBar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_otacos">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/otacos_img"
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/otacos_img_desc"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/ic_launcher" />
-
-            <TextView
-                android:id="@+id/otacos_name"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:textSize="24sp"
-                app:layout_constraintLeft_toRightOf="@+id/otacos_img"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </android.support.constraint.ConstraintLayout>
-    </FrameLayout>
+    <ImageView
+        android:id="@+id/otacos_img"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:contentDescription="@string/otacos_img_desc"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_otacos"
+        app:srcCompat="@mipmap/ic_launcher" />
 
     <TextView
-        android:id="@+id/titre_adresse_otacos"
-        android:layout_width="wrap_content"
+        android:id="@+id/otacos_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/adresse"
         android:textSize="24sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/highBar" />
+        app:layout_constraintLeft_toRightOf="@+id/otacos_img"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_otacos" />
 
     <TextView
         android:id="@+id/adresse1_otacos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:textColor="@android:color/primary_text_light"
         android:textSize="16sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titre_adresse_otacos" />
-
+        app:layout_constraintLeft_toLeftOf="@+id/otacos_name"
+        app:layout_constraintTop_toBottomOf="@+id/otacos_name" />
 
     <TextView
         android:id="@+id/adresse2_otacos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:textColor="@android:color/primary_text_light"
         android:textSize="16sp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/adresse1_otacos"
         app:layout_constraintTop_toBottomOf="@+id/adresse1_otacos" />
 
-    <TextView
-        android:id="@+id/titre_distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/distance"
-        android:textSize="24sp"
+    <ImageView
+        android:id="@+id/img_distance"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/image_distance_otacos"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/adresse2_otacos" />
+        app:layout_constraintTop_toBottomOf="@+id/otacos_img"
+        app:srcCompat="@mipmap/ic_location" />
 
     <TextView
         android:id="@+id/distance"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:scrollHorizontally="false"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
         android:textColor="@android:color/primary_text_light"
         android:textSize="16sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titre_distance" />
+        app:layout_constraintLeft_toRightOf="@+id/img_distance"
+        app:layout_constraintTop_toTopOf="@+id/img_distance" />
 
 </android.support.constraint.ConstraintLayout>
 

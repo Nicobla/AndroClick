@@ -82,9 +82,6 @@ class O_Tacos_Serializable implements Serializable {
     public O_Tacos_Serializable(String nom, GeoPoint location) {
         this(nom, location, "", "", "");
     }
-    /*public O_Tacos(String nom, double latitude, double longitude) {
-        this(nom, new GeoPoint(latitude, longitude));
-    }*/
 
     public O_Tacos_Serializable() {
         this("O'Tacos sans nom", new GeoPoint(0, 0), "", "", "");

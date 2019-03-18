@@ -71,4 +71,6 @@
     </string>
     <string name="copyright">Copyright © 2019 AndroTeam</string>
     <string name="distance">Distance</string>
+    <string name="unknown_location">inconnue (localisation impossible)</string>
+    <string name="image_distance_otacos">image distance otacos</string>
 </resources>
