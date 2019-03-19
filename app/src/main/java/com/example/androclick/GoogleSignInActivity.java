@@ -47,6 +47,8 @@ public class GoogleSignInActivity extends BaseActivity implements
     private com.google.android.gms.common.SignInButton signInButton;
     private LinearLayout signOutAndDisconnect;
 
+    Button button_load_from_firebase;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,6 +79,17 @@ public class GoogleSignInActivity extends BaseActivity implements
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
+
+        button_load_from_firebase = (Button) view.findViewById(R.id.button_load_from_firebase);
+        button_load_from_firebase.setEnabled(mAuth.getCurrentUser() != null);
+        button_load_from_firebase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MyApplication) getActivity().getApplicationContext()).loadDataFromFirebase();
+                button_load_from_firebase.setEnabled(false);
+            }
+        });
+
         return view;
     }
 
@@ -188,12 +201,14 @@ public class GoogleSignInActivity extends BaseActivity implements
 
             signInButton.setVisibility(View.GONE);
             signOutAndDisconnect.setVisibility(View.VISIBLE);
+            button_load_from_firebase.setEnabled(true);
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
 
             signInButton.setVisibility(View.VISIBLE);
             signOutAndDisconnect.setVisibility(View.GONE);
+            button_load_from_firebase.setEnabled(false);
         }
     }
 

@@ -123,7 +123,7 @@ public class MakeTacos_1 extends Fragment {
         ArrayList<Viande> listeViandes = ((MyApplication) getActivity().getApplicationContext()).getListeViandes();
         ArrayList<Supplement> listeSupplements = ((MyApplication) getActivity().getApplicationContext()).getListeSupplements();
 
-        if (listeSauces.size() == 0 || listeViandes.size() == 0 || listeSupplements.size() == 0 ) {
+        if (listeSauces.size() == 0 || listeViandes.size() == 0 || listeSupplements.size() == 0) {
             return new Recette();
         }
 

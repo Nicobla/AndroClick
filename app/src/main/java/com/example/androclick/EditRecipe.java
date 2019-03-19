@@ -111,10 +111,10 @@ public class EditRecipe extends AppCompatActivity {//implements android.widget.C
                         s.setSelected(!s.isSelected());
                         if (s.isSelected()) {
                             recette.addSauce(s);
-                            Log.e("Click", "Ajout de la sauce " + s.getNom());
+                            Log.d("Click", "Ajout de la sauce " + s.getNom());
                         } else {
                             recette.removeSauce(s);
-                            Log.e("Click", "Suppression de la sauce " + s.getNom());
+                            Log.d("Click", "Suppression de la sauce " + s.getNom());
                         }
                     }
                 })
@@ -127,10 +127,10 @@ public class EditRecipe extends AppCompatActivity {//implements android.widget.C
                         v.setSelected(!v.isSelected());
                         if (v.isSelected()) {
                             recette.addViande(v);
-                            Log.e("Click", "Ajout de la viande " + v.getNom());
+                            Log.d("Click", "Ajout de la viande " + v.getNom());
                         } else {
                             recette.removeViande(v);
-                            Log.e("Click", "Suppression de la viande " + v.getNom());
+                            Log.d("Click", "Suppression de la viande " + v.getNom());
                         }
                     }
                 })
@@ -143,10 +143,10 @@ public class EditRecipe extends AppCompatActivity {//implements android.widget.C
                         s.setSelected(!s.isSelected());
                         if (s.isSelected()) {
                             recette.addSupplement(s);
-                            Log.e("Click", "Ajout du supplément " + s.getNom());
+                            Log.d("Click", "Ajout du supplément " + s.getNom());
                         } else {
                             recette.removeSupplement(s);
-                            Log.e("Click", "Suppression du supplément " + s.getNom());
+                            Log.d("Click", "Suppression du supplément " + s.getNom());
                         }
                     }
                 })

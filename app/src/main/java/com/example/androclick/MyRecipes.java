@@ -133,8 +133,8 @@ public class MyRecipes extends Fragment {
                     @Override
                     public void onRefresh() {
                         reload();
-                        new Handler().postDelayed(new Runnable(){
-                            public void run(){
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
                                 mySwipeRefreshLayout.setRefreshing(false);
                             }
                         }, 500);
@@ -177,8 +177,7 @@ public class MyRecipes extends Fragment {
 
             favRecettesAdapter = new RecettesAdapter(favRecettes);
             otherRecettesAdapter = new RecettesAdapter(otherRecettes);
-        }
-        else {
+        } else {
             favRecettesAdapter = new RecettesAdapter(new ArrayList<Recette>());
             otherRecettesAdapter = new RecettesAdapter(new ArrayList<Recette>());
         }

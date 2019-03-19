@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -95,10 +94,10 @@ public class MakeTacos_4 extends Fragment {
                         s.setSelected(!s.isSelected());
                         if (s.isSelected()) {
                             recette.addSupplement(s);
-                            Log.e("Click", "Ajout du supplément " + s.getNom());
+                            //Log.d("Click", "Ajout du supplément " + s.getNom());
                         } else {
                             recette.removeSupplement(s);
-                            Log.e("Click", "Suppression du supplément " + s.getNom());
+                            //Log.d("Click", "Suppression du supplément " + s.getNom());
                         }
                         bundle.putSerializable("recette", recette);
                         setArguments(bundle);

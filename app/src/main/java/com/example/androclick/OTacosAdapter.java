@@ -55,17 +55,17 @@ public class OTacosAdapter extends RecyclerView.Adapter<OTacosAdapter.OTacosHold
 
         while (continueTri) {
             continueTri = false;
-            for (int idx=0; idx<nbOTacos-1; idx++) {
+            for (int idx = 0; idx < nbOTacos - 1; idx++) {
                 O_Tacos o1 = listeOTacos.get(idx);
-                O_Tacos o2 = listeOTacos.get(idx+1);
+                O_Tacos o2 = listeOTacos.get(idx + 1);
 
                 double dif = o1.distance(userPosition) - o2.distance(userPosition);
 
                 if (dif > 0) {
                     continueTri = true;
                     O_Tacos temp = listeOTacos.get(idx);
-                    listeOTacos.set(idx, listeOTacos.get(idx+1));
-                    listeOTacos.set(idx+1, temp);
+                    listeOTacos.set(idx, listeOTacos.get(idx + 1));
+                    listeOTacos.set(idx + 1, temp);
                 }
             }
         }
@@ -88,7 +88,7 @@ public class OTacosAdapter extends RecyclerView.Adapter<OTacosAdapter.OTacosHold
 
         String strAdresse;
         if (userPosition != null)
-            strAdresse = o.getStrFullAdresse() + "\n" + (double) Math.round(o.distance(userPosition)/1000 * 10) / 10 + " km";
+            strAdresse = o.getStrFullAdresse() + "\n" + (double) Math.round(o.distance(userPosition) / 1000 * 10) / 10 + " km";
         else
             strAdresse = o.getStrFullAdresse();
         holder.adrOTacos.setText(strAdresse);

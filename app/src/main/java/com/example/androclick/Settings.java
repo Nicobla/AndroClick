@@ -16,8 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class Settings extends Fragment {
     ConstraintLayout cl;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,6 +75,33 @@ public class Settings extends Fragment {
             }
         });
 
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        final Button button_delete_firebase = (Button) view.findViewById(R.id.button_delete_firebase);
+        button_delete_firebase.setEnabled(firebaseUser != null);
+        button_delete_firebase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (firebaseUser != null) {
+                    String userID = firebaseUser.getUid();
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("User").document(userID).delete();
+                    Toast.makeText(getContext(), "Données supprimées !", Toast.LENGTH_SHORT).show();
+                    button_delete_firebase.setEnabled(false);
+                    FirebaseAuth.getInstance().signOut();
+                }
+            }
+        });
+
+
+        final Button button_force_location = (Button) view.findViewById(R.id.button_force_location);
+        button_force_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MyApplication) getActivity().getApplicationContext()).setUserPosition(new LatLng(45.9208490, 6.1415));
+                Toast.makeText(getContext(), "Location SET !", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
     }

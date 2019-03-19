@@ -45,7 +45,7 @@ public class MakeTacos extends Fragment {
         this.progressBar = view.findViewById(R.id.progress_bar);
 
         Bundle bundle = new Bundle();
-        int numRecette = ((MyApplication) getActivity().getApplicationContext()).getNbRecettes()+1;
+        int numRecette = ((MyApplication) getActivity().getApplicationContext()).getNbRecettes() + 1;
         bundle.putSerializable("recette", new Recette("Recette " + numRecette));
 
         viewPager = view.findViewById(R.id.pager);

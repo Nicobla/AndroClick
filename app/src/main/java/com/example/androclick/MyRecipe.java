@@ -167,8 +167,8 @@ public class MyRecipe extends AppCompatActivity {
     public void share() {
         Intent myIntent = new Intent(Intent.ACTION_SEND);
         myIntent.setType("text/plain");
-        myIntent.putExtra(Intent.EXTRA_SUBJECT, "Ma recette de tacos : "+recette.getNom());
-        myIntent.putExtra(Intent.EXTRA_TEXT, "Ingrédients de la recette :\n"+recette.getIngredients());
+        myIntent.putExtra(Intent.EXTRA_SUBJECT, "Ma recette de tacos : " + recette.getNom());
+        myIntent.putExtra(Intent.EXTRA_TEXT, "Ingrédients de la recette :\n" + recette.getIngredients());
         startActivity(Intent.createChooser(myIntent, "Partager avec"));
     }
 

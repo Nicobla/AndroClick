@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -43,13 +42,12 @@ public class ListOTacos extends Fragment {
     }
 
     public void locate() {
-        // TODO : re-localiser
-        //userPosition = ...
-        if(userPosition == null) {
-            Toast.makeText(getContext(), "Localisation impossible", Toast.LENGTH_SHORT).show();
+        userPosition = ((MyApplication) this.getActivity().getApplicationContext()).getUserPosition();
+        if (userPosition == null) {
             Log.e("ListOTacos - locate", "localisation impossible");
         }
     }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.otacos_list_fragment, container, false);
@@ -68,8 +66,8 @@ public class ListOTacos extends Fragment {
                     @Override
                     public void onRefresh() {
                         reload();
-                        new Handler().postDelayed(new Runnable(){
-                            public void run(){
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
                                 mySwipeRefreshLayout.setRefreshing(false);
                             }
                         }, 500);
@@ -126,8 +124,7 @@ public class ListOTacos extends Fragment {
             }
             favOTacosAdapter = new OTacosAdapter(favOTacos, userPosition);
             otherOTacosAdapter = new OTacosAdapter(otherOTacos, userPosition);
-        }
-        else {
+        } else {
             favOTacosAdapter = new OTacosAdapter(new ArrayList<O_Tacos>(), userPosition);
             otherOTacosAdapter = new OTacosAdapter(new ArrayList<O_Tacos>(), userPosition);
         }

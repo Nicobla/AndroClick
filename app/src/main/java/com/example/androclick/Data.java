@@ -88,19 +88,17 @@ public class Data {
     public static ArrayList<Recette> getAllRecipesFromDb(ArrayList<Sauce> listeSauces, ArrayList<Viande> listeViandes, ArrayList<Supplement> listeSupplements) {
         if (listeSauces != null && listeViandes != null && listeSupplements != null) {
             if (listeSauces.size() <= 0 || listeViandes.size() <= 0 || listeSupplements.size() <= 0) {
-                Log.e("Data - getAllRecipesDb", "Impossible de set la liste des recettes car les listes sont vides :(");
+                Log.e("Data - getAllRecipesDb", "Impossible de set la liste des recettes car les listes d'ingrédients sont vides");
                 return new ArrayList<>();
             }
         } else {
-            Log.e("Data - getAllRecipesDb", "Impossible de set la liste des recettes car les listes sont null :(");
+            Log.e("Data - getAllRecipesDb", "Impossible de set la liste des recettes car les listes d'ingrédients sont null");
             return new ArrayList<>();
         }
 
         final ArrayList<Sauce> listSauces = listeSauces;
         final ArrayList<Viande> listViandes = listeViandes;
         final ArrayList<Supplement> listSupplements = listeSupplements;
-
-        // [START get_all_users]
 
         final ArrayList<Recette> recettes = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -144,16 +142,13 @@ public class Data {
                                 recette.addSupplement(supplement);
                             }
                         }
-                        Log.e("Data - getAllRecipesDb", "Recette:" + recette.getNom());
                         recettes.add(recette);
                     }
                 }
             }
         });
-        Log.e("Data - getAllRecipesDb", "nbRecettes=" + recettes.size());
 
         return recettes;
-        // [END get_all_users]
     }
 
 }

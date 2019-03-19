@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,8 @@ public class MakeTacos_2 extends Fragment {//implements android.widget.CompoundB
     private Bundle bundle;
     private Recette recette;
 
-    final int NB_MAX_SAUCES = 2;
-    int nbSauces = 0;
+//    final int NB_MAX_SAUCES = 2;
+//    int nbSauces = 0;
 
     ArrayList<Sauce> listeSauces;
 
@@ -78,9 +77,9 @@ public class MakeTacos_2 extends Fragment {//implements android.widget.CompoundB
     private void displayListeSauces() {
         listeSauces = ((MyApplication) this.getActivity().getApplicationContext()).getListeSauces();
 
-        for (Sauce sauce : listeSauces) {
-            Log.d("Sauce", "isSelected=" + sauce.isSelected());
-        }
+//        for (Sauce sauce : listeSauces) {
+//            Log.d("Sauce", "isSelected=" + sauce.isSelected());
+//        }
 
         //rvSauces.setHasFixedSize(true);
 
@@ -109,7 +108,6 @@ public class MakeTacos_2 extends Fragment {//implements android.widget.CompoundB
                 nbSauces--;
             if (nbSauces >= NB_MAX_SAUCES) {
                 Toast.makeText(getContext(), "MAX SAUCES ("+nbSauces+")", Toast.LENGTH_SHORT).show();
-                //TODO : griser checkboxes sauf celles déjà cochées
             }
         }
     }*/

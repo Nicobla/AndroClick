@@ -128,10 +128,11 @@ public class Recette implements Serializable {
         this.setSauces(sauces);
     }
 
-    public String[] getStrSauces() {
-        String[] strSauces = new String[]{};
+    ArrayList<String> getStrSauces() {
+        ArrayList<String> strSauces = new ArrayList<>();
         for (Sauce sauce : getSauces()) {
-            strSauces = combine(strSauces, new String[]{sauce.getNom()});
+            strSauces.add(sauce.getNom());
+            //strSauces = combine(strSauces, new String[]{sauce.getNom()});
         }
         return strSauces;
     }
@@ -157,10 +158,11 @@ public class Recette implements Serializable {
         this.setViandes(viandes);
     }
 
-    public String[] getStrViandes() {
-        String[] strViandes = new String[]{};
+    ArrayList<String> getStrViandes() {
+        ArrayList<String> strViandes = new ArrayList<>();
         for (Viande viande : getViandes()) {
-            strViandes = combine(strViandes, new String[]{viande.getNom()});
+            strViandes.add(viande.getNom());
+            //strViandes = combine(strViandes, new String[]{viande.getNom()});
         }
         return strViandes;
     }
@@ -186,10 +188,11 @@ public class Recette implements Serializable {
         this.setSupplements(supplements);
     }
 
-    public String[] getStrSupplements() {
-        String[] strSupplements = new String[]{};
+    ArrayList<String> getStrSupplements() {
+        ArrayList<String> strSupplements = new ArrayList<>();
         for (Supplement supplement : getSupplements()) {
-            strSupplements = combine(strSupplements, new String[]{supplement.getNom()});
+            strSupplements.add(supplement.getNom());
+            //strSupplements = combine(strSupplements, new String[]{supplement.getNom()});
         }
         return strSupplements;
     }
@@ -204,10 +207,13 @@ public class Recette implements Serializable {
 
 
     public String getIngredients() {
-        String[] ingredients = new String[]{};
-        ingredients = combine(ingredients, getStrSauces());
-        ingredients = combine(ingredients, getStrViandes());
-        ingredients = combine(ingredients, getStrSupplements());
+        ArrayList<String> ingredients = new ArrayList<>();
+        //ingredients = combine(ingredients, getStrSauces());
+        //ingredients = combine(ingredients, getStrViandes());
+        //ingredients = combine(ingredients, getStrSupplements());
+        ingredients.addAll(getStrSauces());
+        ingredients.addAll(getStrViandes());
+        ingredients.addAll(getStrSupplements());
 
         String strIngredients = tailleTacos.toString();
         for (String ingredient : ingredients) {
@@ -219,13 +225,13 @@ public class Recette implements Serializable {
         return strIngredients;
     }
 
-    private String[] combine(String[] a, String[] b) {
-        int length = a.length + b.length;
-        String[] result = new String[length];
-        System.arraycopy(a, 0, result, 0, a.length);
-        System.arraycopy(b, 0, result, a.length, b.length);
-        return result;
-    }
+//    private String[] combine(String[] a, String[] b) {
+//        int length = a.length + b.length;
+//        String[] result = new String[length];
+//        System.arraycopy(a, 0, result, 0, a.length);
+//        System.arraycopy(b, 0, result, a.length, b.length);
+//        return result;
+//    }
 
     public boolean isFavorite() {
         return isFavorite;

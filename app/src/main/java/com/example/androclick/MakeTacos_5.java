@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -84,6 +85,17 @@ public class MakeTacos_5 extends Fragment {
         setArguments(bundle);
 
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //Ferme le clavier
+        View viewClavier = getActivity().getCurrentFocus();
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (viewClavier != null) {
+            imm.hideSoftInputFromWindow(viewClavier.getWindowToken(), 0);
+        }
     }
 
     public void closeFragment() {

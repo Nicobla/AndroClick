@@ -1,7 +1,6 @@
 package com.example.androclick;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +32,11 @@ class Sauce implements Serializable {
         this.nom = nom;
     }
 
-    public boolean isSelected() {
+    boolean isSelected() {
         return selected;
     }
 
-    public void setSelected(boolean selected) {
+    void setSelected(boolean selected) {
         this.selected = selected;
     }
 
@@ -66,7 +65,7 @@ public class SaucesAdapter extends RecyclerView.Adapter<SaucesAdapter.SaucesHold
             Sauce s = listeSauces.get(pos);
             //s.setSelected(!s.isSelected());
 
-            Log.d("Test", "Click sur une sauce (" + pos + ") - " + s.isSelected());
+            //Log.d("Test", "Click sur une sauce (" + pos + ") - " + s.isSelected());
         }
     }
 

@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -20,8 +19,8 @@ public class MakeTacos_3 extends Fragment implements android.widget.CompoundButt
     private Bundle bundle;
     private Recette recette;
 
-    final int NB_MAX_VIANDES = 2;
-    int nbViandes = 0;
+//    final int NB_MAX_VIANDES = 2;
+//    int nbViandes = 0;
 
     ArrayList<Viande> listeViandes;
 
@@ -95,15 +94,14 @@ public class MakeTacos_3 extends Fragment implements android.widget.CompoundButt
         if (pos != ListView.INVALID_POSITION) {
             Viande v = listeViandes.get(pos);
             v.setSelected(isChecked);
-            // Compteur de viandes pour limiter
-            if (isChecked)
-                nbViandes++;
-            else
-                nbViandes--;
-            if (nbViandes >= NB_MAX_VIANDES) {
-                Toast.makeText(getContext(), "MAX VIANDES (" + nbViandes + ")", Toast.LENGTH_SHORT).show();
-                //TODO : griser checkboxes sauf celles déjà cochées
-            }
+//            // Compteur de viandes pour limiter
+//            if (isChecked)
+//                nbViandes++;
+//            else
+//                nbViandes--;
+//            if (nbViandes >= NB_MAX_VIANDES) {
+//                Toast.makeText(getContext(), "MAX VIANDES (" + nbViandes + ")", Toast.LENGTH_SHORT).show();
+//            }
         }
     }
 

@@ -92,4 +92,7 @@
     <string name="google_title_text">Compte Google</string>
     <string name="google_status_fmt">Utilisateur Google: %s</string>
     <string name="firebase_status_fmt">Utilisateur Firebase: %s</string>
+    <string name="debug_force_location">[DEBUG] Force location</string>
+    <string name="delete_firebase_account">Supprimer mes données en ligne</string>
+    <string name="download_data_from_firebase">Télécharger les données depuis le compte</string>
 </resources>

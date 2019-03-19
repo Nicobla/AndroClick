@@ -1,11 +1,16 @@
 package com.example.androclick;
 
 import android.app.Application;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
@@ -17,16 +22,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MyApplication extends Application {
 
-    private boolean isConnected;
-
-    public void setConnected(boolean connected) {
-        isConnected = connected;
-    }
-
-    private LatLng userPosition;// = new LatLng(45.9208490, 6.1415);
+    private LatLng userPosition;
 
     private ArrayList<O_Tacos> listeOTacos = new ArrayList<>();
     private ArrayList<Recette> listeRecettes = new ArrayList<>();
@@ -38,6 +38,7 @@ public class MyApplication extends Application {
     public LatLng getUserPosition() {
         return userPosition;
     }
+
     public void setUserPosition(LatLng userPosition) {
         this.userPosition = userPosition;
     }
@@ -46,16 +47,18 @@ public class MyApplication extends Application {
     public ArrayList<O_Tacos> getListeOTacos() {
         return listeOTacos;
     }
+
     public void setListeOTacos(ArrayList<O_Tacos> listeOTacos) {
         this.listeOTacos = listeOTacos;
     }
+
     public void setOTacosFav(int id, boolean isFavorite) {
         int idx = 0;
         for (O_Tacos o_tacos : listeOTacos) {
             if (o_tacos.getId() == id) {
                 o_tacos.setFavorite(isFavorite);
                 listeOTacos.set(idx, o_tacos);
-                Log.e("MyApp - setOTacosFav", "Set fav ! ("+o_tacos.getNom()+")");
+                Log.d("MyApp - setOTacosFav", "Set fav ! (" + o_tacos.getNom() + ")");
                 return;
             }
             idx++;
@@ -63,28 +66,52 @@ public class MyApplication extends Application {
         Log.e("MyApp - setOTacosFav", "L'id ne correspond à aucun OTacos");
     }
 
+    public ArrayList getFavOTacos() {
+        ArrayList listIDs = new ArrayList();
+        for (O_Tacos otacos : listeOTacos) {
+            if (otacos.isFavorite()) {
+                listIDs.add(otacos.getId());
+            }
+        }
+        return listIDs;
+    }
+
+    private void unFavAllOTacos() {
+        int id = 0;
+        for (O_Tacos o_tacos : listeOTacos) {
+            o_tacos.setFavorite(false);
+            if (listeOTacos.get(id) != null)
+                listeOTacos.set(id, o_tacos);
+            id++;
+        }
+    }
 
     public ArrayList<Recette> getListeRecettes() {
         return listeRecettes;
     }
+
     public void setListeRecettes(ArrayList<Recette> listeRecettes) {
         this.listeRecettes = listeRecettes;
     }
+
     public void addToListeRecettes(Recette recette) {
         //ArrayList<Recette> listRecettes = getListeRecettes();
         //listRecettes.add(recette);
         //this.setListeRecettes(listRecettes);
         this.listeRecettes.add(recette);
     }
+
     public void setRecette(int position, Recette recette) {
         //ArrayList<Recette> listRecettes = getListeRecettes();
         //listRecettes.set(position, recette);
         //this.setListeRecettes(listRecettes);
         this.listeRecettes.set(position, recette);
     }
+
     public Recette getRecetteAtPos(int position) {
         return this.getListeRecettes().get(position);
     }
+
     public int getPositionRecette(Recette recette) {
         int idx = 0;
         for (Recette recette1 : getListeRecettes()) {
@@ -95,6 +122,7 @@ public class MyApplication extends Application {
         }
         return -1;
     }
+
     public void deleteRecetteAt(int position) {
         this.listeRecettes.remove(position);
     }
@@ -102,6 +130,7 @@ public class MyApplication extends Application {
     public ArrayList<Sauce> getListeSauces() {
         return listeSauces;
     }
+
     public void setListeSauces(ArrayList<Sauce> listeSauces) {
         this.listeSauces = listeSauces;
     }
@@ -109,6 +138,7 @@ public class MyApplication extends Application {
     public ArrayList<Viande> getListeViandes() {
         return listeViandes;
     }
+
     public void setListeViandes(ArrayList<Viande> listeViandes) {
         this.listeViandes = listeViandes;
     }
@@ -116,6 +146,7 @@ public class MyApplication extends Application {
     public ArrayList<Supplement> getListeSupplements() {
         return listeSupplements;
     }
+
     public void setListeSupplements(ArrayList<Supplement> listeSupplements) {
         this.listeSupplements = listeSupplements;
     }
@@ -139,20 +170,16 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e("MyApp - onCreate", "Ouverture de l'app");
+        Log.d("MyApp - onCreate", "Ouverture de l'app, récupération des données");
         setData();
-
     }
 
     private void setData() {
         // Récupère les données dans l'application (OTacos, recettes, sauces, viandes, suppléments)
-        final ArrayList<Sauce> lsa = getAllSauces();
-        final ArrayList<Viande> lv = getAllViandes();
-        final ArrayList<Supplement> lsu = getAllSupplements();
         setListeOTacos(getAllOTacos());
-        setListeSauces(lsa);
-        setListeViandes(lv);
-        setListeSupplements(lsu);
+        setListeSauces(getAllSauces());
+        setListeViandes(getAllViandes());
+        setListeSupplements(getAllSupplements());
         setListeRecettes(getAllRecipes());
 //        new Handler().postDelayed(new Runnable(){
 //            public void run(){
@@ -166,7 +193,15 @@ public class MyApplication extends Application {
 //                }, 3000);
 //            }
 //        }, 3000);
+    }
 
+    public void writeData() {
+        writeArrayInFile(getListeOTacos(), "otacos.json");
+        writeArrayInFile(getListeSauces(), "sauces.json");
+        writeArrayInFile(getListeViandes(), "viandes.json");
+        writeArrayInFile(getListeSupplements(), "supplements.json");
+        writeArrayInFile(getListeRecettes(), "recettes.json");
+        writeInFirebase(); // Enregistre les données utilisateur dans la BDD associé à son compte firebase
     }
 
     public void writeArrayInFile(ArrayList arrayList, String filename) {
@@ -176,7 +211,7 @@ public class MyApplication extends Application {
             fileOutputStream.write(jsonArray.getBytes());
             fileOutputStream.close();
 
-            Log.d("MyApp-writeArrayInFile", filename+" saved");
+            Log.d("MyApp-writeArrayInFile", filename + " saved");
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -198,8 +233,7 @@ public class MyApplication extends Application {
                 stringBuffer.append(lines);
             }
             return stringBuffer.toString();
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -219,19 +253,19 @@ public class MyApplication extends Application {
             ArrayList listOTacos = new Gson().fromJson(jsonString, ArrayList.class);
 
             for (Object object : listOTacos) {
-                LinkedTreeMap<Object,Object> t = (LinkedTreeMap) object;
+                LinkedTreeMap<Object, Object> t = (LinkedTreeMap) object;
 
-                double idTemp = (double)t.get("id");
+                double idTemp = (double) t.get("id");
                 int id = (int) Math.round(idTemp);
-                String nom = (String)t.get("nom");
+                String nom = (String) t.get("nom");
 
-                LinkedTreeMap<Object,Object> tLocation = (LinkedTreeMap) t.get("location");
-                GeoPoint location = new GeoPoint((double)tLocation.get("latitude"), (double)tLocation.get("longitude"));
+                LinkedTreeMap<Object, Object> tLocation = (LinkedTreeMap) t.get("location");
+                GeoPoint location = new GeoPoint((double) tLocation.get("latitude"), (double) tLocation.get("longitude"));
 
-                String adresse = (String)t.get("adresse");
-                String cp = (String)t.get("cp");
-                String ville = (String)t.get("ville");
-                boolean isFavorite = (boolean)t.get("isFavorite");
+                String adresse = (String) t.get("adresse");
+                String cp = (String) t.get("cp");
+                String ville = (String) t.get("ville");
+                boolean isFavorite = (boolean) t.get("isFavorite");
 
                 O_Tacos otacos = new O_Tacos(id, nom, location, adresse, cp, ville, isFavorite);
                 listeOTacos.add(otacos);
@@ -239,6 +273,7 @@ public class MyApplication extends Application {
         }
         return listeOTacos;
     }
+
     public ArrayList<Sauce> getAllSaucesFromFile() {
         ArrayList<Sauce> listeSauces = new ArrayList<>();
         //Read JSON string
@@ -251,9 +286,9 @@ public class MyApplication extends Application {
             ArrayList list = new Gson().fromJson(jsonString, ArrayList.class);
 
             for (Object object : list) {
-                LinkedTreeMap<Object,Object> t = (LinkedTreeMap) object;
+                LinkedTreeMap<Object, Object> t = (LinkedTreeMap) object;
 
-                String nom = (String)t.get("nom");
+                String nom = (String) t.get("nom");
 
                 Sauce sauce = new Sauce(nom);
                 listeSauces.add(sauce);
@@ -261,6 +296,7 @@ public class MyApplication extends Application {
         }
         return listeSauces;
     }
+
     public ArrayList<Viande> getAllViandesFromFile() {
         ArrayList<Viande> listeViandes = new ArrayList<>();
         //Read JSON string
@@ -273,9 +309,9 @@ public class MyApplication extends Application {
             ArrayList list = new Gson().fromJson(jsonString, ArrayList.class);
 
             for (Object object : list) {
-                LinkedTreeMap<Object,Object> t = (LinkedTreeMap) object;
+                LinkedTreeMap<Object, Object> t = (LinkedTreeMap) object;
 
-                String nom = (String)t.get("nom");
+                String nom = (String) t.get("nom");
 
                 Viande viande = new Viande(nom);
                 listeViandes.add(viande);
@@ -283,6 +319,7 @@ public class MyApplication extends Application {
         }
         return listeViandes;
     }
+
     public ArrayList<Supplement> getAllSupplementsFromFile() {
         ArrayList<Supplement> listeSupplements = new ArrayList<>();
         //Read JSON string
@@ -295,9 +332,9 @@ public class MyApplication extends Application {
             ArrayList list = new Gson().fromJson(jsonString, ArrayList.class);
 
             for (Object object : list) {
-                LinkedTreeMap<Object,Object> t = (LinkedTreeMap) object;
+                LinkedTreeMap<Object, Object> t = (LinkedTreeMap) object;
 
-                String nom = (String)t.get("nom");
+                String nom = (String) t.get("nom");
 
                 Supplement supplement = new Supplement(nom);
                 listeSupplements.add(supplement);
@@ -305,6 +342,7 @@ public class MyApplication extends Application {
         }
         return listeSupplements;
     }
+
     public ArrayList<Recette> getAllRecipesFromFile() {
         ArrayList<Recette> listeRecettes = new ArrayList<>();
         //Read JSON string
@@ -317,10 +355,10 @@ public class MyApplication extends Application {
             ArrayList list = new Gson().fromJson(jsonString, ArrayList.class);
 
             for (Object object : list) {
-                LinkedTreeMap<Object,Object> t = (LinkedTreeMap) object;
+                LinkedTreeMap<Object, Object> t = (LinkedTreeMap) object;
 
-                String nom = (String)t.get("nom");
-                String strTailleTacos = (String)t.get("tailleTacos");
+                String nom = (String) t.get("nom");
+                String strTailleTacos = (String) t.get("tailleTacos");
                 Recette.TailleTacos tailleTacos = null;
                 switch (strTailleTacos) {
                     case "M":
@@ -339,25 +377,25 @@ public class MyApplication extends Application {
                 ArrayList<Sauce> sauces = new ArrayList<>();
                 ArrayList arraySauces = (ArrayList) t.get("sauces");
                 for (Object objSauce : arraySauces) {
-                    LinkedTreeMap<Object,Object> tSauce = (LinkedTreeMap) objSauce;
-                    String nomSauce = (String)tSauce.get("nom");
+                    LinkedTreeMap<Object, Object> tSauce = (LinkedTreeMap) objSauce;
+                    String nomSauce = (String) tSauce.get("nom");
                     sauces.add(new Sauce(nomSauce));
                 }
                 ArrayList<Viande> viandes = new ArrayList<>();
                 ArrayList arrayViandes = (ArrayList) t.get("viandes");
                 for (Object objViande : arrayViandes) {
-                    LinkedTreeMap<Object,Object> tViande = (LinkedTreeMap) objViande;
-                    String nomViande = (String)tViande.get("nom");
+                    LinkedTreeMap<Object, Object> tViande = (LinkedTreeMap) objViande;
+                    String nomViande = (String) tViande.get("nom");
                     viandes.add(new Viande(nomViande));
                 }
                 ArrayList<Supplement> supplements = new ArrayList<>();
                 ArrayList arraySupplements = (ArrayList) t.get("supplements");
                 for (Object objSupplement : arraySupplements) {
-                    LinkedTreeMap<Object,Object> tSupplement = (LinkedTreeMap) objSupplement;
-                    String nomSupplement = (String)tSupplement.get("nom");
+                    LinkedTreeMap<Object, Object> tSupplement = (LinkedTreeMap) objSupplement;
+                    String nomSupplement = (String) tSupplement.get("nom");
                     supplements.add(new Supplement(nomSupplement));
                 }
-                boolean isFavorite = (boolean)t.get("isFavorite");
+                boolean isFavorite = (boolean) t.get("isFavorite");
                 Recette recette = new Recette(nom, tailleTacos, sauces, viandes, supplements, isFavorite);
                 listeRecettes.add(recette);
             }
@@ -369,54 +407,53 @@ public class MyApplication extends Application {
     public ArrayList<O_Tacos> getAllOTacos() {
         ArrayList<O_Tacos> listeOTacos = getAllOTacosFromFile();
         if (listeOTacos == null) {
-            Log.e("MyApp - getAllOTacos", "liste null --> get from database");
+            Log.d("MyApp - getAllOTacos", "liste null --> get from database");
             return Data.getAllOTacosFromDb();
-        }
-        else {
+        } else {
             Log.d("MyApp - getAllOTacos", "lecture de la liste OK");
             return listeOTacos;
         }
     }
+
     public ArrayList<Sauce> getAllSauces() {
         ArrayList<Sauce> listeSauces = getAllSaucesFromFile();
         if (listeSauces == null) {
-            Log.e("MyApp - getAllSauces", "liste null --> get from database");
+            Log.d("MyApp - getAllSauces", "liste null --> get from database");
             return Data.getAllSaucesFromDb();
-        }
-        else {
+        } else {
             Log.d("MyApp - getAllSauces", "lecture de la liste OK");
             return listeSauces;
         }
     }
+
     public ArrayList<Viande> getAllViandes() {
         ArrayList<Viande> listeViandes = getAllViandesFromFile();
         if (listeViandes == null) {
-            Log.e("MyApp - getAllViandes", "liste null --> get from database");
+            Log.d("MyApp - getAllViandes", "liste null --> get from database");
             return Data.getAllViandesFromDb();
-        }
-        else {
+        } else {
             Log.d("MyApp - getAllViandes", "lecture de la liste OK");
             return listeViandes;
         }
     }
-    public  ArrayList<Supplement> getAllSupplements() {
+
+    public ArrayList<Supplement> getAllSupplements() {
         ArrayList<Supplement> listeSupplements = getAllSupplementsFromFile();
         if (listeSupplements == null) {
-            Log.e("MyApp-getAllSupplements", "liste null --> get from database");
+            Log.d("MyApp-getAllSupplements", "liste null --> get from database");
             return Data.getAllSupplementsFromDb();
-        }
-        else {
+        } else {
             Log.d("MyApp-getAllSupplements", "lecture de la liste OK");
             return listeSupplements;
         }
     }
+
     public ArrayList<Recette> getAllRecipes() {
         ArrayList<Recette> listeRecettes = getAllRecipesFromFile();
         if (listeRecettes == null) {
-            Log.e("MyApp - getAllRecipes", "liste null --> get from database");
+            Log.d("MyApp - getAllRecipes", "liste null --> get from database");
             return Data.getAllRecipesFromDb(getAllSauces(), getAllViandes(), getAllSupplements());
-        }
-        else {
+        } else {
             Log.d("MyApp - getAllRecipes", "lecture de la liste OK");
             return listeRecettes;
         }
@@ -437,8 +474,77 @@ public class MyApplication extends Application {
     }
 
     public void deleteAllData() {
-        //TODO : deconnect
         this.setListeOTacos(Data.getAllOTacosFromDb());
         this.setListeRecettes(Data.getAllRecipesFromDb(getListeSauces(), getListeViandes(), getListeSupplements()));
+    }
+
+    public void writeInFirebase() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            String userID = firebaseUser.getUid();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            LinkedTreeMap<String, ArrayList> donnees = new LinkedTreeMap<>();
+            donnees.put("Recettes", getListeRecettes());
+            donnees.put("OTacos favoris", getFavOTacos());
+
+            db.collection("User").document(userID).set(donnees);
+        } else {
+            Log.d("MyApp - writeInFirebase", "Utilisateur déconnecté, on ne fait rien");
+        }
+    }
+
+    public void loadDataFromFirebase() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            String userID = firebaseUser.getUid();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("User").document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Object fav_otacos = document.getData().get("OTacos favoris");
+                            Object recettes = document.getData().get("Recettes");
+                            unFavAllOTacos();
+                            for (Object obj : (ArrayList) fav_otacos) {
+                                int idTacos = ((Long) obj).intValue();
+                                setOTacosFav(idTacos, true);
+                            }
+                            Log.d("MyApp-loadFromFirebase", "OTacos favoris set !");
+                            ArrayList<Recette> listRecettes = new ArrayList<>();
+                            for (Object obj : (ArrayList) recettes) {
+                                Recette recette = new Recette();
+                                HashMap<String, Object> hm = (HashMap) obj;
+                                recette.setNom((String) hm.get("nom"));
+                                recette.setTailleTacosByStr((String) hm.get("tailleTacos"));
+
+                                for (Object objSauce : (ArrayList) hm.get("sauces")) {
+                                    HashMap hmSauce = (HashMap) objSauce;
+                                    recette.addSauce(new Sauce((String) hmSauce.get("nom")));
+                                }
+                                for (Object objViande : (ArrayList) hm.get("viandes")) {
+                                    HashMap hmViande = (HashMap) objViande;
+                                    recette.addViande(new Viande((String) hmViande.get("nom")));
+                                }
+                                for (Object objSupplement : (ArrayList) hm.get("supplements")) {
+                                    HashMap hmSupplement = (HashMap) objSupplement;
+                                    recette.addSupplement(new Supplement((String) hmSupplement.get("nom")));
+                                }
+                                recette.setFavorite((boolean) hm.get("favorite"));
+                                listRecettes.add(recette);
+                            }
+                            setListeRecettes(listRecettes);
+                            Log.d("MyApp-loadFromFirebase", "Liste recettes set !");
+                        }
+                    }
+                }
+            });
+
+        } else {
+            Log.d("MyApp-loadFromFirebase", "Utilisateur déconnecté, on ne fait rien");
+        }
     }
 }

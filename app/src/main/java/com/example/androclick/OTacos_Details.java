@@ -24,8 +24,8 @@ public class OTacos_Details extends AppCompatActivity {
         final TextView tvDistance = (TextView) findViewById(R.id.distance);
         if (userPosition != null) {
             double distance = otacos.distance(userPosition);
-            distance = (double) Math.round(distance/1000 * 10) / 10;
-            String distanceStr = distance+" km";
+            distance = (double) Math.round(distance / 1000 * 10) / 10;
+            String distanceStr = distance + " km";
 
             tvDistance.setText(distanceStr);
         } else {

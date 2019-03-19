@@ -41,6 +41,13 @@
             style="@style/ThemeOverlay.MyTextDetail"
             tools:text="Firebase User ID: 123456789abc" />
 
+        <Button
+            android:id="@+id/button_load_from_firebase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
+            android:text="@string/download_data_from_firebase" />
+
     </LinearLayout>
 
 

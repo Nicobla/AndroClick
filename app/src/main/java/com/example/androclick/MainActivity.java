@@ -1,7 +1,5 @@
 package com.example.androclick;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.e("MainActivity - onCreate", "Démarrage de l'app");
+        //Log.d("MainActivity - onCreate", "Démarrage de l'app");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
@@ -109,16 +107,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStop() {
         super.onStop();
-        Log.e("MainActivity - onStop", "Fermeture de mainActivity, enregistrement des données");
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//        boolean truc = sharedPreferences.getBoolean("isConnected", false);
-//        ((MyApplication) getApplicationContext()).setConnected(truc);
-//        Log.e("CONNECTED", "isCo:"+truc);
-        ((MyApplication) getApplicationContext()).writeArrayInFile(((MyApplication) getApplicationContext()).getListeOTacos(), "otacos.json");
-        ((MyApplication) getApplicationContext()).writeArrayInFile(((MyApplication) getApplicationContext()).getListeSauces(), "sauces.json");
-        ((MyApplication) getApplicationContext()).writeArrayInFile(((MyApplication) getApplicationContext()).getListeViandes(), "viandes.json");
-        ((MyApplication) getApplicationContext()).writeArrayInFile(((MyApplication) getApplicationContext()).getListeSupplements(), "supplements.json");
-        ((MyApplication) getApplicationContext()).writeArrayInFile(((MyApplication) getApplicationContext()).getListeRecettes(), "recettes.json");
+        Log.d("MainActivity - onStop", "Fermeture de mainActivity, enregistrement des données");
+        ((MyApplication) getApplicationContext()).writeData();
     }
 
 }
