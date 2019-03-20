@@ -51,7 +51,7 @@
     </android.support.v7.widget.Toolbar>
 
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -183,7 +183,7 @@
             </android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_apply"
