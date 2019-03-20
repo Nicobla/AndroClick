@@ -208,9 +208,6 @@ public class Recette implements Serializable {
 
     public String getIngredients() {
         ArrayList<String> ingredients = new ArrayList<>();
-        //ingredients = combine(ingredients, getStrSauces());
-        //ingredients = combine(ingredients, getStrViandes());
-        //ingredients = combine(ingredients, getStrSupplements());
         ingredients.addAll(getStrSauces());
         ingredients.addAll(getStrViandes());
         ingredients.addAll(getStrSupplements());
@@ -225,14 +222,6 @@ public class Recette implements Serializable {
         return strIngredients;
     }
 
-//    private String[] combine(String[] a, String[] b) {
-//        int length = a.length + b.length;
-//        String[] result = new String[length];
-//        System.arraycopy(a, 0, result, 0, a.length);
-//        System.arraycopy(b, 0, result, a.length, b.length);
-//        return result;
-//    }
-
     public boolean isFavorite() {
         return isFavorite;
     }
@@ -240,10 +229,4 @@ public class Recette implements Serializable {
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
     }
-
-    /*public void empty() {
-        this.setSauces(new ArrayList<Sauce>());
-        this.setViandes(new ArrayList<Viande>());
-        this.setSupplements(new ArrayList<Supplement>());
-    }*/
 }

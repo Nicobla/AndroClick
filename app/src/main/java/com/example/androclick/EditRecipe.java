@@ -19,7 +19,7 @@ public class EditRecipe extends AppCompatActivity {
 
     final int NB_MAX_SAUCES = 2;
     final int[] NB_MAX_VIANDES = {1, 2, 3, 4};
-    int nb_max_viandes = 1;
+    int nb_max_viandes;
     boolean mustUncheck;
 
     ArrayList<String> listePositionsSauces;
@@ -38,7 +38,6 @@ public class EditRecipe extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recipe);
-
 
         ((MyApplication) getApplicationContext()).uncheckAllIngredients();
 
@@ -74,16 +73,6 @@ public class EditRecipe extends AppCompatActivity {
                 finish();
             }
         });
-
-        rvSauces = (RecyclerView) findViewById(R.id.list_sauces);
-        displayListeSauces();
-
-        rvViandes = (RecyclerView) findViewById(R.id.list_viandes);
-        displayListeViandes();
-
-        rvSupplements = (RecyclerView) findViewById(R.id.list_supplements);
-        displayListeSupplements();
-
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.tailles_tacos);
 
@@ -133,6 +122,15 @@ public class EditRecipe extends AppCompatActivity {
                 displayListeViandes();
             }
         });
+
+        rvSauces = (RecyclerView) findViewById(R.id.list_sauces);
+        displayListeSauces();
+
+        rvViandes = (RecyclerView) findViewById(R.id.list_viandes);
+        displayListeViandes();
+
+        rvSupplements = (RecyclerView) findViewById(R.id.list_supplements);
+        displayListeSupplements();
 
         rvSauces.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -69,9 +70,16 @@ public class Settings extends Fragment {
                     @Override
                     public void onClick(View v) {
                         popupWindow.dismiss();
+                        button_reinit.setEnabled(false);
                         // Suppression
                         ((MyApplication) getActivity().getApplicationContext()).deleteAllData();
-                        Toast.makeText(getContext(), "Données réinitialisées !", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Réinitialisation en cours...", Toast.LENGTH_SHORT).show();
+                        new Handler().postDelayed(new Runnable(){
+                            public void run(){
+                                if (getContext() != null)
+                                    Toast.makeText(getContext(), "Données réinitialisées !", Toast.LENGTH_SHORT).show();
+                            }
+                        }, 1500);
                     }
                 });
                 buttonNo.setOnClickListener(new View.OnClickListener() {

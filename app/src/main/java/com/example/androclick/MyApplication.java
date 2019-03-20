@@ -1,6 +1,7 @@
 package com.example.androclick;
 
 import android.app.Application;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -196,18 +197,12 @@ public class MyApplication extends Application {
         setListeViandes(getAllViandes());
         setListeSupplements(getAllSupplements());
         setListeRecettes(getAllRecipes());
-//        new Handler().postDelayed(new Runnable(){
-//            public void run(){
-//                Log.e("MainActivity - setData", "re-get 1");
-//                setListeRecettes(getAllRecipes());
-//                new Handler().postDelayed(new Runnable(){
-//                    public void run(){
-//                        Log.e("MainActivity - setData", "re-get 2");
-//                        setListeRecettes(getAllRecipes(lsa, lv, lsu));
-//                    }
-//                }, 3000);
-//            }
-//        }, 3000);
+
+        new Handler().postDelayed(new Runnable(){
+            public void run(){
+                mustRefreshRecipes = true;
+            }
+        }, 1500);
     }
 
     public void writeData() {
@@ -260,8 +255,8 @@ public class MyApplication extends Application {
         ArrayList<O_Tacos> listeOTacos = new ArrayList<>();
         //Read JSON string
         String jsonString = getJsonStringFromFile("otacos.json");
-        if (jsonString == null) {
-            Log.e("MyApp - readOTacos", "otacos.json : jsonString is null");
+        if (jsonString == null || jsonString.equals("[]")) {
+            Log.e("MyApp - readOTacos", "otacos.json : jsonString is null or empty");
             return null;
         } else {
             //Convert JSON string
@@ -293,8 +288,8 @@ public class MyApplication extends Application {
         ArrayList<Sauce> listeSauces = new ArrayList<>();
         //Read JSON string
         String jsonString = getJsonStringFromFile("sauces.json");
-        if (jsonString == null) {
-            Log.e("MyApp - readSauces", "sauces.json : jsonString is null");
+        if (jsonString == null || jsonString.equals("[]")) {
+            Log.e("MyApp - readSauces", "sauces.json : jsonString is null or empty");
             return null;
         } else {
             //Convert JSON string
@@ -316,8 +311,8 @@ public class MyApplication extends Application {
         ArrayList<Viande> listeViandes = new ArrayList<>();
         //Read JSON string
         String jsonString = getJsonStringFromFile("viandes.json");
-        if (jsonString == null) {
-            Log.e("MyApp - readViandes", "viandes.json : jsonString is null");
+        if (jsonString == null || jsonString.equals("[]")) {
+            Log.e("MyApp - readViandes", "viandes.json : jsonString is null or empty");
             return null;
         } else {
             //Convert JSON string
@@ -339,8 +334,8 @@ public class MyApplication extends Application {
         ArrayList<Supplement> listeSupplements = new ArrayList<>();
         //Read JSON string
         String jsonString = getJsonStringFromFile("supplements.json");
-        if (jsonString == null) {
-            Log.e("MyApp - readSupplements", "supplements.json : jsonString is null");
+        if (jsonString == null || jsonString.equals("[]")) {
+            Log.e("MyApp - readSupplements", "supplements.json : jsonString is null or empty");
             return null;
         } else {
             //Convert JSON string
@@ -467,19 +462,12 @@ public class MyApplication extends Application {
         ArrayList<Recette> listeRecettes = getAllRecipesFromFile();
         if (listeRecettes == null) {
             Log.d("MyApp - getAllRecipes", "liste null --> get from database");
-            return Data.getAllRecipesFromDb(getAllSauces(), getAllViandes(), getAllSupplements());
+            return Data.getAllRecipesFromDb(getListeSauces(), getListeViandes(), getListeSupplements());
         } else {
             Log.d("MyApp - getAllRecipes", "lecture de la liste OK");
             return listeRecettes;
         }
     }
-//    public ArrayList<Recette> getAllRecipes(ArrayList<Sauce> listeSauces, ArrayList<Viande> listeViandes, ArrayList<Supplement> listeSupplements) {
-//        ArrayList<Recette> listeRecettes = Data.getAllRecipesFromDb(listeSauces, listeViandes, listeSupplements);
-//        if (listeRecettes != null) {
-//            Log.e("Data - getAllRecipes", "size="+listeRecettes.size());
-//        }
-//        return listeRecettes;
-//    }
 
     public int getNbRecettes() {
         if (this.listeRecettes == null)
@@ -491,6 +479,11 @@ public class MyApplication extends Application {
     public void deleteAllData() {
         this.setListeOTacos(Data.getAllOTacosFromDb());
         this.setListeRecettes(Data.getAllRecipesFromDb(getListeSauces(), getListeViandes(), getListeSupplements()));
+        new Handler().postDelayed(new Runnable(){
+            public void run(){
+                mustRefreshRecipes = true;
+            }
+        }, 1500);
     }
 
     public void writeInFirebase() {
