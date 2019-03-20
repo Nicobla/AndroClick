@@ -30,7 +30,6 @@ public class Map extends Fragment implements OnMapReadyCallback {
     private static final int REQUEST_LOCATION_PERMISSION = 0;
     private GoogleMap mMap;
 
-    private Location myLocation;
     private LatLng userLocation;
 
     LocationManager locationManager;
@@ -45,7 +44,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.otacos_map_fragment, container, false);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -99,8 +98,10 @@ public class Map extends Fragment implements OnMapReadyCallback {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-                ((MyApplication) getActivity().getApplicationContext()).setUserPosition(userLocation);
+                if (lastKnownLocation != null) {
+                    userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                    ((MyApplication) getActivity().getApplicationContext()).setUserPosition(userLocation);
+                }
             }
         }
 

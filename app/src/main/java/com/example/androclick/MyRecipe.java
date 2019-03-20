@@ -41,7 +41,7 @@ public class MyRecipe extends AppCompatActivity {
         if (recette != null)
             position = ((MyApplication) getApplication().getApplicationContext()).getPositionRecette(recette);
         if (position == -1 || recette == null) {
-            Log.e("Erreur", "Tentative d'ouverture d'une recette supprimée");
+            Log.e("MyRecipe - OnCreate", "Erreur : Tentative d'ouverture d'une recette supprimée");
             finish();
         }
 
@@ -138,17 +138,14 @@ public class MyRecipe extends AppCompatActivity {
         TextInputEditText mText = findViewById(R.id.myrecipe_name_input);
         recette.setNom(mText.getText().toString());
 
-        /*Intent intent = new Intent();
-        intent.putExtra("recette", recette);
-        intent.putExtra("position", position);
-        setResult(Activity.RESULT_OK, intent);*/
         ((MyApplication) getApplicationContext()).setRecette(position, recette);
-
-        //((MyRecipes)getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getFragments().indexOf(new MyRecipes()))).reset();
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.myRecipes);
-        Log.e("DEBUG", "frag null - " + (currentFragment == null));
-
         finish();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ((MyApplication)getApplicationContext()).mustRefreshRecipes = true;
     }
 
     @Override

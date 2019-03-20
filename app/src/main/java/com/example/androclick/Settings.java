@@ -1,5 +1,8 @@
 package com.example.androclick;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,7 +25,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Settings extends Fragment {
-    ConstraintLayout cl;
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
 
     @Nullable
     @Override
@@ -82,13 +90,17 @@ public class Settings extends Fragment {
         button_delete_firebase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (firebaseUser != null) {
-                    String userID = firebaseUser.getUid();
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection("User").document(userID).delete();
-                    Toast.makeText(getContext(), "Données supprimées !", Toast.LENGTH_SHORT).show();
-                    button_delete_firebase.setEnabled(false);
-                    FirebaseAuth.getInstance().signOut();
+                if (isOnline()) {
+                    if (firebaseUser != null) {
+                        String userID = firebaseUser.getUid();
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        db.collection("User").document(userID).delete();
+                        Toast.makeText(getContext(), "Données supprimées !", Toast.LENGTH_SHORT).show();
+                        button_delete_firebase.setEnabled(false);
+                        FirebaseAuth.getInstance().signOut();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Impossible de supprimer. Vérifiez votre connexion internet.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -1,11 +1,9 @@
 package com.example.androclick;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +15,9 @@ import java.util.ArrayList;
 
 public class MakeTacos_1 extends Fragment {
 
+    final int NB_MAX_SAUCES = 2;
+    final int NB_MAX_SUPPLEMENTS = 8;
+
     private Bundle bundle;
     private Recette recette;
 
@@ -24,15 +25,11 @@ public class MakeTacos_1 extends Fragment {
         // Required empty public constructor
     }
 
-    public void restart() {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(this).attach(this).commit();
-    }
+//    public void restart() {
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.detach(this).attach(this).commit();
+//    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +49,6 @@ public class MakeTacos_1 extends Fragment {
         }
         int numRecette = ((MyApplication) getActivity().getApplicationContext()).getNbRecettes() + 1;
         if (recette == null) recette = new Recette("Recette " + numRecette);
-
 
         RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.tailles_tacos);
 
@@ -88,6 +84,10 @@ public class MakeTacos_1 extends Fragment {
                         recette.setTailleTacos(Recette.TailleTacos.XXL);
                         break;
                 }
+                ((MyApplication)getActivity().getApplicationContext()).listePositionsViandes = new ArrayList<>();
+                recette.setViandes(new ArrayList<Viande>());
+                bundle.putSerializable("recette", recette);
+                setArguments(bundle);
             }
         });
 
@@ -118,7 +118,6 @@ public class MakeTacos_1 extends Fragment {
     }
 
     Recette randRecette() {
-        //recette.empty();
         ArrayList<Sauce> listeSauces = ((MyApplication) getActivity().getApplicationContext()).getListeSauces();
         ArrayList<Viande> listeViandes = ((MyApplication) getActivity().getApplicationContext()).getListeViandes();
         ArrayList<Supplement> listeSupplements = ((MyApplication) getActivity().getApplicationContext()).getListeSupplements();
@@ -130,33 +129,37 @@ public class MakeTacos_1 extends Fragment {
         Recette recette = new Recette(this.recette.getNom() + " (aléatoire)");
 
         int idxTaille = rand(1, 4);
+        int nbViandes = 1;
 
         switch (idxTaille) {
             case 1:
+                nbViandes = rand(0, 1);
                 recette.setTailleTacos(Recette.TailleTacos.M);
                 break;
             case 2:
+                nbViandes = rand(0, 2);
                 recette.setTailleTacos(Recette.TailleTacos.L);
                 break;
             case 3:
+                nbViandes = rand(0, 3);
                 recette.setTailleTacos(Recette.TailleTacos.XL);
                 break;
             case 4:
+                nbViandes = rand(0, 4);
                 recette.setTailleTacos(Recette.TailleTacos.XXL);
                 break;
         }
 
-        int nbSauces = rand(0, 3);
+        int nbSauces = rand(0, NB_MAX_SAUCES);
         for (int i = 0; i < nbSauces; i++) {
             int numSauce = rand(0, listeSauces.size() - 1);
             recette.addSauce(listeSauces.get(numSauce));
         }
-        int nbViandes = rand(0, 2);
         for (int i = 0; i < nbViandes; i++) {
             int numViande = rand(0, listeViandes.size() - 1);
             recette.addViande(listeViandes.get(numViande));
         }
-        int nbSupplements = rand(0, 7);
+        int nbSupplements = rand(0, NB_MAX_SUPPLEMENTS);
         for (int i = 0; i < nbSupplements; i++) {
             int numSupplements = rand(0, listeSupplements.size() - 1);
             recette.addSupplement(listeSupplements.get(numSupplements));

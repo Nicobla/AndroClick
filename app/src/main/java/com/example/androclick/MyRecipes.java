@@ -53,10 +53,7 @@ public class MyRecipes extends Fragment {
         View view = inflater.inflate(R.layout.my_recipes_fragment, container, false);
 
         this.listeRecettes = ((MyApplication) this.getActivity().getApplicationContext()).getListeRecettes();
-//        if (this.listeRecettes != null)
-//            Log.e("MyRecipes - onCreate", "nbRecettes="+this.listeRecettes.size());
-//        else
-//            Log.e("MyRecipes - onCreate", "listeRecettes null");
+
         final EditText text_search = (EditText) view.findViewById(R.id.text_search);
         final TextView title_myrecipes = (TextView) view.findViewById(R.id.title_myrecipes);
 
@@ -138,24 +135,27 @@ public class MyRecipes extends Fragment {
                                 mySwipeRefreshLayout.setRefreshing(false);
                             }
                         }, 500);
-                        //reload();
                     }
                 }
         );
 
 
         // Recharge la page tous les X temps
-//        final Handler handler = new Handler();
-//        final int delay = 2500; //milliseconds
-//
-//        handler.postDelayed(new Runnable(){
-//            public void run(){
-//                handler.postDelayed(this, delay);
-//                if (!isStateSaved() && isResumed()) {
-//                    reload();
-//                }
-//            }
-//        }, delay);
+        final Handler handler = new Handler();
+        final int delay = 500; //milliseconds
+
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                handler.postDelayed(this, delay);
+                if (getActivity() != null) {
+                    if (((MyApplication)getActivity().getApplicationContext()).mustRefreshRecipes) {
+                        if (isResumed() && !isStateSaved())
+                            reload();
+                        ((MyApplication)getActivity().getApplicationContext()).mustRefreshRecipes = false;
+                    }
+                }
+            }
+        }, delay);
 
         return view;
     }

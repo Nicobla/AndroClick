@@ -15,7 +15,7 @@ class Supplement implements Serializable {
     boolean selected = false;
 
     public Supplement() {
-        this("supplément sans nom");
+        this("Supplément sans nom");
     }
 
     public Supplement(String nom) {
@@ -43,7 +43,7 @@ class Supplement implements Serializable {
 }
 
 public class SupplementsAdapter extends RecyclerView.Adapter<SupplementsAdapter.SupplementsHolder> {
-    private ArrayList<Supplement> listeSupplements = new ArrayList<Supplement>();
+    private ArrayList<Supplement> listeSupplements;
 
     public class SupplementsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView nomSupplement;
@@ -54,7 +54,6 @@ public class SupplementsAdapter extends RecyclerView.Adapter<SupplementsAdapter.
 
             nomSupplement = (TextView) v.findViewById(R.id.nom_supplement);
             chkSupplement = (CheckBox) v.findViewById(R.id.checkbox_supplement);
-            //chkSupplement.setChecked(false);
 
             itemView.setOnClickListener(this);
         }
@@ -63,24 +62,20 @@ public class SupplementsAdapter extends RecyclerView.Adapter<SupplementsAdapter.
         public void onClick(View view) {
             CheckBox chk = (CheckBox) view.findViewById(R.id.checkbox_supplement);
             chk.setChecked(!chk.isChecked());
-
-            int pos = getAdapterPosition();
-            Supplement s = listeSupplements.get(pos);
-            //s.setSelected(!s.isSelected());
-
-            //Log.d("Test", "Click sur un supplément (" + pos + ") - " + s.isSelected());
         }
     }
 
     public SupplementsAdapter(ArrayList<Supplement> listSupplements) {
-        listeSupplements = listSupplements;
+        if (listSupplements == null)
+            this.listeSupplements = new ArrayList<>();
+        else
+            this.listeSupplements = listSupplements;
     }
 
     @Override
     public SupplementsAdapter.SupplementsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_supplements, parent, false);
         SupplementsHolder vh = new SupplementsHolder(v);
-        //vh.chkSupplement.setChecked(false);
         return vh;
     }
 
@@ -90,8 +85,6 @@ public class SupplementsAdapter extends RecyclerView.Adapter<SupplementsAdapter.
 
         holder.nomSupplement.setText(s.getNom());
         holder.chkSupplement.setChecked(s.isSelected());
-
-        //holder.chkSupplement.setTag(kek_chose);
     }
 
     @Override

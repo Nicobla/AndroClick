@@ -41,10 +41,10 @@
     <string name="viandes">Sélection de la viande</string>
     <string name="supplements">Sélection des suppléments</string>
 
-    <string name="m">M</string>
-    <string name="l">L</string>
-    <string name="xl">XL</string>
-    <string name="xxl">XXL</string>
+    <string name="m">M (1 viande max)</string>
+    <string name="l">L (2 viandes max)</string>
+    <string name="xl">XL (3 viandes max)</string>
+    <string name="xxl">XXL (4 viandes max)</string>
 
 
     <!-- Description -->
@@ -67,6 +67,7 @@
         Le tacos français se compose d\'une tortilla repliée sur elle-même et grillée, contenant toujours une garniture qui est le plus souvent à base de viandes, de frites et de sauce. Très différent du taco, le tacos (avec un « s » même au singulier) français, hybride entre panini, kebab et burrito, est de forme rectangulaire et comprend des frites et un fromage crémeux industriel.
         \n\nO\'Tacos est une chaîne de restauration rapide, française et spécialisée dans le tacos français.
         Le point fort de cette chaîne de restauration est que le client choisit ces ingrédients (viandes, sauces et suppléments), ainsi que la taille de son tacos.
+        \n\nNombre de sauces maximum: 2\nNombre de viandes maximum (selon la taille du tacos): M->1, L->2, XL->3, XXL->4
     </string>
     <string name="copyright">Copyright © 2019 AndroTeam</string>
     <string name="distance">Distance</string>
@@ -95,4 +96,5 @@
     <string name="debug_force_location">[DEBUG] Force location</string>
     <string name="delete_firebase_account">Supprimer mes données en ligne</string>
     <string name="download_data_from_firebase">Télécharger les données depuis le compte</string>
+    <string name="warning_firebase">Attention ! Vos données locales seront supprimées !</string>
 </resources>

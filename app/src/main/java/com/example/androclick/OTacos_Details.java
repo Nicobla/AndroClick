@@ -86,4 +86,9 @@ public class OTacos_Details extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ((MyApplication)getApplicationContext()).mustRefreshOTacos = true;
+    }
 }

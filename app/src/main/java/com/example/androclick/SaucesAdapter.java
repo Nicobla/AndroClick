@@ -15,7 +15,7 @@ class Sauce implements Serializable {
     boolean selected;
 
     public Sauce() {
-        this("sauce sans nom");
+        this("Sauce sans nom");
     }
 
     public Sauce(String nom) {
@@ -44,8 +44,10 @@ class Sauce implements Serializable {
 
 public class SaucesAdapter extends RecyclerView.Adapter<SaucesAdapter.SaucesHolder> {
     private ArrayList<Sauce> listeSauces;
+    private ArrayList<String> listePositions;
+    private int nb_max_sauces;
 
-    public class SaucesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class SaucesHolder extends RecyclerView.ViewHolder {
         public TextView nomSauce;
         public CheckBox chkSauce;
 
@@ -53,24 +55,16 @@ public class SaucesAdapter extends RecyclerView.Adapter<SaucesAdapter.SaucesHold
             super(v);
             nomSauce = (TextView) v.findViewById(R.id.nom_sauce);
             chkSauce = (CheckBox) v.findViewById(R.id.checkbox_sauce);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            CheckBox chk = (CheckBox) view.findViewById(R.id.checkbox_sauce);
-            chk.setChecked(!chk.isChecked());
-
-            int pos = getAdapterPosition();
-            Sauce s = listeSauces.get(pos);
-            //s.setSelected(!s.isSelected());
-
-            //Log.d("Test", "Click sur une sauce (" + pos + ") - " + s.isSelected());
         }
     }
 
-    public SaucesAdapter(ArrayList<Sauce> listSauces) {
-        this.listeSauces = listSauces;
+    public SaucesAdapter(ArrayList<Sauce> listSauces, ArrayList<String> listPositions, int nb_max_sauces) {
+        if (listSauces == null)
+            this.listeSauces = new ArrayList<>();
+        else
+            this.listeSauces = listSauces;
+        this.listePositions = listPositions;
+        this.nb_max_sauces = nb_max_sauces;
     }
 
     @Override
@@ -86,6 +80,22 @@ public class SaucesAdapter extends RecyclerView.Adapter<SaucesAdapter.SaucesHold
 
         holder.nomSauce.setText(s.getNom());
         holder.chkSauce.setChecked(s.isSelected());
+
+        if (listePositions.size() >= nb_max_sauces) {
+            boolean isChecked = false;
+            for (String strPos : listePositions) {
+                if (position == Integer.parseInt(strPos)) {
+                    isChecked = true;
+                }
+            }
+            if (isChecked) {
+                holder.chkSauce.setEnabled(true);
+                holder.chkSauce.setActivated(true);
+            } else {
+                holder.chkSauce.setEnabled(false);
+                holder.chkSauce.setActivated(false);
+            }
+        }
     }
 
     @Override

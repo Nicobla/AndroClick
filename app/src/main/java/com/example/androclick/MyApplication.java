@@ -34,6 +34,11 @@ public class MyApplication extends Application {
     private ArrayList<Viande> listeViandes = new ArrayList<>();
     private ArrayList<Supplement> listeSupplements = new ArrayList<>();
 
+    public ArrayList<String> listePositionsSauces = new ArrayList<>();
+    public ArrayList<String> listePositionsViandes = new ArrayList<>();
+
+    public boolean mustRefreshRecipes;
+    public boolean mustRefreshOTacos;
 
     public LatLng getUserPosition() {
         return userPosition;
@@ -164,6 +169,16 @@ public class MyApplication extends Application {
         this.setListeSauces(listeSauces);
         this.setListeViandes(listeViandes);
         this.setListeSupplements(listeSupplements);
+
+        this.listePositionsSauces = new ArrayList<>();
+        this.listePositionsViandes = new ArrayList<>();
+    }
+    public void uncheckViandes() {
+        ArrayList<Viande> listeViandes = getListeViandes();
+
+        for (int i = 0; i < listeViandes.size(); i++) listeViandes.get(i).setSelected(false);
+
+        this.setListeViandes(listeViandes);
     }
 
 
@@ -547,4 +562,5 @@ public class MyApplication extends Application {
             Log.d("MyApp-loadFromFirebase", "Utilisateur déconnecté, on ne fait rien");
         }
     }
+
 }

@@ -19,7 +19,7 @@ class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        public void onItemClick(View view, int position);
+        void onItemClick(View view, int position);
     }
 
     GestureDetector mGestureDetector;
@@ -94,10 +94,8 @@ public class MakeTacos_4 extends Fragment {
                         s.setSelected(!s.isSelected());
                         if (s.isSelected()) {
                             recette.addSupplement(s);
-                            //Log.d("Click", "Ajout du supplément " + s.getNom());
                         } else {
                             recette.removeSupplement(s);
-                            //Log.d("Click", "Suppression du supplément " + s.getNom());
                         }
                         bundle.putSerializable("recette", recette);
                         setArguments(bundle);

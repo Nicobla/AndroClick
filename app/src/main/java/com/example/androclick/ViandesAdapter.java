@@ -12,10 +12,10 @@ import java.util.ArrayList;
 
 class Viande implements Serializable {
     String nom;
-    boolean selected = false;
+    boolean selected;
 
     public Viande() {
-        this("viande sans nom");
+        this("Viande sans nom");
     }
 
     public Viande(String nom) {
@@ -43,9 +43,11 @@ class Viande implements Serializable {
 }
 
 public class ViandesAdapter extends RecyclerView.Adapter<ViandesAdapter.ViandesHolder> {
-    private ArrayList<Viande> listeViandes = new ArrayList<Viande>();
+    private ArrayList<Viande> listeViandes;
+    private ArrayList<String> listePositions;
+    private int nb_max_viandes;
 
-    public class ViandesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViandesHolder extends RecyclerView.ViewHolder {
         public TextView nomViande;
         public CheckBox chkViande;
 
@@ -53,24 +55,16 @@ public class ViandesAdapter extends RecyclerView.Adapter<ViandesAdapter.ViandesH
             super(v);
             nomViande = (TextView) v.findViewById(R.id.nom_viande);
             chkViande = (CheckBox) v.findViewById(R.id.checkbox_viande);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            CheckBox chk = (CheckBox) view.findViewById(R.id.checkbox_viande);
-            chk.setChecked(!chk.isChecked());
-
-            int pos = getAdapterPosition();
-            Viande v = listeViandes.get(pos);
-            //s.setSelected(!s.isSelected());
-
-            //Log.d("Test", "Click sur une viande (" + pos + ") - " + v.isSelected());
         }
     }
 
-    public ViandesAdapter(ArrayList<Viande> listViandes) {
-        listeViandes = listViandes;
+    public ViandesAdapter(ArrayList<Viande> listViandes, ArrayList<String> listPositions, int nb_max_viandes) {
+        if (listViandes == null)
+            this.listeViandes = new ArrayList<>();
+        else
+            this.listeViandes = listViandes;
+        this.listePositions = listPositions;
+        this.nb_max_viandes = nb_max_viandes;
     }
 
     @Override
@@ -86,6 +80,22 @@ public class ViandesAdapter extends RecyclerView.Adapter<ViandesAdapter.ViandesH
 
         holder.nomViande.setText(v.getNom());
         holder.chkViande.setChecked(v.isSelected());
+
+        if (listePositions.size() >= nb_max_viandes) {
+            boolean isChecked = false;
+            for (String strPos : listePositions) {
+                if (position == Integer.parseInt(strPos)) {
+                    isChecked = true;
+                }
+            }
+            if (isChecked) {
+                holder.chkViande.setEnabled(true);
+                holder.chkViande.setActivated(true);
+            } else {
+                holder.chkViande.setEnabled(false);
+                holder.chkViande.setActivated(false);
+            }
+        }
     }
 
     @Override

@@ -1,17 +1,24 @@
 package com.example.androclick;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -49,6 +56,12 @@ public class GoogleSignInActivity extends BaseActivity implements
 
     Button button_load_from_firebase;
 
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,8 +98,42 @@ public class GoogleSignInActivity extends BaseActivity implements
         button_load_from_firebase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MyApplication) getActivity().getApplicationContext()).loadDataFromFirebase();
-                button_load_from_firebase.setEnabled(false);
+                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.popup_load_firebase, null);
+
+                // Crée la fenêtre de pop-up
+                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                boolean focusable = true;
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+                popupWindow.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
+
+                Button buttonYes = (Button) popupView.findViewById(R.id.button_confirm);
+                Button buttonNo = (Button) popupView.findViewById(R.id.button_cancel);
+
+                buttonYes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                        if (isOnline()) {
+                            // Chargement des données depuis le compte Firebase
+                            ((MyApplication) getActivity().getApplicationContext()).loadDataFromFirebase();
+                            button_load_from_firebase.setEnabled(false);
+                            Toast.makeText(getContext(), "Données téléchargées !", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Impossible de télécharger. Vérifiez votre connexion internet.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                buttonNo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                    }
+                });
+
+
             }
         });
 

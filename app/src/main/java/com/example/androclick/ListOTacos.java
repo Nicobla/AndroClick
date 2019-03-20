@@ -75,13 +75,22 @@ public class ListOTacos extends Fragment {
                 }
         );
 
-//        Button button_locate = (Button) view.findViewById(R.id.button_locate);
-//        button_locate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                locate();
-//            }
-//        });
+        // Recharge la page tous les X temps
+        final Handler handler = new Handler();
+        final int delay = 500; //milliseconds
+
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                handler.postDelayed(this, delay);
+                if (getActivity() != null) {
+                    if (((MyApplication)getActivity().getApplicationContext()).mustRefreshOTacos) {
+                        if (isResumed() && !isStateSaved())
+                            reload();
+                        ((MyApplication)getActivity().getApplicationContext()).mustRefreshOTacos = false;
+                    }
+                }
+            }
+        }, delay);
 
         return view;
     }

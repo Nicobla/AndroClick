@@ -1,7 +1,5 @@
 package com.example.androclick;
 
-
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,20 +7,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.ListView;
+import android.widget.CheckBox;
 
 import java.util.ArrayList;
 
-public class MakeTacos_3 extends Fragment implements android.widget.CompoundButton.OnCheckedChangeListener {
+public class MakeTacos_3 extends Fragment {
 
     private Bundle bundle;
     private Recette recette;
 
-//    final int NB_MAX_VIANDES = 2;
-//    int nbViandes = 0;
+    final int[] NB_MAX_VIANDES = {1,2,3,4};
 
     ArrayList<Viande> listeViandes;
+    ArrayList<String> listePositions;
+    int nb_max_viandes = 1;
+    boolean mustUncheck = false;
 
     private RecyclerView rvViandes;
     private RecyclerView.Adapter viandesAdapter;
@@ -34,9 +33,20 @@ public class MakeTacos_3 extends Fragment implements android.widget.CompoundButt
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onResume() {
+        super.onResume();
+        this.listePositions = ((MyApplication)getActivity().getApplicationContext()).listePositionsViandes;
+        if (listePositions.size() == 0)
+            mustUncheck = true;
+        displayListeViandes();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((MyApplication)getActivity().getApplicationContext()).listePositionsViandes = listePositions;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,23 +59,41 @@ public class MakeTacos_3 extends Fragment implements android.widget.CompoundButt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.make_tacos_fragment_3, container, false);
+        listePositions = ((MyApplication)getActivity().getApplicationContext()).listePositionsViandes;
 
         rvViandes = (RecyclerView) view.findViewById(R.id.list_viandes);
         displayListeViandes();
-
 
         rvViandes.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Viande v = listeViandes.get(position);
-                        v.setSelected(!v.isSelected());
-                        if (v.isSelected())
-                            recette.addViande(v);
-                        else
-                            recette.removeViande(v);
-                        bundle.putSerializable("recette", recette);
-                        setArguments(bundle);
+                        CheckBox chk = (CheckBox) view.findViewById(R.id.checkbox_viande);
+                        if (chk.isEnabled()) {
+                            Viande v = listeViandes.get(position);
+                            v.setSelected(!v.isSelected());
+                            chk.setChecked(v.isSelected());
+
+                            if (v.isSelected()) {
+                                recette.addViande(v);
+                                listePositions.add(String.valueOf(position));
+                            } else {
+                                recette.removeViande(v);
+                                listePositions.remove(String.valueOf(position));
+                                enableAllCheckboxes();
+                            }
+                            switch (recette.getTailleTacos()) {
+                                case M: nb_max_viandes = NB_MAX_VIANDES[0]; break;
+                                case L: nb_max_viandes = NB_MAX_VIANDES[1]; break;
+                                case XL: nb_max_viandes = NB_MAX_VIANDES[2]; break;
+                                case XXL: nb_max_viandes = NB_MAX_VIANDES[3]; break;
+                            }
+                            if (listePositions.size() >= nb_max_viandes) {
+                                disableCheckboxes();
+                            }
+                            bundle.putSerializable("recette", recette);
+                            setArguments(bundle);
+                        }
                     }
                 })
         );
@@ -77,32 +105,41 @@ public class MakeTacos_3 extends Fragment implements android.widget.CompoundButt
     }
 
     private void displayListeViandes() {
+        if (mustUncheck) {
+            ((MyApplication) this.getActivity().getApplicationContext()).uncheckViandes();
+            mustUncheck = false;
+        }
         listeViandes = ((MyApplication) this.getActivity().getApplicationContext()).getListeViandes();
-
-        rvViandes.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(getContext());
         rvViandes.setLayoutManager(layoutManager);
 
-        viandesAdapter = new ViandesAdapter(listeViandes);
+        viandesAdapter = new ViandesAdapter(listeViandes, listePositions, nb_max_viandes);
         rvViandes.setAdapter(viandesAdapter);
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        int pos = rvViandes.getChildAdapterPosition(buttonView);
-        if (pos != ListView.INVALID_POSITION) {
-            Viande v = listeViandes.get(pos);
-            v.setSelected(isChecked);
-//            // Compteur de viandes pour limiter
-//            if (isChecked)
-//                nbViandes++;
-//            else
-//                nbViandes--;
-//            if (nbViandes >= NB_MAX_VIANDES) {
-//                Toast.makeText(getContext(), "MAX VIANDES (" + nbViandes + ")", Toast.LENGTH_SHORT).show();
-//            }
+    private void disableCheckboxes() {
+        for (int i = 0; i < rvViandes.getChildCount(); i++) {
+            boolean isChecked = false;
+            for (String strPos : listePositions) {
+                if (i == Integer.parseInt(strPos))
+                    isChecked = true;
+            }
+            if (!isChecked) {
+                RecyclerView.ViewHolder vh = rvViandes.findViewHolderForAdapterPosition(i);
+                CheckBox chkbox = (CheckBox) vh.itemView.findViewById(R.id.checkbox_viande);
+                chkbox.setEnabled(false);
+                chkbox.setActivated(false);
+            }
         }
     }
 
+    private void enableAllCheckboxes() {
+        for (int i = 0; i < rvViandes.getChildCount(); i++) {
+            RecyclerView.ViewHolder vh = rvViandes.findViewHolderForAdapterPosition(i);
+            CheckBox chkbox = (CheckBox) vh.itemView.findViewById(R.id.checkbox_viande);
+            chkbox.setEnabled(true);
+            chkbox.setActivated(true);
+        }
+    }
 }
