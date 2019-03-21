@@ -33,19 +33,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_account:
                 view.performClick();
-                //navigationView.setCheckedItem(R.id.nav_account);
                 getSupportFragmentManager().beginTransaction().replace(R.id.constraintLayout,
                         new MyAccount()).commit();
                 break;
             case R.id.nav_settings:
                 view.performClick();
-                //navigationView.setCheckedItem(R.id.nav_settings);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_recipes);
+                navigationView.setCheckedItem(R.id.nav_settings);
                 getSupportFragmentManager().beginTransaction().replace(R.id.constraintLayout,
                         new Settings()).commit();
                 break;
             case R.id.nav_about:
                 view.performClick();
-                //navigationView.setCheckedItem(R.id.nav_about);
+                navigationView.setCheckedItem(R.id.nav_about);
                 getSupportFragmentManager().beginTransaction().replace(R.id.constraintLayout,
                         new About()).commit();
                 break;

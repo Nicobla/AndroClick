@@ -18,18 +18,20 @@
 
     <item android:title="@string/plus">
         <menu>
-            <item
-                android:id="@+id/nav_account"
-                android:icon="@drawable/ic_account"
-                android:title="@string/my_account" />
-            <item
-                android:id="@+id/nav_settings"
-                android:icon="@drawable/ic_settings"
-                android:title="@string/settings" />
-            <item
-                android:id="@+id/nav_about"
-                android:icon="@drawable/ic_about"
-                android:title="@string/about" />
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_account"
+                    android:icon="@drawable/ic_account"
+                    android:title="@string/my_account" />
+                <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@drawable/ic_settings"
+                    android:title="@string/settings" />
+                <item
+                    android:id="@+id/nav_about"
+                    android:icon="@drawable/ic_about"
+                    android:title="@string/about" />
+            </group>
         </menu>
     </item>
 </menu>

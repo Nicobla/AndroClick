@@ -27,13 +27,13 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class CreerRandRecetteTest {
+public class CreerRecetteTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void creerRandRecetteTest() {
+    public void creerRecetteTest() {
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
@@ -76,7 +76,7 @@ public class CreerRandRecetteTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(500);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -89,7 +89,7 @@ public class CreerRandRecetteTest {
                                         0),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Recette 1 (aléatoire)")));
+        textView.check(matches(isDisplayed()));
     }
 
     private static Matcher<View> childAtPosition(
